@@ -197,6 +197,81 @@
   .reg.uk{color:#7ee0ff;background:rgba(80,200,255,.12)}
   .reg.txt{color:#ffd27e;background:rgba(255,200,90,.12)}
   .reg.gen{color:#c8b3ff;background:rgba(167,139,250,.16)}
+
+  /* ===================== GAME / SESSION SCREENS ===================== */
+  .game{--theme:#6ea8fe}
+  .gtop{display:flex;align-items:center;gap:11px;margin:2px 0}
+  .gbar{flex:1;height:12px;border-radius:12px;background:rgba(8,12,24,.6);overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,.5)}
+  .gbar i{display:block;height:100%;border-radius:12px;background:linear-gradient(90deg,var(--theme),#c8a6ff);
+    box-shadow:0 0 14px var(--theme);transition:width .4s cubic-bezier(.4,1.2,.5,1)}
+  .combo{display:flex;align-items:center;gap:3px;font-size:14px;font-weight:800;color:#ffd27e;
+    background:rgba(255,180,90,.16);border:1px solid rgba(255,180,90,.45);padding:5px 10px;border-radius:999px;animation:pump .4s ease}
+  .combo b{font-size:15px}
+  .count2{font-size:14px;font-weight:800;color:var(--txt)}
+  .count2 span{color:var(--mut2)}
+  .gsub{margin:10px 0 2px}
+  .subjchip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:800;color:var(--txt);padding:6px 12px;border-radius:999px;
+    background:rgba(110,168,254,.16);background:color-mix(in srgb,var(--theme) 18%,transparent);
+    border:1px solid color-mix(in srgb,var(--theme) 42%,var(--glassb))}
+
+  .qcard{position:relative;overflow:hidden;border-radius:24px;padding:26px 20px;margin-top:10px;text-align:center;
+    background:linear-gradient(160deg,rgba(36,48,86,.9),rgba(14,20,38,.94));
+    background:radial-gradient(130% 130% at 50% -25%, color-mix(in srgb,var(--theme) 30%,transparent), transparent 58%),linear-gradient(160deg,rgba(36,48,86,.9),rgba(14,20,38,.94));
+    border:1px solid color-mix(in srgb,var(--theme) 32%,var(--glassb));box-shadow:0 16px 42px rgba(0,0,0,.46)}
+  .qtype{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;
+    color:var(--theme);padding:6px 12px;border-radius:999px;margin-bottom:14px;
+    background:rgba(110,168,254,.14);background:color-mix(in srgb,var(--theme) 16%,transparent);
+    border:1px solid color-mix(in srgb,var(--theme) 36%,transparent)}
+  .qbig{font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1.18}
+  .qsmall{font-size:14px;color:var(--mut);margin-top:8px}
+
+  .optgrid{margin-top:16px}
+  .opt{display:flex;align-items:center;gap:13px;padding:15px 16px;border:1px solid var(--glassb);border-radius:16px;margin-bottom:11px;
+    background:linear-gradient(160deg,rgba(255,255,255,.055),rgba(255,255,255,.02));
+    font-size:16px;font-weight:700;text-align:left;width:100%;color:var(--txt);
+    transition:transform .12s, background .2s, border-color .2s;animation:popin .35s both;box-shadow:0 6px 16px rgba(0,0,0,.22)}
+  .opt .bdg{width:30px;height:30px;border-radius:9px;flex:none;display:flex;align-items:center;justify-content:center;
+    font-size:13px;font-weight:800;background:rgba(255,255,255,.08);border:1px solid var(--glassb);color:var(--mut)}
+  .opt .lab{flex:1}
+  .opt .mk{font-size:18px;font-weight:800;width:18px;text-align:center}
+  .opt:active{transform:scale(.985)}
+  .opt.correct{background:linear-gradient(160deg,rgba(52,211,153,.24),rgba(52,211,153,.07));border-color:var(--good)}
+  .opt.correct .bdg{background:var(--good);color:#06241a;border-color:var(--good)}
+  .opt.correct .mk{color:var(--good)}
+  .opt.wrong{background:linear-gradient(160deg,rgba(251,113,133,.22),rgba(251,113,133,.06));border-color:var(--bad);animation:shake .4s}
+  .opt.wrong .bdg{background:var(--bad);color:#2a0710;border-color:var(--bad)}
+  .opt.wrong .mk{color:var(--bad)}
+  .opt.dim{opacity:.4}
+
+  /* build: slots + keycaps */
+  .kbpanel{margin-top:18px}
+  .slotrow{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:14px 0 10px}
+  .slotbox{width:38px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:23px;font-weight:800;color:var(--txt);
+    background:rgba(8,12,24,.5);border:2px solid var(--glassb);transition:.18s}
+  .slotbox.filled{border-color:color-mix(in srgb,var(--theme) 65%,var(--glassb));background:color-mix(in srgb,var(--theme) 14%,rgba(8,12,24,.5))}
+  .slotbox.ok{border-color:var(--good);background:rgba(52,211,153,.16);color:var(--good)}
+  .slotbox.no{border-color:var(--bad);background:rgba(251,113,133,.15);color:var(--bad);animation:shake .4s}
+  .keys{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:20px}
+  .key{width:52px;height:56px;border-radius:14px;font-size:22px;font-weight:800;color:var(--txt);
+    background:linear-gradient(180deg,#3a4a78,#222d52);border:1px solid rgba(160,180,235,.24);
+    box-shadow:0 5px 0 rgba(8,11,24,.85),0 9px 18px rgba(0,0,0,.42);transition:transform .08s,box-shadow .08s,opacity .15s;animation:popin .3s both}
+  .key:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(8,11,24,.85),0 3px 8px rgba(0,0,0,.4)}
+  .key.used{opacity:.2;pointer-events:none;box-shadow:none;transform:translateY(4px)}
+
+  .tinput{width:100%;margin-top:16px;padding:18px;border-radius:16px;border:2px solid var(--glassb);background:rgba(8,12,24,.5);
+    color:var(--txt);font-size:20px;font-weight:800;text-align:center;outline:none;transition:.2s;letter-spacing:.5px}
+  .tinput:focus{border-color:var(--theme);box-shadow:0 0 0 4px color-mix(in srgb,var(--theme) 20%,transparent)}
+
+  .fbcard{margin-top:14px;border-radius:18px;padding:16px;border:1px solid var(--glassb);animation:slideup .3s both;box-shadow:var(--shadow)}
+  .fbcard.ok{background:linear-gradient(160deg,rgba(52,211,153,.16),rgba(52,211,153,.05));border-color:rgba(52,211,153,.5)}
+  .fbcard.no{background:linear-gradient(160deg,rgba(251,113,133,.16),rgba(251,113,133,.05));border-color:rgba(251,113,133,.5)}
+  .fbcard .head{font-weight:800;font-size:16px}
+  .fbcard .big{font-size:21px;font-weight:800}
+
+  @keyframes popin{from{opacity:0;transform:translateY(10px) scale(.96)}to{opacity:1;transform:none}}
+  @keyframes slideup{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  @keyframes shake{10%,90%{transform:translateX(-2px)}20%,80%{transform:translateX(4px)}30%,50%,70%{transform:translateX(-7px)}40%,60%{transform:translateX(7px)}}
+  @keyframes pump{0%{transform:scale(1)}45%{transform:scale(1.18)}100%{transform:scale(1)}}
 </style>
 </head>
 <body>
@@ -918,16 +993,17 @@ function renderStudy(id){
 }
 function sessBack(){ go(sess.backName, sess.backId); }
 function modOf(cur){ return moduleById(cur.key.split('#')[0]); }
+function modColor(cur){ return (modOf(cur)||{}).color || '#6ea8fe'; }
 function sessHeader(){
   const pct=Math.round(sess.i/sess.list.length*100);
   const cur=sess.list[sess.i];
-  const combo = sess.combo>=2 ? `<span class="pill" style="color:#ffd27e;border-color:#7a5a1a">🔥 x${sess.combo}</span>` : "";
-  return `<div class="topbar">
+  const combo = sess.combo>=2 ? `<div class="combo">🔥<b>${sess.combo}</b></div>` : "";
+  return `<div class="gtop">
     <button class="back" onclick="sessBack()">←</button>
-    <div class="grow"><div class="progressline" style="margin:0"><i style="width:${pct}%"></i></div></div>
-    ${combo}<span class="pill">${sess.i+1}/${sess.list.length}</span>
+    <div class="gbar"><i style="width:${pct}%"></i></div>
+    ${combo}<span class="count2">${sess.i+1}<span>/${sess.list.length}</span></span>
   </div>
-  <div class="row" style="margin:8px 0 2px"><span class="tag">${cur.mic} ${cur.mname}</span></div>`;
+  <div class="gsub"><span class="subjchip">${cur.mic} ${cur.mname}</span></div>`;
 }
 function chooseExercise(t){
   const w=t.en.replace(/[^A-Za-z]/g,"");
@@ -953,12 +1029,13 @@ function sessResolve(correct, known){
   if(correct){ sess.correct++; sess.combo++; sess.bestCombo=Math.max(sess.bestCombo,sess.combo); sfx('good'); haptic(8); }
   else { sess.combo=0; sfx('bad'); haptic(40); }
 }
-function revealCard(sel,t){
+function revealCard(sel,t,correct){
   const box=document.querySelector(sel); if(!box) return;
-  const c=document.createElement('div'); c.className='panel'; c.style.marginTop='12px';
-  c.innerHTML=`<div class="row"><div class="grow"><b style="font-size:18px">${t.en}</b> — <span class="mut">${t.ru}</span></div>
+  const c=document.createElement('div'); c.className='fbcard '+(correct?'ok':'no');
+  c.innerHTML=`<div class="head">${correct?'<span class="ok">✓ Верно!</span>':'<span class="ko">✗ Правильный ответ:</span>'}</div>
+    <div class="row" style="margin-top:8px"><div class="grow"><span class="big">${t.en}</span> <span class="mut">— ${t.ru}</span></div>
     <button class="iconbtn" onclick="speak('${esc(t.en)}')">🔊</button></div>
-    <div class="ex" style="margin-top:6px">“${t.ex}”</div>`;
+    <div class="ex" style="margin-top:8px">“${t.ex}”</div>`;
   box.appendChild(c);
   const nx=document.createElement('button'); nx.className='btn acc full'; nx.style.marginTop='12px';
   nx.textContent=(sess.i+1>=sess.list.length)?'Результат →':'Дальше →';
@@ -966,54 +1043,62 @@ function revealCard(sel,t){
   box.appendChild(nx);
 }
 
+const OPTL=['A','B','C','D'];
+function optBtn(o,answer,k){
+  return `<button class="opt" data-v="${esc(o)}" style="animation-delay:${k*60}ms" onclick="ansChoose(this,'${esc(o)}','${esc(answer)}')">
+    <span class="bdg">${OPTL[k]}</span><span class="lab">${o}</span><span class="mk"></span></button>`;
+}
 /* exercise: multiple choice */
 function stepChoose(cur){
-  const t=cur.t; const rev=Math.random()<0.5;
+  const t=cur.t; const rev=Math.random()<0.5; const color=modColor(cur);
   const prompt=rev?t.ru:t.en, answer=rev?t.en:t.ru;
   const others=modOf(cur).terms.filter(x=>x!==t); shuffle(others);
   const opts=[answer,...others.slice(0,3).map(o=>rev?o.en:o.ru)]; shuffle(opts);
-  app.innerHTML=`<div class="wrap fade">${sessHeader()}
-    <div class="panel" style="text-align:center">
-      <div class="qhead">${rev?'Как это по-английски?':'Что это значит?'} ${rev?'':`<button class="iconbtn" style="display:inline-flex;vertical-align:middle" onclick="speak('${esc(t.en)}')">🔊</button>`}</div>
-      <div class="qprompt">${prompt}</div>
+  app.innerHTML=`<div class="wrap fade game" style="--theme:${color}">${sessHeader()}
+    <div class="qcard">
+      <div class="qtype">${rev?'🌍 Скажи по-английски':'💭 Выбери перевод'}</div>
+      <div class="qbig">${prompt}</div>
+      ${rev?'':`<button class="speaker" style="margin-top:14px;width:54px;height:54px;font-size:22px" onclick="speak('${esc(t.en)}')">🔊</button>`}
     </div>
-    <div id="opts">${opts.map(o=>`<button class="opt" onclick="ansChoose(this,'${esc(o)}','${esc(answer)}')">${o}</button>`).join("")}</div>`;
+    <div id="opts" class="optgrid">${opts.map((o,k)=>optBtn(o,answer,k)).join("")}</div>`;
   if(!rev) setTimeout(()=>speak(t.en),260);
 }
 /* exercise: listen and choose */
 function stepListen(cur){
-  const t=cur.t;
+  const t=cur.t; const color=modColor(cur);
   const others=modOf(cur).terms.filter(x=>x!==t); shuffle(others);
   const opts=[t.ru,...others.slice(0,3).map(o=>o.ru)]; shuffle(opts);
-  app.innerHTML=`<div class="wrap fade">${sessHeader()}
-    <div class="panel" style="text-align:center">
-      <div class="qhead">🎧 Слушай и выбери перевод</div>
-      <button class="speaker" style="margin:8px auto;width:84px;height:84px;font-size:34px" onclick="speak('${esc(t.en)}')">🔊</button>
-      <div class="mut small">нажми, чтобы повторить</div>
+  app.innerHTML=`<div class="wrap fade game" style="--theme:${color}">${sessHeader()}
+    <div class="qcard">
+      <div class="qtype">🎧 Аудирование</div>
+      <button class="speaker" style="margin:4px auto 2px;width:94px;height:94px;font-size:40px" onclick="speak('${esc(t.en)}')">🔊</button>
+      <div class="qsmall">нажми, чтобы прослушать ещё раз</div>
     </div>
-    <div id="opts">${opts.map(o=>`<button class="opt" onclick="ansChoose(this,'${esc(o)}','${esc(t.ru)}')">${o}</button>`).join("")}</div>`;
+    <div id="opts" class="optgrid">${opts.map((o,k)=>optBtn(o,t.ru,k)).join("")}</div>`;
   setTimeout(()=>speak(t.en),320);
 }
 function ansChoose(btn,val,ans){
   if(sess.locked) return; sess.locked=true;
-  const cur=sess.list[sess.i]; const correct=decode(val)===decode(ans); const A=decode(ans);
-  document.querySelectorAll('#opts .opt').forEach(b=>{ if(b.textContent===A) b.classList.add('correct'); else b.classList.add('dim'); });
-  if(correct){ btn.classList.add('correct'); sessResolve(true);
-    setTimeout(()=>{ sess.i++; drawStep(); window.scrollTo(0,0); },650); }
-  else { btn.classList.remove('dim'); btn.classList.add('wrong'); sessResolve(false); speak(cur.t.en); revealCard('#opts',cur.t); }
+  const cur=sess.list[sess.i]; const A=decode(ans); const correct=decode(val)===A;
+  document.querySelectorAll('#opts .opt').forEach(b=>{
+    if(decode(b.dataset.v)===A){ b.classList.add('correct'); const m=b.querySelector('.mk'); if(m) m.textContent='✓'; }
+    else if(b!==btn) b.classList.add('dim');
+  });
+  if(correct){ sessResolve(true); setTimeout(()=>{ sess.i++; drawStep(); window.scrollTo(0,0); },720); }
+  else { btn.classList.remove('dim'); btn.classList.add('wrong'); const m=btn.querySelector('.mk'); if(m) m.textContent='✗';
+    sessResolve(false); speak(cur.t.en); revealCard('#opts',cur.t,false); }
 }
 /* exercise: type the word */
 function stepType(cur){
-  const t=cur.t;
-  app.innerHTML=`<div class="wrap fade">${sessHeader()}
-    <div class="panel" style="text-align:center">
-      <div class="qhead">⌨️ Напиши по-английски</div>
-      <div class="qprompt">${t.ru}</div>
-      <button class="btn sm" style="display:inline-flex" onclick="speak('${esc(t.en)}')">🔊 Подсказка-звук</button>
+  const t=cur.t; const color=modColor(cur);
+  app.innerHTML=`<div class="wrap fade game" style="--theme:${color}">${sessHeader()}
+    <div class="qcard">
+      <div class="qtype">⌨️ Напиши по-английски</div>
+      <div class="qbig">${t.ru}</div>
+      <button class="btn sm" style="display:inline-flex;margin-top:14px" onclick="speak('${esc(t.en)}')">🔊 Подсказка-звук</button>
     </div>
-    <input id="tin" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="введите слово…"
-      style="width:100%;margin-top:14px;padding:16px;border-radius:15px;border:1px solid var(--glassb);background:var(--glass);color:var(--txt);font-size:18px;font-weight:700;outline:none">
-    <div class="actions" style="grid-template-columns:1fr 2fr">
+    <input id="tin" class="tinput" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="набери слово…">
+    <div class="actions" style="grid-template-columns:1fr 2fr;margin-top:12px">
       <button class="btn" onclick="hintType()">💡 Буква</button>
       <button class="btn acc" onclick="ansType()">Проверить</button>
     </div>
@@ -1029,35 +1114,41 @@ function ansType(){
   sess.locked=true;
   if(inp){ inp.style.borderColor=correct?'var(--good)':'var(--bad)'; inp.disabled=true; }
   sessResolve(correct); if(!correct) speak(t.en);
-  revealCard('#tfb',t);
+  revealCard('#tfb',t,correct);
 }
 /* exercise: build from letters */
 function stepBuild(cur){
-  const t=cur.t;
+  const t=cur.t; const color=modColor(cur);
   const pool=shuffle(t.en.split('').map((ch,idx)=>({ch,idx})));
   sess.build={word:t.en,picked:[],pool};
-  app.innerHTML=`<div class="wrap fade">${sessHeader()}
-    <div class="panel" style="text-align:center">
-      <div class="qhead">🔤 Собери слово · ${t.ru}
-        <button class="iconbtn" style="display:inline-flex;vertical-align:middle" onclick="speak('${esc(t.en)}')">🔊</button></div>
-      <div id="slot" style="min-height:40px;font-size:26px;font-weight:800;letter-spacing:3px;margin-top:10px;border-bottom:2px dashed var(--glassb);padding-bottom:8px"></div>
-      <button class="btn sm" style="display:inline-flex;margin-top:10px" onclick="buildBack()">⌫ Стереть</button>
+  app.innerHTML=`<div class="wrap fade game" style="--theme:${color}">${sessHeader()}
+    <div class="qcard">
+      <div class="qtype">🔤 Собери слово</div>
+      <div class="qbig">${t.ru}</div>
+      <button class="speaker" style="margin-top:12px;width:50px;height:50px;font-size:21px" onclick="speak('${esc(t.en)}')">🔊</button>
     </div>
-    <div id="pool" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px"></div>
+    <div class="kbpanel">
+      <div id="slot" class="slotrow"></div>
+      <div style="text-align:center"><button class="btn sm" style="display:inline-flex" onclick="buildBack()">⌫ Стереть</button></div>
+      <div id="pool" class="keys"></div>
+    </div>
     <div id="bfb"></div>`;
   renderBuild();
 }
 function renderBuild(){
   const b=sess.build; const slot=document.getElementById('slot'); const pool=document.getElementById('pool');
   if(!slot||!pool) return;
-  slot.textContent=b.picked.map(p=>p.ch).join('')||'·';
+  slot.innerHTML='';
+  for(let i=0;i<b.word.length;i++){
+    const box=document.createElement('div'); box.className='slotbox'+(b.picked[i]?' filled':'');
+    box.textContent=b.picked[i]?b.picked[i].ch:''; slot.appendChild(box);
+  }
   pool.innerHTML='';
-  b.pool.forEach(p=>{
+  b.pool.forEach((p,k)=>{
     const used=b.picked.indexOf(p)>=0;
-    const btn=document.createElement('button'); btn.className='btn'; btn.style.minWidth='48px'; btn.style.padding='12px 14px'; btn.style.fontSize='19px';
-    if(used) btn.style.opacity='.22';
+    const btn=document.createElement('button'); btn.className='key'+(used?' used':''); btn.style.animationDelay=(k*40)+'ms';
     btn.textContent=p.ch;
-    btn.onclick=()=>{ if(sess.locked||used) return; b.picked.push(p); renderBuild(); if(b.picked.length===b.word.length) checkBuild(); };
+    btn.onclick=()=>{ if(sess.locked||used) return; b.picked.push(p); sfx('tick'); haptic(5); renderBuild(); if(b.picked.length===b.word.length) checkBuild(); };
     pool.appendChild(btn);
   });
 }
@@ -1066,21 +1157,22 @@ function checkBuild(){
   const b=sess.build; const t=sess.list[sess.i].t;
   const correct=b.picked.map(p=>p.ch).join('').toLowerCase()===b.word.toLowerCase();
   sess.locked=true;
-  const slot=document.getElementById('slot'); if(slot) slot.style.color=correct?'var(--good)':'var(--bad)';
+  document.querySelectorAll('#slot .slotbox').forEach(box=>{ box.classList.remove('filled'); box.classList.add(correct?'ok':'no'); });
   sessResolve(correct); if(!correct) speak(t.en);
-  revealCard('#bfb',t);
+  revealCard('#bfb',t,correct);
 }
 /* exercise: swipeable flashcard */
 function stepFlip(cur){
-  const t=cur.t;
-  app.innerHTML=`<div class="wrap fade">${sessHeader()}
+  const t=cur.t; const color=modColor(cur);
+  app.innerHTML=`<div class="wrap fade game" style="--theme:${color}">${sessHeader()}
+    <div class="qtype" style="margin:6px 2px 0">🃏 Карточка — смахни ← / → или нажми</div>
     <div class="deckwrap">
       <div class="fcard" id="fcard">
         <div class="face front" onclick="flipStep()">
           <div class="lbl">Английский</div>
           <div class="term">${t.en}</div>
           <button class="speaker" onclick="event.stopPropagation();speak('${esc(t.en)}')">🔊</button>
-          <div class="tap">← повторить · знаю → · нажми, чтобы перевернуть</div>
+          <div class="tap">нажми, чтобы перевернуть</div>
         </div>
         <div class="face rear" onclick="flipStep()">
           <div class="lbl">Перевод</div><div class="ru">${t.ru}</div>
@@ -1292,19 +1384,23 @@ function renderMatch(id){
   drawMatch();
 }
 function drawMatch(){
-  const m=moduleById(match.mid);
+  const m=moduleById(match.mid); const color=m.color||'#6ea8fe';
   const grid=match.tiles.map((tile,idx)=>{
-    let st="margin:0;min-height:62px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:14px;";
-    if(tile.matched) st+="opacity:.25;border-color:var(--good);background:rgba(52,211,153,.12);";
-    else if(match.sel===idx) st+="border-color:var(--acc);background:rgba(110,168,254,.20);";
-    else if(match.wrong&&match.wrong.indexOf(idx)>=0) st+="border-color:var(--bad);background:rgba(251,113,133,.16);";
+    let st="margin:0;min-height:64px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:14px;line-height:1.25;animation-delay:"+(idx*45)+"ms;";
+    if(tile.en) st+="font-weight:800;color:var(--theme);";
+    if(tile.matched) st+="opacity:.22;border-color:var(--good);background:rgba(52,211,153,.12);";
+    else if(match.sel===idx) st+="border-color:var(--theme);background:color-mix(in srgb,var(--theme) 22%,transparent);transform:scale(.97);";
+    else if(match.wrong&&match.wrong.indexOf(idx)>=0) st+="border-color:var(--bad);background:rgba(251,113,133,.18);";
     return `<button class="opt" style="${st}" ${tile.matched?'disabled':''} onclick="tapTile(${idx})">${tile.txt}</button>`;
   }).join("");
-  app.innerHTML=`<div class="wrap fade">
-    <div class="topbar"><button class="back" onclick="go('subject','${match.mid}')">←</button>
-      <div class="grow"><div class="brand">🧩 Найди пары · ${m.name}</div></div>
-      <span class="pill">${match.done}/6</span></div>
-    <div class="mut small" style="margin:6px 2px 12px">Соедини английское слово с переводом. Нажми на слово 🔊 после совпадения.</div>
+  const pct=Math.round(match.done/6*100);
+  app.innerHTML=`<div class="wrap fade game" style="--theme:${color}">
+    <div class="gtop"><button class="back" onclick="go('subject','${match.mid}')">←</button>
+      <div class="gbar"><i style="width:${pct}%"></i></div>
+      <span class="count2">${match.done}<span>/6</span></span></div>
+    <div class="gsub"><span class="subjchip">${m.ic} ${m.name}</span>
+      <span class="qtype" style="margin:0 0 0 8px">🧩 Найди пары</span></div>
+    <div class="mut small" style="margin:10px 2px 12px">Соедини английское слово с переводом.</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">${grid}</div>
   </div>`;
 }
