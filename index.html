@@ -75,8 +75,9 @@
     background:var(--glass);overflow:hidden;text-align:left;transition:transform .14s;
     backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
   .subj:active{transform:scale(.96)}
-  .subj .ic{font-size:23px;width:46px;height:46px;display:flex;align-items:center;justify-content:center;
-    border-radius:14px;background:rgba(255,255,255,.06);border:1px solid var(--glassb)}
+  .subj .ic{font-size:23px;width:46px;height:46px;display:flex;align-items:center;justify-content:center;border-radius:14px;
+    background:rgba(255,255,255,.06);background:color-mix(in srgb,var(--theme,#6ea8fe) 24%,transparent);
+    border:1px solid var(--glassb);border:1px solid color-mix(in srgb,var(--theme,#6ea8fe) 40%,transparent)}
   .subj h3{font-size:16px;margin-top:11px;font-weight:800}
   .subj .ex{font-size:11px;color:var(--mut2);margin-top:2px}
   .subj .bar{height:6px;border-radius:6px;background:rgba(8,12,24,.6);margin-top:13px;overflow:hidden}
@@ -272,6 +273,69 @@
   @keyframes slideup{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
   @keyframes shake{10%,90%{transform:translateX(-2px)}20%,80%{transform:translateX(4px)}30%,50%,70%{transform:translateX(-7px)}40%,60%{transform:translateX(7px)}}
   @keyframes pump{0%{transform:scale(1)}45%{transform:scale(1.18)}100%{transform:scale(1)}}
+
+  /* ===================== DESIGN SYSTEM COMPONENTS ===================== */
+  .phead{padding:8px 2px 2px}
+  .phead .eyebrow{font-size:11.5px;color:var(--mut);letter-spacing:.2em;text-transform:uppercase;font-weight:800}
+  .phead .ttl{font-size:28px;font-weight:800;letter-spacing:-.03em;margin-top:5px;line-height:1.1}
+  .phead .sub{font-size:14px;color:var(--mut);margin-top:7px;line-height:1.5}
+
+  /* subject action tiles */
+  .tiles{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:14px}
+  .tile{display:flex;align-items:center;gap:12px;padding:15px;border-radius:18px;border:1px solid var(--glassb);text-align:left;
+    transition:transform .12s;box-shadow:0 6px 16px rgba(0,0,0,.2);
+    background:linear-gradient(160deg,rgba(255,255,255,.05),rgba(255,255,255,.015))}
+  .tile:active{transform:scale(.97)}
+  .tile .tic{width:42px;height:42px;border-radius:13px;flex:none;display:flex;align-items:center;justify-content:center;font-size:20px;
+    background:rgba(110,168,254,.18);background:color-mix(in srgb,var(--theme) 22%,transparent);border:1px solid color-mix(in srgb,var(--theme) 42%,transparent)}
+  .tile b{font-size:14.5px;font-weight:800;display:block;line-height:1.15}
+  .tile span{font-size:11px;color:var(--mut)}
+  .tile.primary{border-color:color-mix(in srgb,var(--theme) 50%,var(--glassb));
+    background:linear-gradient(135deg,color-mix(in srgb,var(--theme) 30%,transparent),color-mix(in srgb,var(--theme) 10%,transparent))}
+  .tile.primary .tic{background:color-mix(in srgb,var(--theme) 55%,transparent)}
+
+  /* subject hero header */
+  .shead{position:relative;overflow:hidden;border-radius:22px;padding:18px;margin-top:4px;
+    background:linear-gradient(160deg,rgba(36,48,86,.6),rgba(14,20,38,.7));
+    background:radial-gradient(130% 130% at 0% 0%, color-mix(in srgb,var(--theme) 26%,transparent), transparent 58%),linear-gradient(160deg,rgba(36,48,86,.6),rgba(14,20,38,.72));
+    border:1px solid color-mix(in srgb,var(--theme) 32%,var(--glassb));box-shadow:0 14px 36px rgba(0,0,0,.4)}
+  .shead .sic{width:56px;height:56px;border-radius:17px;flex:none;display:flex;align-items:center;justify-content:center;font-size:27px;
+    background:rgba(110,168,254,.2);background:color-mix(in srgb,var(--theme) 26%,transparent);border:1px solid color-mix(in srgb,var(--theme) 44%,transparent)}
+  .shead .sx{font-size:11px;font-weight:800;letter-spacing:.04em;color:var(--theme);text-transform:uppercase}
+  .shead h2{font-size:22px;font-weight:800;letter-spacing:-.02em;margin-top:2px}
+
+  /* term rows with mastery dot */
+  .trow{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--glassb);border-radius:15px;margin-bottom:9px;
+    background:linear-gradient(160deg,rgba(255,255,255,.04),rgba(255,255,255,.012));animation:popin .3s both}
+  .mdot{width:10px;height:10px;border-radius:50%;flex:none;box-shadow:0 0 0 3px rgba(255,255,255,.05)}
+  .trow .tw{flex:1;min-width:0}
+  .trow .tw b{font-size:15.5px;font-weight:700}
+  .trow .tw .tr{font-size:12.5px;color:var(--mut);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+  /* lesson cards */
+  .lcard{display:flex;align-items:center;gap:13px;padding:15px;border:1px solid var(--glassb);border-radius:18px;margin-bottom:11px;
+    transition:transform .12s;animation:popin .3s both;
+    background:linear-gradient(160deg,rgba(255,255,255,.045),rgba(255,255,255,.015))}
+  .lcard:active{transform:scale(.98)}
+  .lcard .lic{width:46px;height:46px;border-radius:14px;flex:none;display:flex;align-items:center;justify-content:center;font-size:22px;
+    background:rgba(251,191,36,.16);border:1px solid rgba(251,191,36,.34)}
+  .lcard h3{font-size:15.5px;font-weight:800}
+  .lcard .ls{font-size:12.5px;color:var(--mut);margin-top:2px}
+  .lcard .arr{color:var(--mut2);font-size:22px;font-weight:700}
+
+  /* result screens */
+  .result{text-align:center;padding:34px 16px 8px;animation:popin .4s both}
+  .result .em{font-size:62px;line-height:1}
+  .result .rt{font-size:25px;font-weight:800;letter-spacing:-.02em;margin:14px 0 6px}
+  .medal{display:inline-flex;gap:7px;align-items:center;font-weight:800;font-size:14px;padding:8px 15px;border-radius:999px;
+    background:rgba(255,255,255,.06);border:1px solid var(--glassb);margin-top:4px}
+
+  /* of-the-day cards */
+  .otd{position:relative;overflow:hidden}
+  .otd .otdlab{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;
+    color:var(--theme);background:color-mix(in srgb,var(--theme) 16%,transparent);border:1px solid color-mix(in srgb,var(--theme) 32%,transparent);
+    padding:5px 10px;border-radius:999px}
+  .otd .otden{font-size:21px;font-weight:800;margin-top:11px;letter-spacing:-.01em}
 </style>
 </head>
 <body>
@@ -681,6 +745,7 @@ function load(){
   return { xp:0, streak:0, lastDay:null, todayCount:0, todayDay:null, mastery:{}, voiceName:null, rate:0.95, sound:true };
 }
 function save(){ localStorage.setItem(SKEY, JSON.stringify(S)); }
+function plural(n,one,few,many){ n=Math.abs(n)%100; const d=n%10; if(n>10&&n<20)return many; if(d>1&&d<5)return few; if(d===1)return one; return many; }
 function todayStr(){ const d=new Date(); return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate(); }
 function rollDay(){
   const t=todayStr();
@@ -815,12 +880,15 @@ function renderHome(){
   const potd=cl[(new Date().getDate())%cl.length];
   const sl=DATA.slang.terms;
   const sotd=sl[(new Date().getDate()*3)%sl.length];
+  const hour=new Date().getHours();
+  const greet=hour<5?'Доброй ночи':hour<12?'Доброе утро':hour<18?'Добрый день':'Добрый вечер';
 
   app.innerHTML=`
   <div class="wrap fade">
-    <div class="top">
-      <div class="brand">King Edward's · Witley · Pre-Sixth</div>
-      <div class="hi">Привет 👋 Готовимся к учёбе</div>
+    <div class="phead">
+      <div class="eyebrow">King Edward's · Witley · Pre-Sixth</div>
+      <div class="ttl">${greet} 👋</div>
+      <div class="sub">${days} ${plural(days,'день','дня','дней')} до отъезда в Англию · учим английский для школы</div>
     </div>
 
     <div class="stats">
@@ -860,18 +928,18 @@ function renderHome(){
       </div>
     </div>
 
-    <div class="panel">
-      <div class="between" style="margin-bottom:8px"><b>🗣️ Фраза дня</b>
+    <div class="panel otd" style="--theme:#6ea8fe">
+      <div class="between"><span class="otdlab">🗣️ Фраза дня</span>
         <button class="iconbtn" onclick="speak('${esc(potd.en)}')">🔊</button></div>
-      <div class="ru" style="font-size:20px">${potd.en}</div>
+      <div class="otden">${potd.en}</div>
       <div class="def" style="color:var(--mut)">${potd.ru}</div>
       <div class="ex" style="margin-top:6px">“${potd.ex}”</div>
     </div>
 
-    <div class="panel">
-      <div class="between" style="margin-bottom:8px"><b>💬 Сленг дня</b>
+    <div class="panel otd" style="--theme:#fb7bb5">
+      <div class="between"><span class="otdlab">💬 Сленг дня</span>
         <button class="iconbtn" onclick="speak('${esc(sotd.en)}')">🔊</button></div>
-      <div class="ru" style="font-size:20px">${sotd.en}</div>
+      <div class="otden">${sotd.en}</div>
       <div class="def" style="color:var(--mut)">${sotd.ru}</div>
       <div class="ex" style="margin-top:6px">“${sotd.ex}”</div>
     </div>
@@ -898,61 +966,56 @@ function ringSvg(pct){
 
 /* ---------- SUBJECTS LIST ---------- */
 function subjCard(m){
-  const p=moduleProgress(m);
-  return `<button class="subj" onclick="go('subject','${m.id}')">
-    <div class="glow" style="background:radial-gradient(80% 80% at 80% 0,${m.color||'#6ea8fe'},transparent)"></div>
+  const p=moduleProgress(m); const color=m.color||'#6ea8fe';
+  return `<button class="subj" style="--theme:${color}" onclick="go('subject','${m.id}')">
+    <div class="glow" style="background:radial-gradient(85% 85% at 85% 0,${color},transparent)"></div>
     <div class="ic">${m.ic}</div>
     <h3>${m.name}</h3>
     <div class="ex">${m.exam}</div>
-    <div class="bar"><i style="width:${p.pct}%"></i></div>
+    <div class="bar"><i style="width:${p.pct}%;background:linear-gradient(90deg,${color},#c8a6ff)"></i></div>
     <div class="pc"><span>${p.learned}/${p.total}</span><span>${p.pct}%</span></div>
   </button>`;
 }
 function renderSubjects(){
   app.innerHTML=`<div class="wrap fade">
-    <div class="top"><div class="brand">6 предметов + язык урока + сленг</div><div class="hi">Что учим</div></div>
-    <div class="item" style="margin-top:8px">
-      <div class="ic" style="font-size:22px;width:auto;height:auto;border:none;background:none">🗣️</div>
-      <div class="grow">
-        <b>Начни с «Язык урока»</b>
-        <div class="mut small">Фразы учителя важнее терминов: поймёшь инструкции — не потеряешься на уроке.</div>
-      </div>
-    </div>
-    <div class="grid">${GRID_MODULES.map(subjCard).join("")}</div>
+    <div class="phead"><div class="eyebrow">8 разделов</div><div class="ttl">Что учим</div>
+      <div class="sub">Начни с «Язык урока» — фразы учителя важнее терминов: поймёшь инструкции, не потеряешься на уроке.</div></div>
+    <div class="grid" style="margin-top:16px">${GRID_MODULES.map(subjCard).join("")}</div>
   </div>`;
 }
 
 /* ---------- SUBJECT OVERVIEW ---------- */
+function masteryColor(lv){ return lv>=5?'#34d399':lv>=3?'#a3e635':lv>0?'#fbbf24':'#445173'; }
 function renderSubject(id){
-  const m=moduleById(id); const p=moduleProgress(m);
-  app.innerHTML=`<div class="wrap fade">
-    <div class="topbar">
+  const m=moduleById(id); const p=moduleProgress(m); const color=m.color||'#6ea8fe';
+  app.innerHTML=`<div class="wrap fade" style="--theme:${color}">
+    <div class="topbar" style="margin-bottom:10px">
       <button class="back" onclick="go('${id==='essay'?'grammar':'subjects'}')">←</button>
-      <div><div class="brand">${m.exam}</div><h2 style="font-size:22px">${m.ic} ${m.name}</h2></div>
+      <div class="grow"></div>
     </div>
-    <div class="panel">
-      <div class="mut" style="line-height:1.5">${m.desc}</div>
+    <div class="shead">
+      <div class="row" style="align-items:flex-start">
+        <div class="sic">${m.ic}</div>
+        <div class="grow"><div class="sx">${m.exam}</div><h2>${m.name}</h2></div>
+      </div>
+      <div class="mut" style="line-height:1.5;margin-top:12px;font-size:13.5px">${m.desc}</div>
       <div style="margin-top:12px">${m.topics.map(t=>`<span class="tag">${t}</span>`).join("")}</div>
-      <div class="progressline" style="margin-top:14px"><i style="width:${p.pct}%"></i></div>
-      <div class="between small mut"><span>Выучено ${p.learned} из ${p.total}</span><span>${p.pct}%</span></div>
+      <div class="progressline" style="margin-top:14px;background:rgba(8,12,24,.45)"><i style="width:${p.pct}%;background:linear-gradient(90deg,${color},#c8a6ff)"></i></div>
+      <div class="between small" style="color:var(--mut)"><span>Выучено ${p.learned} из ${p.total}</span><span style="font-weight:800;color:#fff">${p.pct}%</span></div>
     </div>
-    <div class="actions" style="grid-template-columns:1fr 1fr">
-      <button class="btn acc" onclick="go('study','${id}')">🎮<br>Учить (игра)</button>
-      <button class="btn" onclick="go('match','${id}')">🧩<br>Пары</button>
-      <button class="btn" onclick="go('listen','${id}')">🎧<br>Аудио</button>
-      <button class="btn" onclick="go('quiz','${id}')">✍️<br>Тест</button>
+    <div class="tiles">
+      <button class="tile primary" onclick="go('study','${id}')"><div class="tic">🎮</div><div><b>Учить</b><span>5 мини-игр</span></div></button>
+      <button class="tile" onclick="go('match','${id}')"><div class="tic">🧩</div><div><b>Пары</b><span>на скорость</span></div></button>
+      <button class="tile" onclick="go('listen','${id}')"><div class="tic">🎧</div><div><b>Аудио</b><span>на слух</span></div></button>
+      <button class="tile" onclick="go('quiz','${id}')"><div class="tic">✍️</div><div><b>Тест</b><span>проверка</span></div></button>
     </div>
-    <div class="secttl">Все слова (${m.terms.length})</div>
+    <div class="secttl">Все слова · ${m.terms.length}</div>
     ${m.terms.map((t,i)=>{
       const lv=masteryOf(itemId(id,i));
-      const star = lv>=5?"🟢":lv>=3?"🟡":lv>0?"🟠":"⚪️";
-      return `<div class="item">
+      return `<div class="trow" style="animation-delay:${Math.min(i,12)*30}ms">
+        <span class="mdot" style="background:${masteryColor(lv)}"></span>
+        <div class="tw" onclick="go('study','${id}')"><b>${t.en}</b><div class="tr">${t.ru}</div></div>
         <button class="iconbtn" onclick="speak('${esc(t.en)}')">🔊</button>
-        <div class="grow" onclick="go('study','${id}')">
-          <b>${t.en}</b>
-          <div class="mut small">${t.ru}</div>
-        </div>
-        <span title="уровень запоминания">${star}</span>
       </div>`;
     }).join("")}
   </div>`;
@@ -1047,6 +1110,25 @@ const OPTL=['A','B','C','D'];
 function optBtn(o,answer,k){
   return `<button class="opt" data-v="${esc(o)}" style="animation-delay:${k*60}ms" onclick="ansChoose(this,'${esc(o)}','${esc(answer)}')">
     <span class="bdg">${OPTL[k]}</span><span class="lab">${o}</span><span class="mk"></span></button>`;
+}
+/* generic lettered option for quiz/listen/practice (handlerCall is raw JS) */
+function optRow(o,k,handlerCall){
+  return `<button class="opt" data-v="${esc(o)}" style="animation-delay:${k*55}ms" onclick="${handlerCall}">
+    <span class="bdg">${OPTL[k]}</span><span class="lab">${o}</span><span class="mk"></span></button>`;
+}
+/* mark options after an answer: green correct + ✓, red wrong + ✗, dim others */
+function markOpts(btn, answer, correct){
+  document.querySelectorAll('#opts .opt').forEach(b=>{
+    if(decode(b.dataset.v)===answer){ b.classList.add('correct'); const m=b.querySelector('.mk'); if(m) m.textContent='✓'; }
+    else if(b!==btn) b.classList.add('dim');
+  });
+  if(!correct){ btn.classList.add('wrong'); const m=btn.querySelector('.mk'); if(m) m.textContent='✗'; }
+}
+function gameTop(brand,pct,extra){
+  return `<div class="gtop"><button class="back" onclick="${extra.back}">←</button>
+    <div class="gbar"><i style="width:${pct}%"></i></div>
+    <span class="count2">${extra.i}<span>/${extra.n}</span></span></div>
+  <div class="gsub"><span class="subjchip">${brand}</span></div>`;
 }
 /* exercise: multiple choice */
 function stepChoose(cur){
@@ -1216,12 +1298,12 @@ function sessDone(){
     : `<button class="btn acc full" onclick="go('study','${sess.backId}')">🔁 Ещё раз</button>
        <button class="btn full" style="margin-top:10px" onclick="go('quiz','${sess.backId}')">✍️ Проверить тестом</button>
        <button class="btn full" style="margin-top:10px" onclick="go('subject','${sess.backId}')">← К разделу</button>`;
-  app.innerHTML=`<div class="wrap fade"><div class="empty">
-    <div style="font-size:54px">${acc>=80?'🏆':acc>=50?'🎉':'💪'}</div>
-    <h2 style="margin:10px 0">${sess.title}</h2>
-    <div class="mut">Правильно ${sess.correct}/${sess.list.length} · лучшая серия 🔥 x${sess.bestCombo}</div>
-    <div class="panel">${ringSvgRow(goalPct)}</div>
-    ${back}
+  app.innerHTML=`<div class="wrap fade"><div class="result">
+    <div class="em">${acc>=80?'🏆':acc>=50?'🎉':'💪'}</div>
+    <div class="rt">${sess.title}</div>
+    <div><span class="medal">✅ ${sess.correct}/${sess.list.length}</span> <span class="medal">🔥 серия x${sess.bestCombo}</span></div>
+    <div class="panel" style="margin-top:16px;text-align:left">${ringSvgRow(goalPct)}</div>
+    <div style="margin-top:14px">${back}</div>
   </div></div>`;
 }
 
@@ -1247,50 +1329,34 @@ function drawQuiz(){
   const opts=[answer, ...others.slice(0,3).map(o=>reverse?o.en:o.ru)];
   shuffle(opts);
   quiz._answer=answer; quiz._reverse=reverse; quiz.locked=false;
-  const pct=Math.round(quiz.i/quiz.list.length*100);
-  app.innerHTML=`<div class="wrap fade">
-    <div class="topbar">
-      <button class="back" onclick="go('subject','${m.id}')">←</button>
-      <div class="grow"><div class="brand">Тест · ${m.name}</div>
-        <div class="progressline" style="margin-top:6px"><i style="width:${pct}%"></i></div></div>
-      <span class="pill">${quiz.i+1}/${quiz.list.length}</span>
+  const pct=Math.round(quiz.i/quiz.list.length*100); const color=m.color||'#6ea8fe';
+  app.innerHTML=`<div class="wrap fade game" style="--theme:${color}">
+    ${gameTop(`${m.ic} Тест · ${m.name}`,pct,{back:`go('subject','${m.id}')`,i:quiz.i+1,n:quiz.list.length})}
+    <div class="qcard">
+      <div class="qtype">${reverse?'🌍 Скажи по-английски':'💭 Выбери перевод'}</div>
+      <div class="qbig">${prompt}</div>
+      ${reverse?'':`<button class="speaker" style="margin-top:14px;width:54px;height:54px;font-size:22px" onclick="speak('${esc(cur.t.en)}')">🔊</button>`}
     </div>
-    <div class="panel" style="text-align:center">
-      <div class="qhead">${reverse?"Как это по-английски?":"Что это значит?"}
-        ${reverse?"":`<button class="iconbtn" style="display:inline-flex;vertical-align:middle" onclick="speak('${esc(cur.t.en)}')">🔊</button>`}</div>
-      <div class="qprompt">${prompt}</div>
-    </div>
-    <div id="opts">
-      ${opts.map(o=>`<button class="opt" onclick="pickOpt(this,'${esc(o)}')">${o}</button>`).join("")}
-    </div>
-    <div class="between mut small" style="margin-top:6px">
-      <span>Очки: ${quiz.score}</span><span>🔥 ${S.streak} дней</span></div>
-  </div>`;
+    <div id="opts" class="optgrid">${opts.map((o,k)=>optRow(o,k,`pickOpt(this,'${esc(o)}')`)).join("")}</div>`;
 }
 function pickOpt(btn,val){
   if(quiz.locked) return; quiz.locked=true;
-  const correct = decode(val)===quiz._answer;
-  const cur=quiz.list[quiz.i];
-  document.querySelectorAll("#opts .opt").forEach(b=>{
-    const bv=b.textContent;
-    if(bv===quiz._answer) b.classList.add("correct");
-    else b.classList.add("dim");
-  });
-  if(correct){ btn.classList.add("correct"); quiz.score++; bump(itemId(quiz.mid,cur.i),true); registerStudy(10); }
-  else { btn.classList.remove("dim"); btn.classList.add("wrong"); bump(itemId(quiz.mid,cur.i),false); registerStudy(3);
-    if(!quiz._reverse) speak(cur.t.en); }
-  setTimeout(()=>{ quiz.i++; drawQuiz(); }, correct?650:1400);
+  const cur=quiz.list[quiz.i]; const correct=decode(val)===quiz._answer;
+  markOpts(btn,quiz._answer,correct);
+  if(correct){ quiz.score++; bump(itemId(quiz.mid,cur.i),true); registerStudy(10); sfx('good'); haptic(8); }
+  else { bump(itemId(quiz.mid,cur.i),false); registerStudy(3); sfx('bad'); haptic(40); if(!quiz._reverse) speak(cur.t.en); }
+  setTimeout(()=>{ quiz.i++; drawQuiz(); window.scrollTo(0,0); }, correct?700:1450);
 }
 function quizDone(m){
   const pct=Math.round(quiz.score/quiz.list.length*100);
   if(pct>=80) confetti();
-  app.innerHTML=`<div class="wrap fade"><div class="empty">
-    <div style="font-size:54px">${pct>=80?"🏆":pct>=50?"👍":"💪"}</div>
-    <h2 style="margin:10px 0">${quiz.score} из ${quiz.list.length} верно</h2>
-    <div class="mut">${pct>=80?"Отличный результат!":pct>=50?"Хорошо, но повтори слабые слова.":"Прогоним карточки ещё раз?"}</div>
-    <button class="btn acc full" style="margin-top:14px" onclick="go('study','${m.id}')">🃏 Учить карточки</button>
+  app.innerHTML=`<div class="wrap fade"><div class="result">
+    <div class="em">${pct>=80?"🏆":pct>=50?"👍":"💪"}</div>
+    <div class="rt">${quiz.score} из ${quiz.list.length} верно</div>
+    <div class="mut">${pct>=80?"Отличный результат!":pct>=50?"Хорошо, но повтори слабые слова.":"Прогоним игры ещё раз?"}</div>
+    <button class="btn acc full" style="margin-top:18px" onclick="go('study','${m.id}')">🎮 Учить в игре</button>
     <button class="btn full" style="margin-top:10px" onclick="go('quiz','${m.id}')">🔁 Ещё тест</button>
-    <button class="btn full" style="margin-top:10px" onclick="go('subject','${m.id}')">← К предмету</button>
+    <button class="btn full" style="margin-top:10px" onclick="go('subject','${m.id}')">← К разделу</button>
   </div></div>`;
 }
 
@@ -1309,51 +1375,38 @@ function drawListen(){
   const others=m.terms.filter((_,i)=>i!==cur.i); shuffle(others);
   const opts=[cur.t.ru, ...others.slice(0,3).map(o=>o.ru)]; shuffle(opts);
   listen.locked=false;
-  const pct=Math.round(listen.i/listen.list.length*100);
-  app.innerHTML=`<div class="wrap fade">
-    <div class="topbar">
-      <button class="back" onclick="go('subject','${m.id}')">←</button>
-      <div class="grow"><div class="brand">Аудирование · ${m.name}</div>
-        <div class="progressline" style="margin-top:6px"><i style="width:${pct}%"></i></div></div>
-      <span class="pill">${listen.i+1}/${listen.list.length}</span>
+  const pct=Math.round(listen.i/listen.list.length*100); const color=m.color||'#6ea8fe';
+  app.innerHTML=`<div class="wrap fade game" style="--theme:${color}">
+    ${gameTop(`${m.ic} Аудио · ${m.name}`,pct,{back:`go('subject','${m.id}')`,i:listen.i+1,n:listen.list.length})}
+    <div class="qcard">
+      <div class="qtype">🎧 Аудирование</div>
+      <button class="speaker" style="margin:4px auto 2px;width:94px;height:94px;font-size:40px" onclick="speak('${esc(cur.t.en)}')">🔊</button>
+      <div class="qsmall">нажми, чтобы прослушать ещё раз</div>
+      <button class="btn sm" style="margin-top:12px;display:inline-flex" onclick="speak('${esc(cur.t.ex)}',0.85)">🎬 Услышать в примере</button>
     </div>
-    <div class="panel" style="text-align:center">
-      <div class="qhead">Слушай и выбери перевод</div>
-      <button class="speaker" style="margin:10px auto;width:84px;height:84px;font-size:34px"
-        onclick="speak('${esc(cur.t.en)}')">🔊</button>
-      <div class="mut small">Нажми ещё раз, чтобы повторить</div>
-      <button class="btn sm" style="margin-top:10px;display:inline-flex" onclick="speak('${esc(cur.t.ex)}',0.85)">🎧 Послушать в примере</button>
-    </div>
-    <div id="opts">
-      ${opts.map(o=>`<button class="opt" onclick="pickListen(this,'${esc(o)}')">${o}</button>`).join("")}
-    </div>
-  </div>`;
+    <div id="opts" class="optgrid">${opts.map((o,k)=>optRow(o,k,`pickListen(this,'${esc(o)}')`)).join("")}</div>`;
   setTimeout(()=>speak(cur.t.en),350);
 }
 function pickListen(btn,val){
   if(listen.locked) return; listen.locked=true;
-  const cur=listen.list[listen.i];
-  const correct=decode(val)===cur.t.ru;
-  document.querySelectorAll("#opts .opt").forEach(b=>{
-    if(b.textContent===cur.t.ru) b.classList.add("correct"); else b.classList.add("dim");
-  });
-  if(correct){ btn.classList.add("correct"); listen.score++; bump(itemId(listen.mid,cur.i),true); registerStudy(10); }
-  else{ btn.classList.remove("dim"); btn.classList.add("wrong"); bump(itemId(listen.mid,cur.i),false); registerStudy(3); }
-  // reveal the english word
-  const w=document.createElement("div"); w.className="mut small"; w.style.textAlign="center"; w.style.marginTop="8px";
+  const cur=listen.list[listen.i]; const correct=decode(val)===cur.t.ru;
+  markOpts(btn,cur.t.ru,correct);
+  if(correct){ listen.score++; bump(itemId(listen.mid,cur.i),true); registerStudy(10); sfx('good'); haptic(8); }
+  else{ bump(itemId(listen.mid,cur.i),false); registerStudy(3); sfx('bad'); haptic(40); }
+  const w=document.createElement("div"); w.className="mut small"; w.style.textAlign="center"; w.style.marginTop="10px";
   w.innerHTML=`Это было: <b style="color:var(--txt)">${cur.t.en}</b>`;
   document.getElementById("opts").appendChild(w);
-  setTimeout(()=>{ listen.i++; drawListen(); }, 1300);
+  setTimeout(()=>{ listen.i++; drawListen(); window.scrollTo(0,0); }, 1350);
 }
 function listenDone(m){
   const pct=Math.round(listen.score/listen.list.length*100);
   if(pct>=80) confetti();
-  app.innerHTML=`<div class="wrap fade"><div class="empty">
-    <div style="font-size:54px">${pct>=80?"🎧✨":"🎧"}</div>
-    <h2 style="margin:10px 0">${listen.score} из ${listen.list.length} на слух</h2>
+  app.innerHTML=`<div class="wrap fade"><div class="result">
+    <div class="em">${pct>=80?"🎧✨":"🎧"}</div>
+    <div class="rt">${listen.score} из ${listen.list.length} на слух</div>
     <div class="mut">Понимание на слух — самый важный навык для уроков. Тренируй каждый день!</div>
-    <button class="btn acc full" style="margin-top:14px" onclick="go('listen','${m.id}')">🔁 Ещё раз</button>
-    <button class="btn full" style="margin-top:10px" onclick="go('subject','${m.id}')">← К предмету</button>
+    <button class="btn acc full" style="margin-top:18px" onclick="go('listen','${m.id}')">🔁 Ещё раз</button>
+    <button class="btn full" style="margin-top:10px" onclick="go('subject','${m.id}')">← К разделу</button>
   </div></div>`;
 }
 
@@ -1444,11 +1497,11 @@ function renderGrammar(){
   </div>`;
   let body="";
   if(grammarTab==='lessons'){
-    body=`<div class="mut small" style="margin:14px 2px 4px">Короткие уроки с правилами, примерами и разбором частых ошибок русскоговорящих.</div>`+
-      GRAMMAR.lessons.map(l=>`<div class="panel" style="cursor:pointer" onclick="go('lesson','${l.id}')">
-        <div class="row"><div class="ic" style="font-size:24px">${l.ic}</div>
-        <div class="grow"><h3>${l.title}</h3><div class="mut small">${l.summary}</div></div>
-        <span class="mut" style="font-size:20px">›</span></div></div>`).join("");
+    body=`<div class="mut small" style="margin:16px 2px 12px">Короткие уроки с правилами, примерами и разбором частых ошибок русскоговорящих.</div>`+
+      GRAMMAR.lessons.map((l,k)=>`<button class="lcard" style="width:100%;animation-delay:${k*35}ms" onclick="go('lesson','${l.id}')">
+        <div class="lic">${l.ic}</div>
+        <div class="grow" style="text-align:left"><h3>${l.title}</h3><div class="ls">${l.summary}</div></div>
+        <span class="arr">›</span></button>`).join("");
   } else if(grammarTab==='phrases'){
     const m=GRAMMAR.essay; const groups={};
     m.terms.forEach((t,i)=>{ (groups[t.group]=groups[t.group]||[]).push(t); });
@@ -1468,8 +1521,8 @@ function renderGrammar(){
       <button class="btn acc full" style="margin-top:14px" onclick="go('gpractice')">Начать практику →</button></div>
       <div class="mut small" style="text-align:center;margin-top:12px">Артикли · времена · пассив · условные · пунктуация · частые ошибки</div>`;
   }
-  app.innerHTML=`<div class="wrap fade">
-    <div class="top"><div class="brand">Писать эссе на английском</div><div class="hi">✍️ Грамматика</div></div>
+  app.innerHTML=`<div class="wrap fade" style="--theme:#fbbf24">
+    <div class="phead"><div class="eyebrow">Писать эссе на английском</div><div class="ttl">✍️ Грамматика</div></div>
     ${seg}
     <div>${body}</div>
   </div>`;
@@ -1483,9 +1536,12 @@ function renderLesson(id){
     <div class="ko" style="text-decoration:line-through">${l.mistake.wrong}</div>
     <div class="ok" style="margin-top:5px">✓ ${l.mistake.right}</div>
     <div class="mut small" style="margin-top:7px">${l.mistake.why}</div></div>`:"";
-  app.innerHTML=`<div class="wrap fade">
-    <div class="topbar"><button class="back" onclick="go('grammar')">←</button>
-      <div><div class="brand">Грамматика</div><h2 style="font-size:21px">${l.ic} ${l.title}</h2></div></div>
+  app.innerHTML=`<div class="wrap fade" style="--theme:#fbbf24">
+    <div class="topbar" style="margin-bottom:10px"><button class="back" onclick="go('grammar')">←</button><div class="grow"></div></div>
+    <div class="shead" style="display:flex;align-items:center;gap:14px">
+      <div class="sic">${l.ic}</div>
+      <div class="grow"><div class="sx">Урок грамматики</div><h2>${l.title}</h2></div>
+    </div>
     <div class="panel"><div class="lessonbody">${rule}</div></div>
     <div class="secttl">Примеры</div>
     ${ex}
@@ -1507,27 +1563,21 @@ function drawGPractice(){
   const opts=cur.options.slice(); shuffle(opts);
   gprac.locked=false;
   const pct=Math.round(gprac.i/gprac.list.length*100);
-  app.innerHTML=`<div class="wrap fade">
-    <div class="topbar"><button class="back" onclick="go('grammar')">←</button>
-      <div class="grow"><div class="brand">Практика грамматики</div>
-        <div class="progressline" style="margin-top:6px"><i style="width:${pct}%"></i></div></div>
-      <span class="pill">${gprac.i+1}/${gprac.list.length}</span></div>
-    <div class="panel" style="text-align:center"><div class="qhead">Выбери правильный вариант</div>
-      <div class="qprompt">${cur.q}</div></div>
-    <div id="opts">${opts.map(o=>`<button class="opt" onclick="pickGP(this,'${esc(o)}')">${o}</button>`).join("")}</div>
-    <div class="between mut small" style="margin-top:6px"><span>Очки: ${gprac.score}</span><span>🔥 ${S.streak} дней</span></div>
-  </div>`;
+  app.innerHTML=`<div class="wrap fade game" style="--theme:#fbbf24">
+    ${gameTop('🎯 Практика грамматики',pct,{back:`go('grammar')`,i:gprac.i+1,n:gprac.list.length})}
+    <div class="qcard"><div class="qtype">🎯 Выбери правильный вариант</div>
+      <div class="qbig">${cur.q}</div></div>
+    <div id="opts" class="optgrid">${opts.map((o,k)=>optRow(o,k,`pickGP(this,'${esc(o)}')`)).join("")}</div>`;
 }
 function pickGP(btn,val){
   if(gprac.locked) return; gprac.locked=true;
-  const cur=gprac.list[gprac.i];
-  const correct=decode(val)===cur.answer;
-  document.querySelectorAll('#opts .opt').forEach(b=>{ if(b.textContent===cur.answer) b.classList.add('correct'); else b.classList.add('dim'); });
-  if(correct){ btn.classList.add('correct'); gprac.score++; registerStudy(10); }
-  else { btn.classList.remove('dim'); btn.classList.add('wrong'); registerStudy(3); }
+  const cur=gprac.list[gprac.i]; const correct=decode(val)===cur.answer;
+  markOpts(btn,cur.answer,correct);
+  if(correct){ gprac.score++; registerStudy(10); sfx('good'); haptic(8); }
+  else { registerStudy(3); sfx('bad'); haptic(40); }
   const box=document.getElementById('opts');
-  const ex=document.createElement('div'); ex.className='callout'+(correct?'':' bad');
-  ex.innerHTML=`<b>${correct?'✓ Верно':'✗ Объяснение'}</b>${cur.explain}`;
+  const ex=document.createElement('div'); ex.className='fbcard '+(correct?'ok':'no');
+  ex.innerHTML=`<div class="head">${correct?'<span class="ok">✓ Верно</span>':'<span class="ko">✗ Объяснение</span>'}</div><div style="margin-top:6px;line-height:1.5">${cur.explain}</div>`;
   box.appendChild(ex);
   const nx=document.createElement('button'); nx.className='btn acc full'; nx.style.marginTop='12px';
   nx.textContent=(gprac.i+1>=gprac.list.length)?'Результат →':'Дальше →';
@@ -1537,11 +1587,11 @@ function pickGP(btn,val){
 function gpracDone(){
   const pct=Math.round(gprac.score/gprac.list.length*100);
   if(pct>=80) confetti();
-  app.innerHTML=`<div class="wrap fade"><div class="empty">
-    <div style="font-size:54px">${pct>=80?'🏆':pct>=50?'👍':'💪'}</div>
-    <h2 style="margin:10px 0">${gprac.score} из ${gprac.list.length}</h2>
+  app.innerHTML=`<div class="wrap fade"><div class="result">
+    <div class="em">${pct>=80?'🏆':pct>=50?'👍':'💪'}</div>
+    <div class="rt">${gprac.score} из ${gprac.list.length}</div>
     <div class="mut">${pct>=80?'Отличная грамматика!':'Перечитай уроки и попробуй снова.'}</div>
-    <button class="btn acc full" style="margin-top:14px" onclick="go('gpractice')">🔁 Ещё раз</button>
+    <button class="btn acc full" style="margin-top:18px" onclick="go('gpractice')">🔁 Ещё раз</button>
     <button class="btn full" style="margin-top:10px" onclick="go('grammar')">← К грамматике</button>
   </div></div>`;
 }
@@ -1551,17 +1601,18 @@ function renderProgress(){
   const li=levelInfo();
   const learned=overallLearned();
   const rows=MODULES.map(m=>{
-    const p=moduleProgress(m);
-    return `<div class="item">
-      <div class="ic" style="font-size:22px">${m.ic}</div>
+    const p=moduleProgress(m); const color=m.color||'#6ea8fe';
+    return `<div class="trow" style="--theme:${color}">
+      <div class="tic" style="width:40px;height:40px;border-radius:12px;flex:none;display:flex;align-items:center;justify-content:center;font-size:19px;background:color-mix(in srgb,${color} 22%,transparent);border:1px solid color-mix(in srgb,${color} 40%,transparent)">${m.ic}</div>
       <div class="grow">
-        <div class="between"><b>${m.name}</b><span class="mut small">${p.learned}/${p.total}</span></div>
-        <div class="bar" style="margin-top:8px;background:#0f1730"><i style="display:block;height:100%;border-radius:6px;width:${p.pct}%;background:linear-gradient(90deg,${m.color||'#6ea8fe'},#8b7bff)"></i></div>
+        <div class="between"><b style="font-size:14.5px">${m.name}</b><span class="mut small">${p.learned}/${p.total} · ${p.pct}%</span></div>
+        <div class="bar" style="margin-top:8px;background:rgba(8,12,24,.6)"><i style="display:block;height:100%;border-radius:6px;width:${p.pct}%;background:linear-gradient(90deg,${color},#c8a6ff)"></i></div>
       </div>
     </div>`;
   }).join("");
   app.innerHTML=`<div class="wrap fade">
-    <div class="top"><div class="brand">Твоя статистика</div><div class="hi">📈 Прогресс</div></div>
+    <div class="phead"><div class="eyebrow">Твоя статистика</div><div class="ttl">📈 Прогресс</div></div>
+    <div style="height:6px"></div>
     <div class="stats">
       <div class="stat"><b>${S.streak}🔥</b><span>серия</span></div>
       <div class="stat"><b>${S.xp}</b><span>XP</span></div>
