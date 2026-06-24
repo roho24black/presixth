@@ -13,17 +13,24 @@
 <title>Pre-Sixth Prep · KESW</title>
 <style>
   :root{
-    --bg:#0b1020; --bg2:#121a33; --card:#172244; --card2:#1d2a52;
-    --line:#27355f; --txt:#eaf0ff; --mut:#93a1c9; --mut2:#6b7aa6;
-    --acc:#6ea8fe; --acc2:#8b7bff; --good:#34d399; --bad:#fb7185; --warn:#fbbf24;
-    --r:18px;
+    --bg:#070b16; --bg2:#0e1426; --card:#141d36; --card2:#1a2444;
+    --line:#2a3a63; --txt:#eef2ff; --mut:#9fb0d8; --mut2:#6f7fab;
+    --acc:#6ea8fe; --acc2:#a78bfa; --acc3:#fb7bb5; --acc4:#34e0c8;
+    --good:#34d399; --bad:#fb7185; --warn:#fbbf24;
+    --glass:rgba(22,31,58,.62); --glassb:rgba(150,170,230,.16);
+    --r:20px; --shadow:0 12px 34px rgba(0,0,0,.42);
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;padding:0;background:var(--bg);color:var(--txt);
     font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;
-    overscroll-behavior-y:none;}
-  body{padding:env(safe-area-inset-top) 0 calc(72px + env(safe-area-inset-bottom));
-    background:radial-gradient(120% 60% at 50% -10%, #1a2550 0%, var(--bg) 60%);min-height:100vh}
+    overscroll-behavior-y:none;-webkit-font-smoothing:antialiased}
+  body{min-height:100vh;position:relative;
+    padding:env(safe-area-inset-top) 0 calc(104px + env(safe-area-inset-bottom));background:var(--bg)}
+  body::before{content:"";position:fixed;inset:-20% -10% auto -10%;height:72vh;z-index:-1;pointer-events:none;
+    background:
+      radial-gradient(45% 50% at 16% 6%, rgba(110,168,254,.32), transparent 70%),
+      radial-gradient(45% 50% at 86% 0%, rgba(167,139,250,.30), transparent 70%),
+      radial-gradient(40% 45% at 60% 32%, rgba(251,123,181,.16), transparent 70%)}
   .wrap{max-width:560px;margin:0 auto;padding:14px}
   h1,h2,h3{margin:0;font-weight:800;letter-spacing:-.02em}
   .mut{color:var(--mut)} .small{font-size:13px}
@@ -34,125 +41,162 @@
   .hidden{display:none!important}
 
   /* top */
-  .top{padding:8px 2px 4px}
-  .brand{font-size:13px;color:var(--mut);letter-spacing:.18em;text-transform:uppercase;font-weight:700}
-  .hi{font-size:24px;margin-top:2px}
+  .top{padding:10px 2px 4px}
+  .brand{font-size:12px;color:var(--mut);letter-spacing:.2em;text-transform:uppercase;font-weight:800}
+  .hi{font-size:27px;margin-top:4px;font-weight:800;letter-spacing:-.03em}
 
   /* chips / stat */
-  .stats{display:flex;gap:10px;margin-top:14px}
-  .stat{flex:1;background:linear-gradient(160deg,var(--card),var(--bg2));border:1px solid var(--line);
-    border-radius:var(--r);padding:12px}
-  .stat b{font-size:22px;display:block;line-height:1.1}
-  .stat span{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em}
+  .stats{display:flex;gap:10px;margin-top:16px}
+  .stat{flex:1;background:var(--glass);border:1px solid var(--glassb);border-radius:var(--r);padding:13px 12px;
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+  .stat b{font-size:23px;display:block;line-height:1.1;font-weight:800}
+  .stat span{font-size:10.5px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em}
 
-  .panel{background:linear-gradient(160deg,var(--card),var(--bg2));border:1px solid var(--line);
-    border-radius:var(--r);padding:16px;margin-top:14px}
+  .panel{background:var(--glass);border:1px solid var(--glassb);border-radius:var(--r);padding:17px;margin-top:14px;
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:var(--shadow)}
 
   /* ring */
   .ring{display:flex;align-items:center;gap:14px}
-  .ringsvg{width:62px;height:62px;flex:none}
+  .ringsvg{width:64px;height:64px;flex:none}
   .ringsvg circle{fill:none;stroke-width:7;stroke-linecap:round}
-  .ringbg{stroke:#26345e}
+  .ringbg{stroke:rgba(150,170,230,.16)}
   .ringfg{stroke:url(#g);transition:stroke-dashoffset .6s ease}
 
   /* countdown */
-  .count{display:flex;gap:8px;margin-top:10px}
-  .count div{flex:1;background:#101733;border:1px solid var(--line);border-radius:14px;padding:10px 6px;text-align:center}
-  .count b{font-size:20px;display:block}
+  .count{display:flex;gap:8px;margin-top:12px}
+  .count div{flex:1;background:rgba(8,12,24,.5);border:1px solid var(--glassb);border-radius:14px;padding:11px 6px;text-align:center}
+  .count b{font-size:21px;display:block;font-weight:800}
   .count span{font-size:10px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em}
 
   /* subject grid */
-  .secttl{margin:20px 2px 8px;font-size:14px;color:var(--mut);text-transform:uppercase;letter-spacing:.1em;font-weight:700}
+  .secttl{margin:22px 2px 10px;font-size:13px;color:var(--mut);text-transform:uppercase;letter-spacing:.12em;font-weight:800}
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  .subj{position:relative;border:1px solid var(--line);border-radius:var(--r);padding:14px;
-    background:var(--card);overflow:hidden;text-align:left;transition:transform .12s}
-  .subj:active{transform:scale(.97)}
-  .subj .ic{font-size:26px}
-  .subj h3{font-size:16px;margin-top:8px}
+  .subj{position:relative;border:1px solid var(--glassb);border-radius:var(--r);padding:15px;
+    background:var(--glass);overflow:hidden;text-align:left;transition:transform .14s;
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+  .subj:active{transform:scale(.96)}
+  .subj .ic{font-size:23px;width:46px;height:46px;display:flex;align-items:center;justify-content:center;
+    border-radius:14px;background:rgba(255,255,255,.06);border:1px solid var(--glassb)}
+  .subj h3{font-size:16px;margin-top:11px;font-weight:800}
   .subj .ex{font-size:11px;color:var(--mut2);margin-top:2px}
-  .subj .bar{height:6px;border-radius:6px;background:#0f1730;margin-top:12px;overflow:hidden}
+  .subj .bar{height:6px;border-radius:6px;background:rgba(8,12,24,.6);margin-top:13px;overflow:hidden}
   .subj .bar i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,var(--acc),var(--acc2))}
-  .subj .pc{font-size:11px;color:var(--mut);margin-top:6px;display:flex;justify-content:space-between}
-  .glow{position:absolute;inset:0;opacity:.14;pointer-events:none}
+  .subj .pc{font-size:11px;color:var(--mut);margin-top:7px;display:flex;justify-content:space-between;font-weight:600}
+  .glow{position:absolute;inset:0;opacity:.20;pointer-events:none}
 
   /* generic card / list */
-  .item{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--line);
-    border-radius:14px;background:var(--card);margin-bottom:10px}
+  .item{display:flex;align-items:center;gap:12px;padding:13px 14px;border:1px solid var(--glassb);
+    border-radius:16px;background:var(--glass);margin-bottom:10px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
   .badge{font-size:11px;padding:3px 8px;border-radius:999px;border:1px solid var(--line);color:var(--mut)}
 
   /* buttons */
-  .btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;border-radius:14px;
-    font-weight:700;font-size:15px;background:var(--card2);border:1px solid var(--line)}
-  .btn.acc{background:linear-gradient(135deg,var(--acc),var(--acc2));border:none;color:#0b1020}
+  .btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;border-radius:16px;
+    font-weight:800;font-size:15px;background:rgba(255,255,255,.05);border:1px solid var(--glassb);color:var(--txt)}
+  .btn.acc{background:linear-gradient(135deg,var(--acc),var(--acc2));border:none;color:#0a0f1f;
+    box-shadow:0 10px 24px rgba(122,150,255,.34)}
   .btn.full{width:100%}
-  .btn:active{filter:brightness(.95)}
-  .btn.sm{padding:10px 12px;font-size:13px}
+  .btn:active{transform:scale(.985);filter:brightness(.97)}
+  .btn.sm{padding:10px 12px;font-size:13px;border-radius:12px}
   .actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:14px}
 
   /* flashcard */
   .deckwrap{margin-top:10px}
-  .fcard{position:relative;height:360px;border-radius:22px}
+  .fcard{position:relative;height:360px;border-radius:24px}
   .face{position:absolute;top:0;left:0;width:100%;height:100%;
-    border:1px solid var(--line);border-radius:22px;padding:22px;display:flex;flex-direction:column;
-    justify-content:center;align-items:center;text-align:center;background:linear-gradient(160deg,var(--card2),var(--bg2));
+    border:1px solid var(--glassb);border-radius:24px;padding:24px;display:flex;flex-direction:column;
+    justify-content:center;align-items:center;text-align:center;
+    background:linear-gradient(160deg,rgba(36,48,86,.92),rgba(16,22,42,.94));box-shadow:var(--shadow);
     opacity:0;visibility:hidden;transform:scale(.96);transition:opacity .28s ease, transform .28s ease}
   .face.front{opacity:1;visibility:visible;transform:none}
   .fcard.flip .face.front{opacity:0;visibility:hidden;transform:scale(.96)}
   .fcard.flip .face.rear{opacity:1;visibility:visible;transform:none}
   .face.rear{justify-content:flex-start;align-items:flex-start;text-align:left;overflow:auto}
-  .term{font-size:30px;font-weight:800;letter-spacing:-.02em}
+  .term{font-size:31px;font-weight:800;letter-spacing:-.02em}
   .ipa{color:var(--mut);margin-top:6px;font-size:14px}
   .tap{position:absolute;bottom:14px;left:0;right:0;text-align:center;color:var(--mut2);font-size:12px}
-  .speaker{margin-top:18px;width:64px;height:64px;border-radius:50%;display:flex;align-items:center;
-    justify-content:center;font-size:26px;background:#0f1730;border:1px solid var(--line)}
-  .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--acc);font-weight:700;margin:14px 0 4px}
-  .ru{font-size:22px;font-weight:800}
+  .speaker{margin-top:18px;width:66px;height:66px;border-radius:50%;display:flex;align-items:center;
+    justify-content:center;font-size:26px;background:rgba(255,255,255,.06);border:1px solid var(--glassb)}
+  .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--acc);font-weight:800;margin:14px 0 4px}
+  .ru{font-size:23px;font-weight:800}
   .def{margin-top:2px;color:var(--txt);line-height:1.45}
   .ex{color:var(--mut);font-style:italic;line-height:1.5;margin-top:2px}
-  .progressline{height:6px;background:#0f1730;border-radius:6px;overflow:hidden;margin:6px 0 12px}
+  .progressline{height:7px;background:rgba(8,12,24,.6);border-radius:7px;overflow:hidden;margin:6px 0 12px}
   .progressline i{display:block;height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2));transition:width .3s}
 
   /* quiz */
-  .opt{padding:15px 16px;border:1px solid var(--line);border-radius:14px;background:var(--card);
-    margin-bottom:10px;font-size:16px;font-weight:600;transition:.15s;text-align:left;width:100%}
+  .opt{padding:15px 16px;border:1px solid var(--glassb);border-radius:15px;background:var(--glass);
+    margin-bottom:10px;font-size:16px;font-weight:700;transition:.15s;text-align:left;width:100%;color:var(--txt);
+    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
   .opt:active{transform:scale(.99)}
-  .opt.correct{background:rgba(52,211,153,.16);border-color:var(--good)}
-  .opt.wrong{background:rgba(251,113,133,.14);border-color:var(--bad)}
-  .opt.dim{opacity:.5}
+  .opt.correct{background:rgba(52,211,153,.18);border-color:var(--good)}
+  .opt.wrong{background:rgba(251,113,133,.16);border-color:var(--bad)}
+  .opt.dim{opacity:.45}
   .qhead{font-size:13px;color:var(--mut);margin-bottom:6px}
-  .qprompt{font-size:24px;font-weight:800;margin:4px 0 18px;line-height:1.25}
+  .qprompt{font-size:25px;font-weight:800;margin:4px 0 18px;line-height:1.25}
 
-  /* bottom nav */
-  .nav{position:fixed;left:0;right:0;bottom:0;z-index:50;
-    background:rgba(13,19,40,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-    border-top:1px solid var(--line);padding:8px 0 calc(6px + env(safe-area-inset-bottom))}
-  .navin{max-width:560px;margin:0 auto;display:flex}
+  /* bottom nav — floating pill */
+  .nav{position:fixed;left:12px;right:12px;bottom:calc(8px + env(safe-area-inset-bottom));z-index:50;
+    background:var(--glass);backdrop-filter:blur(20px) saturate(1.5);-webkit-backdrop-filter:blur(20px) saturate(1.5);
+    border:1px solid var(--glassb);border-radius:24px;box-shadow:var(--shadow);padding:6px}
+  .navin{max-width:540px;margin:0 auto;display:flex;gap:4px}
   .nav button{flex:1;background:none;display:flex;flex-direction:column;align-items:center;gap:3px;
-    font-size:10px;color:var(--mut2);padding:4px}
-  .nav button .ni{font-size:21px}
-  .nav button.on{color:var(--acc)}
+    font-size:10px;color:var(--mut2);padding:9px 4px;border-radius:17px;transition:.2s;font-weight:700}
+  .nav button .ni{font-size:20px}
+  .nav button.on{color:#fff;background:linear-gradient(135deg,rgba(110,168,254,.24),rgba(167,139,250,.24))}
 
-  .iconbtn{width:40px;height:40px;border-radius:12px;background:var(--card);border:1px solid var(--line);
-    display:flex;align-items:center;justify-content:center;font-size:18px}
-  .toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%) translateY(20px);opacity:0;
-    background:#0f1730;border:1px solid var(--line);padding:10px 16px;border-radius:999px;font-size:13px;
-    transition:.25s;z-index:80;pointer-events:none;font-weight:600}
+  .iconbtn{width:42px;height:42px;border-radius:13px;background:rgba(255,255,255,.06);border:1px solid var(--glassb);
+    display:flex;align-items:center;justify-content:center;font-size:18px;flex:none}
+  .toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%) translateY(20px);opacity:0;
+    background:rgba(14,20,38,.95);border:1px solid var(--glassb);padding:11px 18px;border-radius:999px;font-size:13px;
+    transition:.25s;z-index:80;pointer-events:none;font-weight:700;backdrop-filter:blur(10px)}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
   .pill{display:inline-flex;gap:6px;align-items:center;font-size:12px;color:var(--mut);
-    background:#0f1730;border:1px solid var(--line);padding:5px 10px;border-radius:999px}
-  .empty{text-align:center;color:var(--mut);padding:40px 20px}
+    background:rgba(8,12,24,.5);border:1px solid var(--glassb);padding:5px 11px;border-radius:999px;font-weight:600}
+  .empty{text-align:center;color:var(--mut);padding:38px 20px}
   .topbar{display:flex;align-items:center;gap:10px;margin-bottom:6px}
-  .back{font-size:22px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;
-    border-radius:12px;background:var(--card);border:1px solid var(--line)}
-  .seg{display:flex;background:#0f1730;border:1px solid var(--line);border-radius:12px;padding:4px;gap:4px;margin-top:12px}
-  .seg button{flex:1;padding:9px;border-radius:9px;font-size:13px;font-weight:700;color:var(--mut);background:none}
-  .seg button.on{background:var(--card2);color:var(--txt)}
-  .tag{font-size:11px;color:var(--mut);background:#0f1730;border:1px solid var(--line);
-    padding:4px 9px;border-radius:999px;margin:0 6px 6px 0;display:inline-block}
+  .back{font-size:21px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;
+    border-radius:13px;background:rgba(255,255,255,.06);border:1px solid var(--glassb);flex:none}
+  .seg{display:flex;background:rgba(8,12,24,.5);border:1px solid var(--glassb);border-radius:14px;padding:4px;gap:4px;margin-top:12px}
+  .seg button{flex:1;padding:10px;border-radius:11px;font-size:13px;font-weight:800;color:var(--mut);background:none}
+  .seg button.on{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#0a0f1f}
+  .tag{font-size:11px;color:var(--mut);background:rgba(8,12,24,.5);border:1px solid var(--glassb);
+    padding:5px 10px;border-radius:999px;margin:0 6px 6px 0;display:inline-block;font-weight:600}
   .ok{color:var(--good)} .ko{color:var(--bad)}
-  .fade{animation:fade .3s ease}
-  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .fade{animation:fade .35s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
   .conf{position:fixed;inset:0;pointer-events:none;z-index:90}
+
+  /* hero (home) */
+  .hero{position:relative;overflow:hidden;border-radius:24px;padding:18px;margin-top:16px;
+    background:linear-gradient(135deg,rgba(110,168,254,.22),rgba(167,139,250,.18),rgba(251,123,181,.12));
+    border:1px solid var(--glassb);box-shadow:var(--shadow)}
+
+  /* quick links (home) */
+  .qrow{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+  .ql{position:relative;overflow:hidden;text-align:left;border-radius:18px;padding:15px;border:1px solid var(--glassb);
+    background:var(--glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:transform .14s}
+  .ql:active{transform:scale(.96)}
+  .ql .ic{font-size:24px}
+  .ql b{display:block;margin-top:8px;font-size:15px;font-weight:800}
+  .ql span{font-size:11.5px;color:var(--mut)}
+
+  /* grammar lessons */
+  .lesson h3{font-size:16px;font-weight:800}
+  .lessonbody{line-height:1.6;color:var(--txt)}
+  .lessonbody p{margin:0 0 10px}
+  .exline{padding:11px 13px;border-radius:13px;background:rgba(8,12,24,.4);border:1px solid var(--glassb);margin-bottom:8px}
+  .exline .en{font-weight:700}
+  .exline .ru{font-size:13px;font-weight:500;color:var(--mut);margin-top:2px}
+  .callout{border-radius:14px;padding:13px 14px;margin-top:12px;border:1px solid var(--glassb);background:rgba(52,211,153,.12)}
+  .callout.bad{background:rgba(251,113,133,.12)}
+  .callout b{display:block;margin-bottom:5px}
+
+  /* essay phrases / slang */
+  .pgroup{font-size:12px;color:var(--acc);text-transform:uppercase;letter-spacing:.08em;font-weight:800;margin:18px 2px 8px}
+  .reg{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;padding:3px 8px;border-radius:999px;border:1px solid var(--glassb);white-space:nowrap}
+  .reg.uk{color:#7ee0ff;background:rgba(80,200,255,.12)}
+  .reg.txt{color:#ffd27e;background:rgba(255,200,90,.12)}
+  .reg.gen{color:#c8b3ff;background:rgba(167,139,250,.16)}
 </style>
 </head>
 <body>
@@ -161,8 +205,8 @@
 <nav class="nav">
   <div class="navin">
     <button data-nav="home" class="on"><span class="ni">🏠</span>Главная</button>
-    <button data-nav="subjects"><span class="ni">📚</span>Предметы</button>
-    <button data-nav="daily"><span class="ni">⚡️</span>Тренировка</button>
+    <button data-nav="subjects"><span class="ni">📚</span>Учить</button>
+    <button data-nav="grammar"><span class="ni">✍️</span>Грамматика</button>
     <button data-nav="progress"><span class="ni">📈</span>Прогресс</button>
   </div>
 </nav>
@@ -205,6 +249,45 @@ const DATA = {
       {en:"Feedback",ru:"Обратная связь / комментарии",def:"Что учитель написал о вашей работе и как её улучшить.",ex:"Read my feedback and act on it for next time."},
       {en:"Highlight",ru:"Выделить маркером",def:"Отметить текст цветом.",ex:"Highlight the words you don't understand."},
       {en:"Label the diagram",ru:"Подпишите схему",def:"Написать названия частей на рисунке.",ex:"Label the diagram of the heart with these terms."}
+    ]
+  },
+  slang: {
+    id:"slang", name:"Сленг", nameEn:"Slang & texting", ic:"💬",
+    exam:"Для переписки с друзьями", color:"#fb7bb5",
+    desc:"Неформальный английский, которым реально переписываются и общаются подростки в Британии. ⚠️ Это для друзей — НЕ для учителей, экзаменов и эссе.",
+    topics:["Переписка","Британский сленг","Gen-Z"],
+    terms:[
+      {en:"lol",ru:"ха-ха / смешно",def:"💬 В переписке. «Laughing out loud» — реакция на что-то смешное.",ex:"lol that's actually so funny 😭"},
+      {en:"tbh",ru:"честно говоря",def:"💬 «To be honest» — когда говоришь искреннее мнение.",ex:"tbh I didn't really like the film"},
+      {en:"ngl",ru:"не вру / честно",def:"💬 «Not gonna lie» — признаёшь что-то честно.",ex:"ngl this homework is actually hard"},
+      {en:"idk",ru:"не знаю",def:"💬 «I don't know».",ex:"idk what to wear tomorrow tbh"},
+      {en:"imo",ru:"по-моему",def:"💬 «In my opinion».",ex:"imo the first option is way better"},
+      {en:"rn",ru:"прямо сейчас",def:"💬 «Right now».",ex:"what are you doing rn?"},
+      {en:"fr",ru:"реально / серьёзно",def:"💬 «For real» — соглашаешься или подчёркиваешь правду.",ex:"— that lesson was so long — fr 😩"},
+      {en:"wyd",ru:"что делаешь?",def:"💬 «What you doing?» — частое начало переписки.",ex:"heyy wyd later?"},
+      {en:"hbu / wbu",ru:"а ты? / а у тебя?",def:"💬 «How / what about you?» — возвращаешь вопрос.",ex:"I'm good thanks, hbu?"},
+      {en:"btw",ru:"кстати",def:"💬 «By the way» — добавить мысль.",ex:"btw are you coming on Friday?"},
+      {en:"brb",ru:"щас вернусь",def:"💬 «Be right back» — отойти на минуту.",ex:"brb, dinner's ready"},
+      {en:"gtg",ru:"мне пора",def:"💬 «Got to go».",ex:"ok gtg, ttyl!"},
+      {en:"ttyl",ru:"спишемся позже",def:"💬 «Talk to you later».",ex:"have fun! ttyl x"},
+      {en:"omw",ru:"уже еду / иду",def:"💬 «On my way».",ex:"omw, like 5 mins"},
+      {en:"nvm",ru:"забей / неважно",def:"💬 «Never mind».",ex:"nvm, I figured it out"},
+      {en:"lowkey",ru:"типа / немного / втихаря",def:"💬 Что-то слегка или по-тихому. Противоположное — «highkey» (открыто, сильно).",ex:"I lowkey want to go home already"},
+      {en:"no cap",ru:"без вранья / реально",def:"💬 «Cap» = ложь. «No cap» = я не вру.",ex:"that test was easy, no cap"},
+      {en:"bet",ru:"идёт / окей / договорились",def:"💬 Согласие или «давай».",ex:"— wanna play after school? — bet"},
+      {en:"mid",ru:"так себе / средне",def:"💬 Ничего особенного, посредственно.",ex:"the food there is kinda mid"},
+      {en:"sus",ru:"подозрительный",def:"💬 «Suspicious» — странный, вызывает подозрения.",ex:"he's been acting kinda sus"},
+      {en:"slay",ru:"шикарно / красава",def:"💬 Похвала: сделал круто, отлично выглядишь.",ex:"you slayed that presentation 🔥"},
+      {en:"W / L",ru:"победа / поражение",def:"💬 «Win» / «Loss». «That's a W» = это успех; «took an L» = облажался.",ex:"got an A, big W"},
+      {en:"innit",ru:"да ведь? / не так ли?",def:"🇬🇧 British. Сокращение «isn't it», лепят в конце фразы для согласия.",ex:"it's freezing today, innit"},
+      {en:"mate / bruv",ru:"друг, чувак",def:"🇬🇧 British. Обращение к другу (или просто к парню).",ex:"you alright, mate?"},
+      {en:"cheers",ru:"спасибо / пока",def:"🇬🇧 British. «Спасибо», а иногда «пока». Очень частое.",ex:"cheers for waiting for me!"},
+      {en:"you alright?",ru:"как дела? (приветствие)",def:"🇬🇧 British. Это НЕ про здоровье — просто «привет, как ты». Отвечают «yeah, you?».",ex:"— you alright? — yeah good ta, you?"},
+      {en:"knackered",ru:"вымотанный, без сил",def:"🇬🇧 British. Очень уставший.",ex:"I'm absolutely knackered after PE"},
+      {en:"gutted",ru:"в расстройстве, обидно",def:"🇬🇧 British. Сильно разочарован.",ex:"we lost the match, I'm gutted"},
+      {en:"buzzing",ru:"в восторге, на эмоциях",def:"🇬🇧 British. Очень рад, в предвкушении.",ex:"buzzing for the weekend!!"},
+      {en:"long",ru:"нудно / морока / лень",def:"🇬🇧 British. Что-то утомительное и скучное.",ex:"ugh revision is so long"},
+      {en:"sound",ru:"норм / надёжный / хороший",def:"🇬🇧 British. «Sound» = окей, хороший человек, договорились.",ex:"— meet at 6? — yeah sound"}
     ]
   },
   subjects:[
@@ -379,9 +462,135 @@ const DATA = {
   ]
 };
 
-/* flat list of every studyable module (classroom + subjects) */
-const MODULES = [DATA.classroom, ...DATA.subjects];
+/* =========================================================================
+   GRAMMAR — для написания эссе (уроки + фразы + практика)
+   ========================================================================= */
+const GRAMMAR = {
+  essay: {
+    id:"essay", name:"Фразы для эссе", nameEn:"Essay phrases", ic:"✍️",
+    exam:"Академический английский", color:"#fbbf24",
+    desc:"Готовые академические фразы для сочинений: как начать, добавить аргумент, противопоставить и сделать вывод. Выучи их — и эссе сразу звучит уверенно.",
+    topics:["Вступление","Аргументы","Контраст","Вывод"],
+    terms:[
+      {group:"Вступление",en:"This essay will discuss…",ru:"В этом эссе будет рассмотрено…",def:"Открыть эссе и обозначить тему.",ex:"This essay will discuss how the writer creates tension."},
+      {group:"Вступление",en:"It is often argued that…",ru:"Часто утверждают, что…",def:"Ввести распространённое мнение, чтобы потом обсудить.",ex:"It is often argued that social media harms teenagers."},
+      {group:"Вступление",en:"In recent years…",ru:"В последние годы…",def:"Задать контекст темы.",ex:"In recent years, the cost of living has risen sharply."},
+      {group:"Своё мнение",en:"In my opinion…",ru:"По-моему…",def:"Высказать личную позицию (простой вариант).",ex:"In my opinion, the policy does more harm than good."},
+      {group:"Своё мнение",en:"I would argue that…",ru:"Я бы сказал, что…",def:"Более академичный способ дать своё мнение.",ex:"I would argue that the evidence is not convincing."},
+      {group:"Своё мнение",en:"It seems clear that…",ru:"Кажется очевидным, что…",def:"Подать вывод как логичный.",ex:"It seems clear that exercise improves mood."},
+      {group:"Добавить аргумент",en:"Furthermore…",ru:"Более того…",def:"Добавить ещё один довод в ту же сторону.",ex:"Furthermore, the data support this conclusion."},
+      {group:"Добавить аргумент",en:"Moreover…",ru:"Кроме того…",def:"Усилить мысль дополнительным аргументом.",ex:"Moreover, prices continued to rise."},
+      {group:"Добавить аргумент",en:"In addition…",ru:"Вдобавок…",def:"Присоединить новый пункт.",ex:"In addition, many students reported feeling tired."},
+      {group:"Контраст",en:"However…",ru:"Однако…",def:"Ввести противоположную мысль. Запятая после.",ex:"However, this view ignores the cost."},
+      {group:"Контраст",en:"On the other hand…",ru:"С другой стороны…",def:"Показать вторую точку зрения.",ex:"On the other hand, some people benefit from it."},
+      {group:"Контраст",en:"Nevertheless…",ru:"Тем не менее…",def:"Признать возражение, но остаться при своём.",ex:"Nevertheless, the plan was successful overall."},
+      {group:"Контраст",en:"Despite this…",ru:"Несмотря на это…",def:"Контраст вопреки сказанному.",ex:"Despite this, sales increased."},
+      {group:"Контраст",en:"Whereas…",ru:"Тогда как…",def:"Прямое сравнение двух вещей в одном предложении.",ex:"The north is industrial, whereas the south is rural."},
+      {group:"Причина и следствие",en:"Therefore…",ru:"Поэтому / следовательно…",def:"Сделать вывод из сказанного.",ex:"Costs rose; therefore, profits fell."},
+      {group:"Причина и следствие",en:"As a result…",ru:"В результате…",def:"Показать следствие.",ex:"As a result, demand dropped."},
+      {group:"Причина и следствие",en:"This is because…",ru:"Это потому, что…",def:"Объяснить причину.",ex:"Sales fell. This is because prices were too high."},
+      {group:"Примеры",en:"For instance…",ru:"Например…",def:"Ввести конкретный пример.",ex:"For instance, the author repeats the word 'dark'."},
+      {group:"Примеры",en:"such as",ru:"такие как",def:"Перечислить примеры внутри предложения.",ex:"Greenhouse gases, such as CO2, trap heat."},
+      {group:"Вывод",en:"In conclusion…",ru:"В заключение…",def:"Начать заключительный абзац.",ex:"In conclusion, the benefits outweigh the costs."},
+      {group:"Вывод",en:"To sum up…",ru:"Подводя итог…",def:"Кратко собрать главное.",ex:"To sum up, three factors explain the change."},
+      {group:"Вывод",en:"Overall…",ru:"В целом…",def:"Дать общую оценку в конце.",ex:"Overall, the writer presents a hopeful message."}
+    ]
+  },
+  lessons:[
+    {id:"peel",ic:"🧱",title:"Структура абзаца (PEEL)",summary:"Как построить сильный абзац",
+      rule:"Каждый абзац строится по схеме PEEL:\n\nP — Point (мысль): главное утверждение абзаца.\nE — Evidence (доказательство): цитата или факт.\nE — Explain (объяснение): как доказательство подтверждает мысль.\nL — Link (связка): мини-вывод и переход дальше.\n\nПравило: один абзац = одна мысль.",
+      examples:[
+        {en:"The writer presents the city as dangerous. (Point)",ru:"Писатель показывает город опасным. — мысль"},
+        {en:"For example, he describes 'shadows creeping' down the street. (Evidence)",ru:"Например, «крадущиеся тени». — доказательство"},
+        {en:"This makes the reader feel uneasy. (Explain)",ru:"Это вызывает тревогу у читателя. — объяснение"},
+        {en:"Therefore, the setting prepares us for the crime. (Link)",ru:"Поэтому обстановка готовит нас к преступлению. — связка"}
+      ],
+      mistake:{wrong:"I think the city is bad because it is dark and scary and bad.",right:"The writer presents the city as threatening, shown by the 'creeping shadows', which unsettles the reader.",why:"Избегай «I think… bad… bad». Используй точные слова и доказательство."}},
+    {id:"introconcl",ic:"🎬",title:"Вступление и заключение",summary:"Как начать и закончить эссе",
+      rule:"ВСТУПЛЕНИЕ: коротко назови тему и свою позицию (1–2 предложения). Не пересказывай весь текст.\n\nЗАКЛЮЧЕНИЕ: подытожь главное и дай финальную мысль. Не вводи новых аргументов в конце.",
+      examples:[
+        {en:"This essay will explore how Dickens presents poverty.",ru:"В этом эссе я разберу, как Диккенс показывает бедность."},
+        {en:"In conclusion, the writer uses setting to build fear throughout.",ru:"В заключение: автор использует обстановку, чтобы нагнетать страх."}
+      ],
+      mistake:{wrong:"In conclusion, also the weather is important and here is a new idea.",right:"In conclusion, the writer's main message is that fear comes from the unknown.",why:"В заключении НЕ добавляй новые аргументы — только подытоживай."}},
+    {id:"linkers",ic:"🔗",title:"Слова-связки",summary:"Соединяй мысли плавно",
+      rule:"Связки делают текст плавным:\n\nДобавить: furthermore, moreover, in addition.\nПротивопоставить: however, on the other hand, nevertheless.\nПричина/следствие: therefore, as a result, consequently.\nВывод: in conclusion, overall, to sum up.\n\nПосле связки в начале предложения ставь запятую: «However, …».",
+      examples:[
+        {en:"The plan is cheap. However, it is risky.",ru:"План дешёвый. Однако он рискованный."},
+        {en:"Prices rose. As a result, demand fell.",ru:"Цены выросли. В результате спрос упал."}
+      ],
+      mistake:{wrong:"The plan is cheap, but however it is risky.",right:"The plan is cheap; however, it is risky.",why:"Не дублируй связки (but + however). Выбери одну."}},
+    {id:"articles",ic:"🅰️",title:"Артикли: a / an / the",summary:"Самая частая ошибка русскоговорящих",
+      rule:"В русском артиклей нет, поэтому это сложно.\n\na / an — что-то одно, впервые или любое: a book, an apple (an перед гласным ЗВУКОМ).\nthe — конкретное, уже известное, единственное: the sun, the book I bought.\nБез артикля — общие понятия (мн.ч. / неисчисляемые): Cats are cute. Water is life.",
+      examples:[
+        {en:"I saw a dog. The dog was huge.",ru:"Я увидел (какую-то) собаку. (Та самая) собака была огромной."},
+        {en:"The Moon orbits the Earth.",ru:"Луна вращается вокруг Земли. — единственные → the"}
+      ],
+      mistake:{wrong:"I want to be doctor. Information is important.",right:"I want to be a doctor. The information is important.",why:"Перед профессией нужен «a»; перед конкретной информацией — «the»."}},
+    {id:"tenses",ic:"⏳",title:"Present Perfect или Past Simple?",summary:"have done vs did",
+      rule:"Past Simple — законченное прошлое, есть «когда»: I did it yesterday.\n\nPresent Perfect (have/has + V3) — связь с настоящим, результат сейчас или без точного времени: I have done it.\n\nСо словами yesterday, last week, in 2020 → ТОЛЬКО Past Simple.\nСо словами already, just, ever, never, yet → обычно Present Perfect.",
+      examples:[
+        {en:"I have finished my homework. (it's done now)",ru:"Я доделал домашку. — результат важен сейчас"},
+        {en:"I finished it yesterday.",ru:"Я доделал её вчера. — есть «вчера» → Past Simple"}
+      ],
+      mistake:{wrong:"I have seen him yesterday.",right:"I saw him yesterday.",why:"С «yesterday» нельзя Present Perfect — только Past Simple."}},
+    {id:"passive",ic:"🔄",title:"Пассивный залог",summary:"Важно для науки и формального стиля",
+      rule:"Пассив = be + V3 (3-я форма). Используем, когда важно ДЕЙСТВИЕ, а не кто его сделал. Очень частое в науке.\n\nActive: We heat the water.\nPassive: The water is heated.\n\nФормула: am/is/are/was/were + past participle.",
+      examples:[
+        {en:"The experiment was repeated three times.",ru:"Эксперимент повторили три раза."},
+        {en:"English is spoken all over the world.",ru:"На английском говорят по всему миру."}
+      ],
+      mistake:{wrong:"The water is heat by the flame.",right:"The water is heated by the flame.",why:"Нужна 3-я форма глагола (heated), не первая."}},
+    {id:"conditionals",ic:"🔀",title:"Условные предложения (if)",summary:"Типы 0, 1, 2, 3",
+      rule:"0 (факт): If you heat ice, it melts.\n1 (реальное будущее): If it rains, I will stay home.\n2 (нереальное настоящее): If I were rich, I would travel.\n3 (нереальное прошлое): If I had studied, I would have passed.\n\nВ типе 2 для «be» используют were для всех лиц (If I were…).",
+      examples:[
+        {en:"If demand rises, prices go up. (type 0)",ru:"Если спрос растёт, цены идут вверх. — общий факт"},
+        {en:"If I were you, I would revise more.",ru:"На твоём месте я бы больше повторял."}
+      ],
+      mistake:{wrong:"If I will have time, I will help.",right:"If I have time, I will help.",why:"После «if» в 1-м типе НЕ ставят will — только Present Simple."}},
+    {id:"punct",ic:"⏺️",title:"Пунктуация",summary:"Запятая, точка с запятой, апостроф",
+      rule:"Точка с запятой (;) соединяет два связанных предложения: It was late; we left.\n\nАпостроф: принадлежность (Tom's book) и сокращения (it's = it is). НО its (его) — без апострофа!\n\nЗапятая после however/therefore в начале предложения; не ставь запятую между подлежащим и сказуемым.",
+      examples:[
+        {en:"The dog wagged its tail. It's a happy dog.",ru:"Собака виляла своим хвостом. Это счастливая собака."},
+        {en:"I was tired; therefore, I slept.",ru:"Я устал; поэтому я заснул."}
+      ],
+      mistake:{wrong:"Its a good idea. The students books are here.",right:"It's a good idea. The students' books are here.",why:"it's = it is (с апострофом); притяжательное мн.ч. — апостроф после s."}},
+    {id:"formal",ic:"🎩",title:"Формальный стиль",summary:"Как писать «по-учёному»",
+      rule:"В эссе:\n• НЕ используй сокращения: don't → do not, it's → it is.\n• НЕ используй сленг; вместо «really/very» — точные слова.\n• Смягчай утверждения (hedging): may, tends to, suggests.\n• Пиши безлично: It can be argued that… вместо I think.",
+      examples:[
+        {en:"This suggests that the policy may reduce poverty.",ru:"Это говорит о том, что политика, возможно, снизит бедность."},
+        {en:"The data indicate a clear trend.",ru:"Данные указывают на чёткую тенденцию."}
+      ],
+      mistake:{wrong:"This is gonna be super bad and it's a big problem fr.",right:"This is likely to have serious negative effects.",why:"Никакого сленга и сокращений в эссе — только нейтральный тон."}},
+    {id:"mistakes",ic:"🚫",title:"Частые ошибки русскоговорящих",summary:"То, что выдаёт на письме",
+      rule:"• make или do: make a decision, do homework.\n• say или tell: say something, tell someone.\n• «people» — множественное: people are (не is).\n• «advice», «information», «money» — неисчисляемые: an advice ✗ → some advice ✓.\n• Предлоги: depend ON, interested IN, good AT, listen TO.\n• «I agree» (НЕ I am agree).",
+      examples:[
+        {en:"I agree with you. It depends on the price.",ru:"Я согласен с тобой. Это зависит от цены."},
+        {en:"She gave me some good advice.",ru:"Она дала мне хороший совет."}
+      ],
+      mistake:{wrong:"I am agree. People is happy. He make his homework.",right:"I agree. People are happy. He does his homework.",why:"agree — глагол (без am); people — мн.ч.; homework делают через do."}}
+  ],
+  practice:[
+    {q:"I ___ my homework yesterday.",options:["did","have done","do","am doing"],answer:"did",explain:"«yesterday» → Past Simple (did)."},
+    {q:"If it ___ tomorrow, we will stay in.",options:["rains","will rain","rained","is raining"],answer:"rains",explain:"После «if» (1-й тип) — Present Simple, без will."},
+    {q:"I want to be ___ engineer.",options:["an","a","the","—"],answer:"an",explain:"Перед гласным звуком (e-) → an."},
+    {q:"The water ___ to 100°C.",options:["is heated","is heat","heats by us","has heat"],answer:"is heated",explain:"Пассив: be + 3-я форма (heated)."},
+    {q:"It was raining; ___, we cancelled the trip.",options:["therefore","however","such as","despite"],answer:"therefore",explain:"Причина → следствие: therefore."},
+    {q:"___ a good idea.",options:["It's","Its","Its'","Is"],answer:"It's",explain:"It's = it is (с апострофом)."},
+    {q:"Choose the correct sentence:",options:["I saw him last week.","I have seen him last week.","I seen him last week.","I am see him last week."],answer:"I saw him last week.",explain:"«last week» → Past Simple."},
+    {q:"She gave me some useful ___.",options:["advice","advices","an advice","advice's"],answer:"advice",explain:"advice — неисчисляемое, без множественного числа."},
+    {q:"Success ___ on hard work.",options:["depends","depend","is depend","depending"],answer:"depends",explain:"depend ON; 3-е лицо ед.ч. → depends."},
+    {q:"People ___ different opinions.",options:["have","has","is having","was"],answer:"have",explain:"people — множественное → have."},
+    {q:"He is good ___ maths.",options:["at","in","on","with"],answer:"at",explain:"good AT something."},
+    {q:"Formal version of 'kids don't like it':",options:["Children do not like it.","Kids dont like it.","Kids really hate it fr.","Children ain't liking it."],answer:"Children do not like it.",explain:"Формально: children + полная форма do not, без сленга."}
+  ]
+};
+
+/* learnable modules */
+const MODULES = [DATA.classroom, DATA.slang, ...DATA.subjects, GRAMMAR.essay];
+const GRID_MODULES = [DATA.classroom, DATA.slang, ...DATA.subjects];
 function moduleById(id){ return MODULES.find(m=>m.id===id); }
+function lessonById(id){ return GRAMMAR.lessons.find(l=>l.id===id); }
 function itemId(mid,i){ return mid+"#"+i; }
 const TOTAL_ITEMS = MODULES.reduce((a,m)=>a+m.terms.length,0);
 const DAILY_GOAL = 20;
@@ -486,7 +695,8 @@ function toast(msg){
 function render(){
   rollDay();
   const navMap={home:"home",subjects:"subjects",subject:"subjects",study:"subjects",
-    quiz:"subjects",listen:"subjects",daily:"daily",progress:"progress"};
+    quiz:"subjects",listen:"subjects",daily:"home",progress:"progress",
+    grammar:"grammar",lesson:"grammar",gpractice:"grammar"};
   setNav(navMap[view.name]||"home");
   if(view.name==="home") return renderHome();
   if(view.name==="subjects") return renderSubjects();
@@ -495,6 +705,9 @@ function render(){
   if(view.name==="quiz") return renderQuiz(view.id);
   if(view.name==="listen") return renderListen(view.id);
   if(view.name==="daily") return renderDaily();
+  if(view.name==="grammar") return renderGrammar();
+  if(view.name==="lesson") return renderLesson(view.id);
+  if(view.name==="gpractice") return renderGPractice();
   if(view.name==="progress") return renderProgress();
 }
 
@@ -505,9 +718,11 @@ function renderHome(){
   const weeks=Math.floor(days/7);
   const learned=overallLearned();
   const goalPct=Math.min(100,Math.round(S.todayCount/DAILY_GOAL*100));
-  // phrase of the day
+  // phrase / slang of the day
   const cl=DATA.classroom.terms;
   const potd=cl[(new Date().getDate())%cl.length];
+  const sl=DATA.slang.terms;
+  const sotd=sl[(new Date().getDate()*3)%sl.length];
 
   app.innerHTML=`
   <div class="wrap fade">
@@ -519,28 +734,38 @@ function renderHome(){
     <div class="stats">
       <div class="stat"><b>${S.streak}🔥</b><span>дней подряд</span></div>
       <div class="stat"><b>Lv ${li.lv}</b><span>${S.xp} XP</span></div>
-      <div class="stat"><b>${learned}</b><span>выучено слов</span></div>
+      <div class="stat"><b>${learned}</b><span>выучено</span></div>
     </div>
 
-    <div class="panel">
+    <div class="hero">
       <div class="ring">
         ${ringSvg(goalPct)}
         <div class="grow">
           <div class="between"><b>Цель на сегодня</b><span class="mut small">${S.todayCount}/${DAILY_GOAL}</span></div>
           <div class="mut small" style="margin-top:4px">${goalPct>=100?"Готово! Отличная работа 🎉":"Пройди ещё "+(DAILY_GOAL-S.todayCount)+" карточек"}</div>
-          <button class="btn acc full" style="margin-top:12px" onclick="go('daily')">⚡️ Быстрая тренировка</button>
         </div>
       </div>
+      <button class="btn acc full" style="margin-top:14px" onclick="go('daily')">⚡️ Быстрая тренировка</button>
     </div>
 
-    <div class="panel" style="background:linear-gradient(160deg,#1a2550,#121a33)">
+    <div class="qrow">
+      <button class="ql" onclick="go('grammar')">
+        <div class="glow" style="background:radial-gradient(80% 80% at 80% 0,#fbbf24,transparent);opacity:.18"></div>
+        <div class="ic">✍️</div><b>Грамматика</b><span>Писать эссе правильно</span>
+      </button>
+      <button class="ql" onclick="go('subject','slang')">
+        <div class="glow" style="background:radial-gradient(80% 80% at 80% 0,#fb7bb5,transparent);opacity:.18"></div>
+        <div class="ic">💬</div><b>Сленг</b><span>Для переписки с друзьями</span>
+      </button>
+    </div>
+
+    <div class="panel">
       <div class="between"><b>✈️ До отъезда в Англию</b><span class="pill">1 сентября</span></div>
       <div class="count">
         <div><b>${days}</b><span>дней</span></div>
         <div><b>${weeks}</b><span>недель</span></div>
         <div><b>${Math.round(learned/TOTAL_ITEMS*100)}%</b><span>курса</span></div>
       </div>
-      <div class="mut small" style="margin-top:10px">Если учить по ${DAILY_GOAL} слов в день — пройдёшь весь курс примерно за ${Math.ceil(TOTAL_ITEMS/DAILY_GOAL)} дней.</div>
     </div>
 
     <div class="panel">
@@ -551,11 +776,19 @@ function renderHome(){
       <div class="ex" style="margin-top:6px">“${potd.ex}”</div>
     </div>
 
-    <div class="secttl">Продолжить</div>
-    <div class="grid">
-      ${MODULES.slice(0,2).map(subjCard).join("")}
+    <div class="panel">
+      <div class="between" style="margin-bottom:8px"><b>💬 Сленг дня</b>
+        <button class="iconbtn" onclick="speak('${esc(sotd.en)}')">🔊</button></div>
+      <div class="ru" style="font-size:20px">${sotd.en}</div>
+      <div class="def" style="color:var(--mut)">${sotd.ru}</div>
+      <div class="ex" style="margin-top:6px">“${sotd.ex}”</div>
     </div>
-    <button class="btn full" style="margin-top:12px" onclick="go('subjects')">Все предметы →</button>
+
+    <div class="secttl">Продолжить учить</div>
+    <div class="grid">
+      ${GRID_MODULES.slice(0,2).map(subjCard).join("")}
+    </div>
+    <button class="btn full" style="margin-top:12px" onclick="go('subjects')">Все разделы →</button>
   </div>`;
 }
 
@@ -585,15 +818,15 @@ function subjCard(m){
 }
 function renderSubjects(){
   app.innerHTML=`<div class="wrap fade">
-    <div class="top"><div class="brand">6 предметов + язык урока</div><div class="hi">Что учим</div></div>
-    <div class="item" style="margin-top:8px;background:linear-gradient(160deg,#1a2550,#121a33)">
-      <div class="ic" style="font-size:24px">🗣️</div>
+    <div class="top"><div class="brand">6 предметов + язык урока + сленг</div><div class="hi">Что учим</div></div>
+    <div class="item" style="margin-top:8px">
+      <div class="ic" style="font-size:22px;width:auto;height:auto;border:none;background:none">🗣️</div>
       <div class="grow">
         <b>Начни с «Язык урока»</b>
-        <div class="mut small">Фразы учителя важнее терминов: если поймёшь инструкции — не потеряешься на уроке.</div>
+        <div class="mut small">Фразы учителя важнее терминов: поймёшь инструкции — не потеряешься на уроке.</div>
       </div>
     </div>
-    <div class="grid">${MODULES.map(subjCard).join("")}</div>
+    <div class="grid">${GRID_MODULES.map(subjCard).join("")}</div>
   </div>`;
 }
 
@@ -602,7 +835,7 @@ function renderSubject(id){
   const m=moduleById(id); const p=moduleProgress(m);
   app.innerHTML=`<div class="wrap fade">
     <div class="topbar">
-      <button class="back" onclick="go('subjects')">←</button>
+      <button class="back" onclick="go('${id==='essay'?'grammar':'subjects'}')">←</button>
       <div><div class="brand">${m.exam}</div><h2 style="font-size:22px">${m.ic} ${m.name}</h2></div>
     </div>
     <div class="panel">
@@ -915,6 +1148,119 @@ function ringSvgRow(pct){
   return `<div class="ring">${ringSvg(pct)}<div class="grow" style="text-align:left">
     <b>Цель дня ${pct>=100?"выполнена 🎉":""}</b>
     <div class="mut small">${S.todayCount}/${DAILY_GOAL} карточек</div></div></div>`;
+}
+
+/* ---------- GRAMMAR ---------- */
+let grammarTab="lessons";
+function setGrammarTab(t){ grammarTab=t; renderGrammar(); window.scrollTo(0,0); }
+function renderGrammar(){
+  const seg=`<div class="seg">
+    <button class="${grammarTab==='lessons'?'on':''}" onclick="setGrammarTab('lessons')">📘 Уроки</button>
+    <button class="${grammarTab==='phrases'?'on':''}" onclick="setGrammarTab('phrases')">🧩 Фразы</button>
+    <button class="${grammarTab==='practice'?'on':''}" onclick="setGrammarTab('practice')">🎯 Практика</button>
+  </div>`;
+  let body="";
+  if(grammarTab==='lessons'){
+    body=`<div class="mut small" style="margin:14px 2px 4px">Короткие уроки с правилами, примерами и разбором частых ошибок русскоговорящих.</div>`+
+      GRAMMAR.lessons.map(l=>`<div class="panel" style="cursor:pointer" onclick="go('lesson','${l.id}')">
+        <div class="row"><div class="ic" style="font-size:24px">${l.ic}</div>
+        <div class="grow"><h3>${l.title}</h3><div class="mut small">${l.summary}</div></div>
+        <span class="mut" style="font-size:20px">›</span></div></div>`).join("");
+  } else if(grammarTab==='phrases'){
+    const m=GRAMMAR.essay; const groups={};
+    m.terms.forEach((t,i)=>{ (groups[t.group]=groups[t.group]||[]).push(t); });
+    const list=Object.keys(groups).map(g=>`<div class="pgroup">${g}</div>`+
+      groups[g].map(t=>`<div class="item">
+        <button class="iconbtn" onclick="speak('${esc(t.en)}')">🔊</button>
+        <div class="grow"><b>${t.en}</b><div class="mut small">${t.ru}</div></div>
+      </div>`).join("")).join("");
+    body=`<div class="panel" style="margin-top:14px"><div class="mut" style="line-height:1.5">Готовые академические фразы, чтобы эссе звучало уверенно. Выучи карточками или пройди тест.</div>
+      <div class="actions" style="grid-template-columns:1fr 1fr;margin-top:12px">
+        <button class="btn acc" onclick="go('study','essay')">🃏 Карточки</button>
+        <button class="btn" onclick="go('quiz','essay')">✍️ Тест</button>
+      </div></div>${list}`;
+  } else {
+    body=`<div class="panel" style="margin-top:14px"><div class="row"><div class="ic" style="font-size:26px">🎯</div>
+      <div class="grow"><b>Тренажёр грамматики</b><div class="mut small">${GRAMMAR.practice.length} заданий с выбором ответа и объяснением каждой ошибки.</div></div></div>
+      <button class="btn acc full" style="margin-top:14px" onclick="go('gpractice')">Начать практику →</button></div>
+      <div class="mut small" style="text-align:center;margin-top:12px">Артикли · времена · пассив · условные · пунктуация · частые ошибки</div>`;
+  }
+  app.innerHTML=`<div class="wrap fade">
+    <div class="top"><div class="brand">Писать эссе на английском</div><div class="hi">✍️ Грамматика</div></div>
+    ${seg}
+    <div>${body}</div>
+  </div>`;
+}
+
+function renderLesson(id){
+  const l=lessonById(id);
+  const rule=l.rule.split("\n").map(p=>p.trim()===""?"":`<p>${p}</p>`).join("");
+  const ex=l.examples.map(e=>`<div class="exline"><div class="en">${e.en}</div><div class="ru">${e.ru}</div></div>`).join("");
+  const mistake=l.mistake?`<div class="callout bad"><b>⚠️ Частая ошибка</b>
+    <div class="ko" style="text-decoration:line-through">${l.mistake.wrong}</div>
+    <div class="ok" style="margin-top:5px">✓ ${l.mistake.right}</div>
+    <div class="mut small" style="margin-top:7px">${l.mistake.why}</div></div>`:"";
+  app.innerHTML=`<div class="wrap fade">
+    <div class="topbar"><button class="back" onclick="go('grammar')">←</button>
+      <div><div class="brand">Грамматика</div><h2 style="font-size:21px">${l.ic} ${l.title}</h2></div></div>
+    <div class="panel"><div class="lessonbody">${rule}</div></div>
+    <div class="secttl">Примеры</div>
+    ${ex}
+    ${mistake}
+    <button class="btn acc full" style="margin-top:16px" onclick="go('gpractice')">🎯 Проверить себя</button>
+  </div>`;
+}
+
+/* grammar practice trainer */
+let gprac={list:[],i:0,score:0,locked:false};
+function renderGPractice(){
+  const pool=GRAMMAR.practice.slice(); shuffle(pool);
+  gprac={list:pool,i:0,score:0,locked:false};
+  drawGPractice();
+}
+function drawGPractice(){
+  if(gprac.i>=gprac.list.length) return gpracDone();
+  const cur=gprac.list[gprac.i];
+  const opts=cur.options.slice(); shuffle(opts);
+  gprac.locked=false;
+  const pct=Math.round(gprac.i/gprac.list.length*100);
+  app.innerHTML=`<div class="wrap fade">
+    <div class="topbar"><button class="back" onclick="go('grammar')">←</button>
+      <div class="grow"><div class="brand">Практика грамматики</div>
+        <div class="progressline" style="margin-top:6px"><i style="width:${pct}%"></i></div></div>
+      <span class="pill">${gprac.i+1}/${gprac.list.length}</span></div>
+    <div class="panel" style="text-align:center"><div class="qhead">Выбери правильный вариант</div>
+      <div class="qprompt">${cur.q}</div></div>
+    <div id="opts">${opts.map(o=>`<button class="opt" onclick="pickGP(this,'${esc(o)}')">${o}</button>`).join("")}</div>
+    <div class="between mut small" style="margin-top:6px"><span>Очки: ${gprac.score}</span><span>🔥 ${S.streak} дней</span></div>
+  </div>`;
+}
+function pickGP(btn,val){
+  if(gprac.locked) return; gprac.locked=true;
+  const cur=gprac.list[gprac.i];
+  const correct=decode(val)===cur.answer;
+  document.querySelectorAll('#opts .opt').forEach(b=>{ if(b.textContent===cur.answer) b.classList.add('correct'); else b.classList.add('dim'); });
+  if(correct){ btn.classList.add('correct'); gprac.score++; registerStudy(10); }
+  else { btn.classList.remove('dim'); btn.classList.add('wrong'); registerStudy(3); }
+  const box=document.getElementById('opts');
+  const ex=document.createElement('div'); ex.className='callout'+(correct?'':' bad');
+  ex.innerHTML=`<b>${correct?'✓ Верно':'✗ Объяснение'}</b>${cur.explain}`;
+  box.appendChild(ex);
+  const nx=document.createElement('button'); nx.className='btn acc full'; nx.style.marginTop='12px';
+  nx.textContent=(gprac.i+1>=gprac.list.length)?'Результат →':'Дальше →';
+  nx.onclick=()=>{ gprac.i++; drawGPractice(); window.scrollTo(0,0); };
+  box.appendChild(nx);
+}
+function gpracDone(){
+  const pct=Math.round(gprac.score/gprac.list.length*100);
+  if(pct>=80) confetti();
+  app.innerHTML=`<div class="wrap fade"><div class="empty">
+    <div style="font-size:54px">${pct>=80?'🏆':pct>=50?'👍':'💪'}</div>
+    <h2 style="margin:10px 0">${gprac.score} из ${gprac.list.length}</h2>
+    <div class="mut">${pct>=80?'Отличная грамматика!':'Перечитай уроки и попробуй снова.'}</div>
+    <button class="btn acc full" style="margin-top:14px" onclick="go('gpractice')">🔁 Ещё раз</button>
+    <button class="btn full" style="margin-top:10px" onclick="go('grammar')">← К грамматике</button>
+  </div></div>`;
 }
 
 /* ---------- PROGRESS ---------- */
