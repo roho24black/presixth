@@ -731,7 +731,60 @@ const GRAMMAR = {
     {lesson:"peel",q:"Что означает буква E в схеме PEEL (сразу после Point)?",options:["Evidence — доказательство","Example — пример","Ending — концовка","Effect — эффект"],answer:"Evidence — доказательство",explain:"P-E-E-L: Point, Evidence, Explain, Link. Первое E — Evidence."},
     {lesson:"peel",q:"Сколько главных мыслей должно быть в одном абзаце?",options:["Одна","Две-три","Сколько угодно","Ноль"],answer:"Одна",explain:"Правило: один абзац = одна мысль (Point)."},
     {lesson:"introconcl",q:"Что НЕ нужно делать в заключении эссе?",options:["Вводить новый аргумент","Подвести итог","Дать финальную мысль","Повторить позицию"],answer:"Вводить новый аргумент",explain:"В заключении не вводят новые аргументы — только подытоживают."},
-    {lesson:"introconcl",q:"Хорошее начало эссе:",options:["This essay will explore how the writer presents fear.","The weather was nice and I like dogs.","In conclusion, fear is bad.","lol idk"],answer:"This essay will explore how the writer presents fear.",explain:"Вступление коротко называет тему и позицию."}
+    {lesson:"introconcl",q:"Хорошее начало эссе:",options:["This essay will explore how the writer presents fear.","The weather was nice and I like dogs.","In conclusion, fear is bad.","lol idk"],answer:"This essay will explore how the writer presents fear.",explain:"Вступление коротко называет тему и позицию."},
+
+    {lesson:"tenses",q:"She ___ in London since 2019.",options:["has lived","lived","lives","is living"],answer:"has lived",explain:"«since» + результат сейчас → Present Perfect (has lived)."},
+    {lesson:"tenses",q:"Look! It ___ outside.",options:["is raining","rains","rained","has rained"],answer:"is raining",explain:"Происходит прямо сейчас → Present Continuous."},
+    {lesson:"tenses",q:"I ___ this film. Let's watch another.",options:["have already seen","already saw","see","am seeing"],answer:"have already seen",explain:"«already» + связь с настоящим → Present Perfect."},
+    {lesson:"tenses",q:"When ___ you born?",options:["were","was","are","did"],answer:"were",explain:"Рождение в прошлом, you → were."},
+    {lesson:"tenses",q:"Water ___ at 100°C.",options:["boils","is boiling","boiled","has boiled"],answer:"boils",explain:"Общий факт → Present Simple (boils)."},
+
+    {lesson:"conditionals",q:"If you heat ice, it ___.",options:["melts","will melt","melted","would melt"],answer:"melts",explain:"0-й тип (факт): Present + Present."},
+    {lesson:"conditionals",q:"I would buy a car if I ___ enough money.",options:["had","have","will have","would have"],answer:"had",explain:"2-й тип: if + Past Simple (had)."},
+    {lesson:"conditionals",q:"If she had studied, she ___ the exam.",options:["would have passed","would pass","passed","will pass"],answer:"would have passed",explain:"3-й тип (нереальное прошлое): would have + V3."},
+    {lesson:"conditionals",q:"We'll be late if we ___ now.",options:["don't leave","won't leave","didn't leave","not leave"],answer:"don't leave",explain:"1-й тип: после if — Present Simple (don't leave)."},
+
+    {lesson:"articles",q:"He plays ___ guitar very well.",options:["the","a","an","—"],answer:"the",explain:"Музыкальные инструменты → the guitar."},
+    {lesson:"articles",q:"She is ___ honest person.",options:["an","a","the","—"],answer:"an",explain:"«honest»: h не читается, звук гласный → an."},
+    {lesson:"articles",q:"I had ___ breakfast at 8.",options:["—","a","the","an"],answer:"—",explain:"Приёмы пищи без артикля: have breakfast."},
+    {lesson:"articles",q:"___ water is essential for life.",options:["—","The","A","An"],answer:"—",explain:"Общее неисчисляемое понятие → без артикля."},
+
+    {lesson:"passive",q:"The Mona Lisa ___ by Leonardo.",options:["was painted","painted","is painting","has paint"],answer:"was painted",explain:"Пассив прошлого: was + painted (V3)."},
+    {lesson:"passive",q:"English ___ in many countries.",options:["is spoken","speaks","is speaking","spoke"],answer:"is spoken",explain:"Пассив настоящего: is + spoken."},
+    {lesson:"passive",q:"The houses ___ last year.",options:["were built","was built","built","are built"],answer:"were built",explain:"Множественное + прошлое → were built."},
+    {lesson:"passive",q:"Сделай пассив: 'They clean the room daily.'",options:["The room is cleaned daily.","The room cleans daily.","The room was cleaned daily.","The room is cleaning daily."],answer:"The room is cleaned daily.",explain:"Present Simple passive: is cleaned."},
+
+    {lesson:"linkers",q:"I was tired. ___, I finished the work.",options:["However","Therefore","Because","For example"],answer:"However",explain:"Контраст (несмотря на усталость) → However."},
+    {lesson:"linkers",q:"It was cheap. ___, I bought two.",options:["Therefore","However","Although","Whereas"],answer:"Therefore",explain:"Следствие → Therefore."},
+    {lesson:"linkers",q:"___ it was raining, we went out.",options:["Although","Because","Therefore","So"],answer:"Although",explain:"Уступка → Although + предложение."},
+    {lesson:"linkers",q:"Fruits ___ apples are healthy.",options:["such as","therefore","however","whereas"],answer:"such as",explain:"Примеры внутри предложения → such as."},
+    {lesson:"linkers",q:"He is rich; ___, he is unhappy.",options:["nevertheless","because","such as","so"],answer:"nevertheless",explain:"Тем не менее (контраст) → nevertheless."},
+
+    {lesson:"punct",q:"That book is ___.",options:["Tom's","Toms","Toms'","Tom`s"],answer:"Tom's",explain:"Принадлежность ед.ч. → 's (Tom's)."},
+    {lesson:"punct",q:"The ___ books are here. (много учеников)",options:["students'","student's","students","students's"],answer:"students'",explain:"Притяжательное мн.ч. на -s → апостроф после s."},
+    {lesson:"punct",q:"Где точка с запятой верна?",options:["It was late; we went home.","It was late we went home.","It was, late; we went home.","It; was late we went home."],answer:"It was late; we went home.",explain:"; соединяет два связанных предложения."},
+    {lesson:"punct",q:"Запятая после связки:",options:["However, the plan failed.","However the plan failed.","However; the plan failed.","However the plan, failed."],answer:"However, the plan failed.",explain:"После however в начале предложения — запятая."},
+
+    {lesson:"mistakes",q:"I must ___ a decision today.",options:["make","do","take","have"],answer:"make",explain:"make a decision (не do)."},
+    {lesson:"mistakes",q:"Please ___ me the truth.",options:["tell","say","speak","talk"],answer:"tell",explain:"tell someone (но say something)."},
+    {lesson:"mistakes",q:"This information ___ useful.",options:["is","are","were","be"],answer:"is",explain:"information — неисчисляемое → is."},
+    {lesson:"mistakes",q:"I'm interested ___ history.",options:["in","on","at","of"],answer:"in",explain:"interested IN something."},
+    {lesson:"mistakes",q:"He ___ his homework every day.",options:["does","makes","make","do"],answer:"does",explain:"do homework; 3-е лицо ед.ч. → does."},
+
+    {lesson:"formal",q:"Формально вместо «a lot of people»:",options:["many people","loads of people","tons of people","a bunch of people"],answer:"many people",explain:"Формально: many (не loads/tons)."},
+    {lesson:"formal",q:"Какой вариант формальный?",options:["The experiment was unsuccessful.","The experiment totally flopped.","The experiment was a fail.","The experiment bombed."],answer:"The experiment was unsuccessful.",explain:"Нейтральная лексика, без сленга."},
+    {lesson:"formal",q:"Формальная замена «but»:",options:["however","but","plus","and also"],answer:"however",explain:"however — более формально, чем but."},
+    {lesson:"formal",q:"Без сокращений — выбери формальное:",options:["They do not agree.","They don't agree.","They ain't agree.","They're not agreeing tbh."],answer:"They do not agree.",explain:"В эссе — полные формы (do not)."},
+
+    {lesson:"peel",q:"С чего начинается абзац по PEEL?",options:["Point — главная мысль","Evidence — цитата","Link — связка","С примера"],answer:"Point — главная мысль",explain:"Сначала Point — утверждение абзаца."},
+    {lesson:"peel",q:"Что лучше подходит как Evidence?",options:["Цитата из текста","Своё настроение","Вопрос читателю","Шутка"],answer:"Цитата из текста",explain:"Evidence = доказательство: цитата или факт из текста."},
+    {lesson:"peel",q:"Фраза для части Explain:",options:["This suggests that…","The end.","lol","Because I said so"],answer:"This suggests that…",explain:"Explain объясняет, КАК доказательство подтверждает мысль."},
+    {lesson:"peel",q:"Хорошая связка (Link) в конце абзаца:",options:["Therefore, the writer builds tension.","And then stuff happened.","I think it is nice.","The weather was sunny."],answer:"Therefore, the writer builds tension.",explain:"Link — мини-вывод и переход к следующей мысли."},
+
+    {lesson:"introconcl",q:"Фраза для заключения:",options:["In conclusion, the writer…","Firstly, …","For example, …","Although, …"],answer:"In conclusion, the writer…",explain:"In conclusion начинает заключительный абзац."},
+    {lesson:"introconcl",q:"Сколько предложений обычно во вступлении?",options:["1–2 (тема и позиция)","Пересказ всего текста","Ноль","Десять и больше"],answer:"1–2 (тема и позиция)",explain:"Вступление короткое: тема + позиция."},
+    {lesson:"introconcl",q:"Что лишнее во вступлении?",options:["Подробный пересказ всего текста","Тема эссе","Твоя позиция","Контекст темы"],answer:"Подробный пересказ всего текста",explain:"Не пересказывай весь текст во вступлении."},
+    {lesson:"introconcl",q:"Заключение должно…",options:["подвести итог","ввести новый аргумент","задать новый вопрос","начать новую тему"],answer:"подвести итог",explain:"Заключение подытоживает, без новых аргументов."}
   ]
 };
 
