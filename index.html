@@ -603,7 +603,7 @@ const SKEY="presixth_v2";
 let S = load();
 function load(){
   try{ const r=JSON.parse(localStorage.getItem(SKEY)); if(r) return r; }catch(e){}
-  return { xp:0, streak:0, lastDay:null, todayCount:0, todayDay:null, mastery:{}, voice:null };
+  return { xp:0, streak:0, lastDay:null, todayCount:0, todayDay:null, mastery:{}, voiceName:null, rate:0.95, sound:true };
 }
 function save(){ localStorage.setItem(SKEY, JSON.stringify(S)); }
 function todayStr(){ const d=new Date(); return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate(); }
@@ -622,6 +622,7 @@ function registerStudy(n){
     S.lastDay=t;
   }
   S.xp += n;
+  S.todayCount = (S.todayCount||0)+1;
   save();
 }
 function masteryOf(id){ return S.mastery[id]||0; }   // 0..5
@@ -655,19 +656,34 @@ if(window.speechSynthesis){
   loadVoices();
   speechSynthesis.onvoiceschanged = loadVoices;
 }
-function pickVoice(){
+/* English voices only, ranked best-first (enhanced/natural UK voices on top) */
+function enVoices(){
   if(!VOICES.length) loadVoices();
-  return VOICES.find(v=>/en[-_]GB/i.test(v.lang)) ||
-         VOICES.find(v=>/Daniel|Kate|Serena|Arthur|UK English/i.test(v.name)) ||
-         VOICES.find(v=>/^en/i.test(v.lang)) || null;
+  const en=VOICES.filter(v=>/^en/i.test(v.lang));
+  const score=v=>{
+    let s=0; const n=(v.name||"")+" "+(v.lang||"");
+    if(/en[-_]GB/i.test(v.lang)) s+=40;                      // British accent
+    if(/enhanced|premium|natural|neural|siri/i.test(n)) s+=30; // higher quality
+    if(/Serena|Stephanie|Kate|Martha|Jamie|Arthur|Daniel|Sonia|Libby|Ryan/i.test(n)) s+=12;
+    if(/Google/i.test(n)) s+=8;
+    if(/female|woman/i.test(n)) s+=2;
+    if(v.localService) s+=3;
+    return s;
+  };
+  return en.sort((a,b)=>score(b)-score(a));
+}
+function pickVoice(){
+  const list=enVoices();
+  if(S.voiceName){ const m=list.find(v=>v.name===S.voiceName); if(m) return m; }
+  return list[0] || null;
 }
 function speak(text, rate){
   if(!window.speechSynthesis) { toast("🔇 Озвучка недоступна на этом устройстве"); return; }
   try{
     speechSynthesis.cancel();
-    const u=new SpeechSynthesisUtterance(text.replace(/[²³]/g," squared "));
-    const v=pickVoice(); if(v) u.voice=v;
-    u.lang="en-GB"; u.rate=rate||0.9; u.pitch=1;
+    const u=new SpeechSynthesisUtterance(String(text).replace(/[²³]/g," squared ").replace(/\s*\/\s*/g," or "));
+    const v=pickVoice(); if(v){ u.voice=v; u.lang=v.lang; } else { u.lang="en-GB"; }
+    u.rate=rate || S.rate || 0.95; u.pitch=1.05;
     speechSynthesis.speak(u);
   }catch(e){}
 }
@@ -695,13 +711,14 @@ function toast(msg){
 function render(){
   rollDay();
   const navMap={home:"home",subjects:"subjects",subject:"subjects",study:"subjects",
-    quiz:"subjects",listen:"subjects",daily:"home",progress:"progress",
+    quiz:"subjects",listen:"subjects",match:"subjects",daily:"home",progress:"progress",
     grammar:"grammar",lesson:"grammar",gpractice:"grammar"};
   setNav(navMap[view.name]||"home");
   if(view.name==="home") return renderHome();
   if(view.name==="subjects") return renderSubjects();
   if(view.name==="subject") return renderSubject(view.id);
   if(view.name==="study") return renderStudy(view.id);
+  if(view.name==="match") return renderMatch(view.id);
   if(view.name==="quiz") return renderQuiz(view.id);
   if(view.name==="listen") return renderListen(view.id);
   if(view.name==="daily") return renderDaily();
@@ -844,8 +861,9 @@ function renderSubject(id){
       <div class="progressline" style="margin-top:14px"><i style="width:${p.pct}%"></i></div>
       <div class="between small mut"><span>Выучено ${p.learned} из ${p.total}</span><span>${p.pct}%</span></div>
     </div>
-    <div class="actions">
-      <button class="btn acc" onclick="go('study','${id}')">🃏<br>Карточки</button>
+    <div class="actions" style="grid-template-columns:1fr 1fr">
+      <button class="btn acc" onclick="go('study','${id}')">🎮<br>Учить (игра)</button>
+      <button class="btn" onclick="go('match','${id}')">🧩<br>Пары</button>
       <button class="btn" onclick="go('listen','${id}')">🎧<br>Аудио</button>
       <button class="btn" onclick="go('quiz','${id}')">✍️<br>Тест</button>
     </div>
@@ -865,87 +883,254 @@ function renderSubject(id){
   </div>`;
 }
 
-/* ---------- STUDY (flashcards) ---------- */
-let study={list:[],i:0,flip:false,mid:null};
+/* ---------- SOUND FX + HAPTICS ---------- */
+let AC=null;
+function audioCtx(){ try{ AC=AC||new (window.AudioContext||window.webkitAudioContext)(); if(AC.state==='suspended') AC.resume(); }catch(e){} return AC; }
+function sfx(kind){
+  if(S.sound===false) return;
+  const ac=audioCtx(); if(!ac) return;
+  try{
+    const now=ac.currentTime;
+    const beep=(f1,f2,dur,type,delay)=>{ const o=ac.createOscillator(), g=ac.createGain(); o.type=type||'sine';
+      o.connect(g); g.connect(ac.destination); const t0=now+(delay||0);
+      o.frequency.setValueAtTime(f1,t0); if(f2) o.frequency.exponentialRampToValueAtTime(f2,t0+dur);
+      g.gain.setValueAtTime(0.0001,t0); g.gain.exponentialRampToValueAtTime(0.13,t0+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t0+dur);
+      o.start(t0); o.stop(t0+dur+0.03); };
+    if(kind==='good') beep(620,940,0.15,'sine');
+    else if(kind==='bad') beep(240,150,0.22,'triangle');
+    else if(kind==='win'){ beep(660,990,0.13,'sine',0); beep(880,1320,0.16,'sine',0.12); }
+    else beep(820,null,0.07,'sine');
+  }catch(e){}
+}
+function haptic(ms){ try{ navigator.vibrate && navigator.vibrate(ms||10); }catch(e){} }
+
+/* ---------- STUDY SESSION (mixed mini-games) ---------- */
+let sess=null;
+function startSession(list, backName, backId, title){
+  sess={ list, i:0, correct:0, combo:0, bestCombo:0, locked:false, flip:false, backName, backId, title:title||"Готово" };
+  drawStep();
+}
 function renderStudy(id){
   const m=moduleById(id);
-  // order: least-known first
-  const order=m.terms.map((t,i)=>({t,i,lv:masteryOf(itemId(id,i))})).sort((a,b)=>a.lv-b.lv);
-  study={list:order, i:0, flip:false, mid:id};
-  drawCard();
+  const list=m.terms.map((t,i)=>({t,key:itemId(id,i),mname:m.name,mic:m.ic}))
+    .sort((a,b)=>masteryOf(a.key)-masteryOf(b.key));
+  startSession(list,"subject",id,m.ic+" "+m.name);
 }
-function drawCard(){
-  const m=moduleById(study.mid);
-  if(study.i>=study.list.length){ return studyDone(m); }
-  const {t,i}=study.list[study.i];
-  const pct=Math.round(study.i/study.list.length*100);
-  app.innerHTML=`<div class="wrap fade">
-    <div class="topbar">
-      <button class="back" onclick="go('subject','${m.id}')">←</button>
-      <div class="grow"><div class="brand">${m.ic} ${m.name}</div>
-        <div class="progressline" style="margin-top:6px"><i style="width:${pct}%"></i></div>
-      </div>
-      <span class="pill">${study.i+1}/${study.list.length}</span>
-    </div>
+function sessBack(){ go(sess.backName, sess.backId); }
+function modOf(cur){ return moduleById(cur.key.split('#')[0]); }
+function sessHeader(){
+  const pct=Math.round(sess.i/sess.list.length*100);
+  const cur=sess.list[sess.i];
+  const combo = sess.combo>=2 ? `<span class="pill" style="color:#ffd27e;border-color:#7a5a1a">🔥 x${sess.combo}</span>` : "";
+  return `<div class="topbar">
+    <button class="back" onclick="sessBack()">←</button>
+    <div class="grow"><div class="progressline" style="margin:0"><i style="width:${pct}%"></i></div></div>
+    ${combo}<span class="pill">${sess.i+1}/${sess.list.length}</span>
+  </div>
+  <div class="row" style="margin:8px 0 2px"><span class="tag">${cur.mic} ${cur.mname}</span></div>`;
+}
+function chooseExercise(t){
+  const w=t.en.replace(/[^A-Za-z]/g,"");
+  const single=/^[A-Za-z'’.\-]+$/.test(t.en) && w.length>=3 && w.length<=11;
+  const pool = single ? ['choose','build','type','listen','choose','flip'] : ['choose','listen','choose','flip'];
+  return pool[Math.floor(Math.random()*pool.length)];
+}
+function drawStep(){
+  if(sess.i>=sess.list.length) return sessDone();
+  sess.locked=false; sess.flip=false; sess.build=null;
+  const cur=sess.list[sess.i];
+  const type=chooseExercise(cur.t);
+  if(type==='choose') return stepChoose(cur);
+  if(type==='type')   return stepType(cur);
+  if(type==='build')  return stepBuild(cur);
+  if(type==='listen') return stepListen(cur);
+  return stepFlip(cur);
+}
+function sessResolve(correct, known){
+  const k=(known===undefined)?correct:known;
+  bump(sess.list[sess.i].key, k);
+  registerStudy(k?8:3);
+  if(correct){ sess.correct++; sess.combo++; sess.bestCombo=Math.max(sess.bestCombo,sess.combo); sfx('good'); haptic(8); }
+  else { sess.combo=0; sfx('bad'); haptic(40); }
+}
+function revealCard(sel,t){
+  const box=document.querySelector(sel); if(!box) return;
+  const c=document.createElement('div'); c.className='panel'; c.style.marginTop='12px';
+  c.innerHTML=`<div class="row"><div class="grow"><b style="font-size:18px">${t.en}</b> — <span class="mut">${t.ru}</span></div>
+    <button class="iconbtn" onclick="speak('${esc(t.en)}')">🔊</button></div>
+    <div class="ex" style="margin-top:6px">“${t.ex}”</div>`;
+  box.appendChild(c);
+  const nx=document.createElement('button'); nx.className='btn acc full'; nx.style.marginTop='12px';
+  nx.textContent=(sess.i+1>=sess.list.length)?'Результат →':'Дальше →';
+  nx.onclick=()=>{ sess.i++; drawStep(); window.scrollTo(0,0); };
+  box.appendChild(nx);
+}
 
+/* exercise: multiple choice */
+function stepChoose(cur){
+  const t=cur.t; const rev=Math.random()<0.5;
+  const prompt=rev?t.ru:t.en, answer=rev?t.en:t.ru;
+  const others=modOf(cur).terms.filter(x=>x!==t); shuffle(others);
+  const opts=[answer,...others.slice(0,3).map(o=>rev?o.en:o.ru)]; shuffle(opts);
+  app.innerHTML=`<div class="wrap fade">${sessHeader()}
+    <div class="panel" style="text-align:center">
+      <div class="qhead">${rev?'Как это по-английски?':'Что это значит?'} ${rev?'':`<button class="iconbtn" style="display:inline-flex;vertical-align:middle" onclick="speak('${esc(t.en)}')">🔊</button>`}</div>
+      <div class="qprompt">${prompt}</div>
+    </div>
+    <div id="opts">${opts.map(o=>`<button class="opt" onclick="ansChoose(this,'${esc(o)}','${esc(answer)}')">${o}</button>`).join("")}</div>`;
+  if(!rev) setTimeout(()=>speak(t.en),260);
+}
+/* exercise: listen and choose */
+function stepListen(cur){
+  const t=cur.t;
+  const others=modOf(cur).terms.filter(x=>x!==t); shuffle(others);
+  const opts=[t.ru,...others.slice(0,3).map(o=>o.ru)]; shuffle(opts);
+  app.innerHTML=`<div class="wrap fade">${sessHeader()}
+    <div class="panel" style="text-align:center">
+      <div class="qhead">🎧 Слушай и выбери перевод</div>
+      <button class="speaker" style="margin:8px auto;width:84px;height:84px;font-size:34px" onclick="speak('${esc(t.en)}')">🔊</button>
+      <div class="mut small">нажми, чтобы повторить</div>
+    </div>
+    <div id="opts">${opts.map(o=>`<button class="opt" onclick="ansChoose(this,'${esc(o)}','${esc(t.ru)}')">${o}</button>`).join("")}</div>`;
+  setTimeout(()=>speak(t.en),320);
+}
+function ansChoose(btn,val,ans){
+  if(sess.locked) return; sess.locked=true;
+  const cur=sess.list[sess.i]; const correct=decode(val)===decode(ans); const A=decode(ans);
+  document.querySelectorAll('#opts .opt').forEach(b=>{ if(b.textContent===A) b.classList.add('correct'); else b.classList.add('dim'); });
+  if(correct){ btn.classList.add('correct'); sessResolve(true);
+    setTimeout(()=>{ sess.i++; drawStep(); window.scrollTo(0,0); },650); }
+  else { btn.classList.remove('dim'); btn.classList.add('wrong'); sessResolve(false); speak(cur.t.en); revealCard('#opts',cur.t); }
+}
+/* exercise: type the word */
+function stepType(cur){
+  const t=cur.t;
+  app.innerHTML=`<div class="wrap fade">${sessHeader()}
+    <div class="panel" style="text-align:center">
+      <div class="qhead">⌨️ Напиши по-английски</div>
+      <div class="qprompt">${t.ru}</div>
+      <button class="btn sm" style="display:inline-flex" onclick="speak('${esc(t.en)}')">🔊 Подсказка-звук</button>
+    </div>
+    <input id="tin" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="введите слово…"
+      style="width:100%;margin-top:14px;padding:16px;border-radius:15px;border:1px solid var(--glassb);background:var(--glass);color:var(--txt);font-size:18px;font-weight:700;outline:none">
+    <div class="actions" style="grid-template-columns:1fr 2fr">
+      <button class="btn" onclick="hintType()">💡 Буква</button>
+      <button class="btn acc" onclick="ansType()">Проверить</button>
+    </div>
+    <div id="tfb"></div>`;
+  const inp=document.getElementById('tin');
+  if(inp){ inp.focus(); inp.addEventListener('keydown',e=>{ if(e.key==='Enter') ansType(); }); }
+}
+function normWord(s){ return String(s).toLowerCase().replace(/[’]/g,"'").replace(/[^a-z' ]/g,"").trim(); }
+function hintType(){ const inp=document.getElementById('tin'); const t=sess.list[sess.i].t; if(inp){ if(inp.value.length<1) inp.value=t.en[0]; else if(inp.value.length<t.en.length) inp.value=t.en.slice(0,inp.value.length+1); inp.focus(); } }
+function ansType(){
+  if(sess.locked) return; const t=sess.list[sess.i].t; const inp=document.getElementById('tin');
+  const correct=normWord(inp?inp.value:"")===normWord(t.en);
+  sess.locked=true;
+  if(inp){ inp.style.borderColor=correct?'var(--good)':'var(--bad)'; inp.disabled=true; }
+  sessResolve(correct); if(!correct) speak(t.en);
+  revealCard('#tfb',t);
+}
+/* exercise: build from letters */
+function stepBuild(cur){
+  const t=cur.t;
+  const pool=shuffle(t.en.split('').map((ch,idx)=>({ch,idx})));
+  sess.build={word:t.en,picked:[],pool};
+  app.innerHTML=`<div class="wrap fade">${sessHeader()}
+    <div class="panel" style="text-align:center">
+      <div class="qhead">🔤 Собери слово · ${t.ru}
+        <button class="iconbtn" style="display:inline-flex;vertical-align:middle" onclick="speak('${esc(t.en)}')">🔊</button></div>
+      <div id="slot" style="min-height:40px;font-size:26px;font-weight:800;letter-spacing:3px;margin-top:10px;border-bottom:2px dashed var(--glassb);padding-bottom:8px"></div>
+      <button class="btn sm" style="display:inline-flex;margin-top:10px" onclick="buildBack()">⌫ Стереть</button>
+    </div>
+    <div id="pool" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px"></div>
+    <div id="bfb"></div>`;
+  renderBuild();
+}
+function renderBuild(){
+  const b=sess.build; const slot=document.getElementById('slot'); const pool=document.getElementById('pool');
+  if(!slot||!pool) return;
+  slot.textContent=b.picked.map(p=>p.ch).join('')||'·';
+  pool.innerHTML='';
+  b.pool.forEach(p=>{
+    const used=b.picked.indexOf(p)>=0;
+    const btn=document.createElement('button'); btn.className='btn'; btn.style.minWidth='48px'; btn.style.padding='12px 14px'; btn.style.fontSize='19px';
+    if(used) btn.style.opacity='.22';
+    btn.textContent=p.ch;
+    btn.onclick=()=>{ if(sess.locked||used) return; b.picked.push(p); renderBuild(); if(b.picked.length===b.word.length) checkBuild(); };
+    pool.appendChild(btn);
+  });
+}
+function buildBack(){ if(sess.locked) return; sess.build.picked.pop(); renderBuild(); }
+function checkBuild(){
+  const b=sess.build; const t=sess.list[sess.i].t;
+  const correct=b.picked.map(p=>p.ch).join('').toLowerCase()===b.word.toLowerCase();
+  sess.locked=true;
+  const slot=document.getElementById('slot'); if(slot) slot.style.color=correct?'var(--good)':'var(--bad)';
+  sessResolve(correct); if(!correct) speak(t.en);
+  revealCard('#bfb',t);
+}
+/* exercise: swipeable flashcard */
+function stepFlip(cur){
+  const t=cur.t;
+  app.innerHTML=`<div class="wrap fade">${sessHeader()}
     <div class="deckwrap">
-      <div class="fcard${study.flip?' flip':''}" id="fcard">
-        <div class="face front" onclick="flipCard()">
+      <div class="fcard" id="fcard">
+        <div class="face front" onclick="flipStep()">
           <div class="lbl">Английский</div>
           <div class="term">${t.en}</div>
           <button class="speaker" onclick="event.stopPropagation();speak('${esc(t.en)}')">🔊</button>
-          <div class="tap">Нажми, чтобы увидеть перевод</div>
+          <div class="tap">← повторить · знаю → · нажми, чтобы перевернуть</div>
         </div>
-        <div class="face rear" onclick="flipCard()">
-          <div class="lbl">Перевод</div>
-          <div class="ru">${t.ru}</div>
-          <div class="lbl">Что это значит</div>
-          <div class="def">${t.def}</div>
-          <div class="lbl">Пример с урока</div>
-          <div class="ex">“${t.ex}”</div>
-          <button class="btn sm" style="margin-top:14px" onclick="event.stopPropagation();speak('${esc(t.ex)}')">🔊 Послушать пример</button>
+        <div class="face rear" onclick="flipStep()">
+          <div class="lbl">Перевод</div><div class="ru">${t.ru}</div>
+          <div class="lbl">Значение</div><div class="def">${t.def}</div>
+          <div class="lbl">Пример</div><div class="ex">“${t.ex}”</div>
+          <button class="btn sm" style="margin-top:14px" onclick="event.stopPropagation();speak('${esc(t.ex)}')">🔊 Пример</button>
         </div>
       </div>
     </div>
-
     <div class="actions" style="grid-template-columns:1fr 1fr">
-      <button class="btn" onclick="answerCard(false)">🔁 Повторить</button>
-      <button class="btn acc" onclick="answerCard(true)">✅ Знаю</button>
-    </div>
-    <div class="mut small" style="text-align:center;margin-top:10px">«Знаю» 3 раза → слово выучено 🟢</div>
-  </div>`;
+      <button class="btn" onclick="flipAnswer(false)">🔁 Повторить</button>
+      <button class="btn acc" onclick="flipAnswer(true)">✅ Знаю</button>
+    </div>`;
+  attachSwipe();
 }
-
-function flipCard(){
-  study.flip=!study.flip;
-  const c=document.getElementById("fcard"); if(c) c.classList.toggle("flip",study.flip);
-  const {t}=study.list[study.i];
-  if(study.flip){} else {}
+function flipStep(){ const c=document.getElementById('fcard'); if(c){ sess.flip=!sess.flip; c.classList.toggle('flip',sess.flip); } }
+function flipAnswer(known){ if(sess.locked) return; sess.locked=true; sessResolve(known,known); sess.i++; drawStep(); window.scrollTo(0,0); }
+function attachSwipe(){
+  const c=document.getElementById('fcard'); if(!c) return;
+  let sx=0,sy=0,dx=0;
+  const move=e=>{ const p=e.touches?e.touches[0]:e; dx=p.clientX-sx; const dy=p.clientY-sy;
+    if(Math.abs(dx)<Math.abs(dy)&&Math.abs(dx)<10) return;
+    c.style.transform=`translateX(${dx}px) rotate(${dx/22}deg)`; c.style.opacity=String(1-Math.min(Math.abs(dx)/420,0.5)); };
+  const end=()=>{ document.removeEventListener('touchmove',move); document.removeEventListener('touchend',end);
+    document.removeEventListener('mousemove',move); document.removeEventListener('mouseup',end);
+    c.style.transition='transform .25s, opacity .25s';
+    if(Math.abs(dx)>90){ const known=dx>0; c.style.transform=`translateX(${known?640:-640}px) rotate(${known?28:-28}deg)`; c.style.opacity='0'; setTimeout(()=>flipAnswer(known),170); }
+    else { c.style.transform=''; c.style.opacity='1'; } };
+  const start=e=>{ const p=e.touches?e.touches[0]:e; sx=p.clientX; sy=p.clientY; dx=0; c.style.transition='none';
+    document.addEventListener('touchmove',move,{passive:true}); document.addEventListener('touchend',end);
+    document.addEventListener('mousemove',move); document.addEventListener('mouseup',end); };
+  c.addEventListener('touchstart',start,{passive:true}); c.addEventListener('mousedown',start);
 }
-function answerCard(known){
-  const {i}=study.list[study.i];
-  bump(itemId(study.mid,i), known);
-  registerStudy(known?5:2);
-  study.i++; study.flip=false;
-  drawCard();
-}
-function studyDone(m){
-  const p=moduleProgress(m);
-  confetti();
-  app.innerHTML=`<div class="wrap fade">
-    <div class="empty">
-      <div style="font-size:54px">🎉</div>
-      <h2 style="margin:10px 0">Колода пройдена!</h2>
-      <div class="mut">${m.ic} ${m.name} — выучено ${p.learned}/${p.total}</div>
-      <div class="panel" style="text-align:left">
-        <div class="between"><span>+ опыт</span><b>+${m.terms.length*5} XP</b></div>
-        <div class="between" style="margin-top:6px"><span>Прогресс предмета</span><b>${p.pct}%</b></div>
-      </div>
-      <button class="btn acc full" style="margin-top:6px" onclick="go('study','${m.id}')">🔁 Ещё раз</button>
-      <button class="btn full" style="margin-top:10px" onclick="go('quiz','${m.id}')">✍️ Проверить тестом</button>
-      <button class="btn full" style="margin-top:10px" onclick="go('subject','${m.id}')">← К предмету</button>
-    </div>
-  </div>`;
+function sessDone(){
+  confetti(); sfx('win');
+  const acc=Math.round(sess.correct/sess.list.length*100);
+  const goalPct=Math.min(100,Math.round(S.todayCount/DAILY_GOAL*100));
+  const back = sess.backName==='home'
+    ? `<button class="btn acc full" onclick="go('daily')">🔁 Ещё раунд</button>
+       <button class="btn full" style="margin-top:10px" onclick="go('home')">🏠 На главную</button>`
+    : `<button class="btn acc full" onclick="go('study','${sess.backId}')">🔁 Ещё раз</button>
+       <button class="btn full" style="margin-top:10px" onclick="go('quiz','${sess.backId}')">✍️ Проверить тестом</button>
+       <button class="btn full" style="margin-top:10px" onclick="go('subject','${sess.backId}')">← К разделу</button>`;
+  app.innerHTML=`<div class="wrap fade"><div class="empty">
+    <div style="font-size:54px">${acc>=80?'🏆':acc>=50?'🎉':'💪'}</div>
+    <h2 style="margin:10px 0">${sess.title}</h2>
+    <div class="mut">Правильно ${sess.correct}/${sess.list.length} · лучшая серия 🔥 x${sess.bestCombo}</div>
+    <div class="panel">${ringSvgRow(goalPct)}</div>
+    ${back}
+  </div></div>`;
 }
 
 /* ---------- QUIZ ---------- */
@@ -1080,74 +1265,76 @@ function listenDone(m){
   </div></div>`;
 }
 
-/* ---------- DAILY MIX ---------- */
+/* ---------- DAILY (mixed session across all modules) ---------- */
 function renderDaily(){
-  // build a mixed deck across all modules, prioritising not-yet-mastered
   const all=[];
-  MODULES.forEach(m=>m.terms.forEach((t,i)=>all.push({m,t,i,lv:masteryOf(itemId(m.id,i))})));
+  GRID_MODULES.forEach(m=>m.terms.forEach((t,i)=>all.push({t,key:itemId(m.id,i),mname:m.name,mic:m.ic,lv:masteryOf(itemId(m.id,i))})));
   all.sort((a,b)=>a.lv-b.lv || Math.random()-0.5);
-  const list=all.slice(0,DAILY_GOAL);
-  // reuse study engine but mixed
-  study={list:list.map(x=>({t:x.t,i:x.i,_m:x.m.id})),i:0,flip:false,mid:"__mix__"};
-  drawMix();
-}
-function drawMix(){
-  if(study.i>=study.list.length){ return mixDone(); }
-  const cur=study.list[study.i]; const t=cur.t; const m=moduleById(cur._m);
-  const pct=Math.round(study.i/study.list.length*100);
-  app.innerHTML=`<div class="wrap fade">
-    <div class="topbar">
-      <button class="back" onclick="go('home')">←</button>
-      <div class="grow"><div class="brand">⚡️ Дневная тренировка</div>
-        <div class="progressline" style="margin-top:6px"><i style="width:${pct}%"></i></div></div>
-      <span class="pill">${study.i+1}/${study.list.length}</span>
-    </div>
-    <div class="row" style="margin-bottom:6px"><span class="tag">${m.ic} ${m.name}</span></div>
-    <div class="deckwrap">
-      <div class="fcard${study.flip?' flip':''}" id="fcard">
-        <div class="face front" onclick="flipMix()">
-          <div class="lbl">Английский</div>
-          <div class="term">${t.en}</div>
-          <button class="speaker" onclick="event.stopPropagation();speak('${esc(t.en)}')">🔊</button>
-          <div class="tap">Нажми, чтобы перевернуть</div>
-        </div>
-        <div class="face rear" onclick="flipMix()">
-          <div class="lbl">Перевод</div><div class="ru">${t.ru}</div>
-          <div class="lbl">Значение</div><div class="def">${t.def}</div>
-          <div class="lbl">Пример</div><div class="ex">“${t.ex}”</div>
-          <button class="btn sm" style="margin-top:14px" onclick="event.stopPropagation();speak('${esc(t.ex)}')">🔊 Пример</button>
-        </div>
-      </div>
-    </div>
-    <div class="actions" style="grid-template-columns:1fr 1fr">
-      <button class="btn" onclick="answerMix(false)">🔁 Повторить</button>
-      <button class="btn acc" onclick="answerMix(true)">✅ Знаю</button>
-    </div>
-  </div>`;
-}
-function flipMix(){ study.flip=!study.flip; const c=document.getElementById("fcard"); if(c)c.classList.toggle("flip",study.flip); }
-function answerMix(known){
-  const cur=study.list[study.i];
-  bump(itemId(cur._m,cur.i),known);
-  registerStudy(known?5:2);
-  study.i++; study.flip=false; drawMix();
-}
-function mixDone(){
-  confetti();
-  const goalPct=Math.min(100,Math.round(S.todayCount/DAILY_GOAL*100));
-  app.innerHTML=`<div class="wrap fade"><div class="empty">
-    <div style="font-size:54px">${goalPct>=100?"🏅":"⚡️"}</div>
-    <h2 style="margin:10px 0">Тренировка завершена!</h2>
-    <div class="mut">Сегодня пройдено ${S.todayCount} карточек · 🔥 ${S.streak} дней подряд</div>
-    <div class="panel">${ringSvgRow(goalPct)}</div>
-    <button class="btn acc full" onclick="go('daily')">🔁 Ещё раунд</button>
-    <button class="btn full" style="margin-top:10px" onclick="go('home')">🏠 На главную</button>
-  </div></div>`;
+  const list=all.slice(0,DAILY_GOAL).map(({t,key,mname,mic})=>({t,key,mname,mic}));
+  shuffle(list);
+  startSession(list,"home",null,"⚡️ Тренировка завершена!");
 }
 function ringSvgRow(pct){
   return `<div class="ring">${ringSvg(pct)}<div class="grow" style="text-align:left">
     <b>Цель дня ${pct>=100?"выполнена 🎉":""}</b>
-    <div class="mut small">${S.todayCount}/${DAILY_GOAL} карточек</div></div></div>`;
+    <div class="mut small">${S.todayCount}/${DAILY_GOAL} карточек сегодня · 🔥 ${S.streak}</div></div></div>`;
+}
+
+/* ---------- MATCHING GAME (Пары) ---------- */
+let match=null;
+function renderMatch(id){
+  const m=moduleById(id);
+  const pick=shuffle(m.terms.map((t,i)=>({t,i}))).slice(0,6);
+  const tiles=[];
+  pick.forEach(({t,i},k)=>{ tiles.push({pid:k,ti:i,txt:t.en,en:true}); tiles.push({pid:k,ti:i,txt:t.ru,en:false}); });
+  shuffle(tiles);
+  match={mid:id,tiles,sel:null,wrong:null,done:0,moves:0,start:Date.now()};
+  drawMatch();
+}
+function drawMatch(){
+  const m=moduleById(match.mid);
+  const grid=match.tiles.map((tile,idx)=>{
+    let st="margin:0;min-height:62px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:14px;";
+    if(tile.matched) st+="opacity:.25;border-color:var(--good);background:rgba(52,211,153,.12);";
+    else if(match.sel===idx) st+="border-color:var(--acc);background:rgba(110,168,254,.20);";
+    else if(match.wrong&&match.wrong.indexOf(idx)>=0) st+="border-color:var(--bad);background:rgba(251,113,133,.16);";
+    return `<button class="opt" style="${st}" ${tile.matched?'disabled':''} onclick="tapTile(${idx})">${tile.txt}</button>`;
+  }).join("");
+  app.innerHTML=`<div class="wrap fade">
+    <div class="topbar"><button class="back" onclick="go('subject','${match.mid}')">←</button>
+      <div class="grow"><div class="brand">🧩 Найди пары · ${m.name}</div></div>
+      <span class="pill">${match.done}/6</span></div>
+    <div class="mut small" style="margin:6px 2px 12px">Соедини английское слово с переводом. Нажми на слово 🔊 после совпадения.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">${grid}</div>
+  </div>`;
+}
+function tapTile(idx){
+  if(match.wrong) return;
+  const tile=match.tiles[idx]; if(tile.matched) return;
+  if(match.sel===null){ match.sel=idx; sfx('tick'); drawMatch(); return; }
+  if(match.sel===idx){ match.sel=null; drawMatch(); return; }
+  const a=match.tiles[match.sel], b=tile; match.moves++;
+  if(a.pid===b.pid && a.en!==b.en){
+    a.matched=b.matched=true; match.done++; match.sel=null; sfx('good'); haptic(8);
+    registerStudy(6); bump(itemId(match.mid,a.ti),true);
+    const en=match.tiles.find(x=>x.pid===a.pid&&x.en); speak(moduleById(match.mid).terms[a.ti].en);
+    drawMatch();
+    if(match.done>=6) setTimeout(matchDone,450);
+  } else {
+    sfx('bad'); haptic(30); match.wrong=[match.sel,idx]; match.sel=null; drawMatch();
+    setTimeout(()=>{ match.wrong=null; drawMatch(); },650);
+  }
+}
+function matchDone(){
+  confetti(); sfx('win');
+  const secs=Math.round((Date.now()-match.start)/1000);
+  app.innerHTML=`<div class="wrap fade"><div class="empty">
+    <div style="font-size:54px">🧩</div>
+    <h2 style="margin:10px 0">Все пары найдены!</h2>
+    <div class="mut">Время ${secs} сек · ходов ${match.moves}</div>
+    <button class="btn acc full" style="margin-top:14px" onclick="go('match','${match.mid}')">🔁 Ещё раз</button>
+    <button class="btn full" style="margin-top:10px" onclick="go('subject','${match.mid}')">← К разделу</button>
+  </div></div>`;
 }
 
 /* ---------- GRAMMAR ---------- */
@@ -1289,6 +1476,27 @@ function renderProgress(){
       <div class="progressline" style="margin-top:8px"><i style="width:${li.pct}%"></i></div>
       <div class="mut small" style="margin-top:8px">Выучено ${learned} из ${TOTAL_ITEMS} слов и фраз. Слово считается выученным после 3 ответов «Знаю» 🟢.</div>
     </div>
+
+    <div class="secttl">🎧 Звук и голос</div>
+    <div class="panel">
+      <div class="between"><b>Голос озвучки</b>
+        <button class="iconbtn" onclick="speak('Hello! This is the voice for listening.')">🔊</button></div>
+      <div style="margin-top:10px">
+        ${(()=>{ const vs=enVoices();
+          if(!vs.length) return '<div class="mut small">Голоса ещё загружаются…</div><button class="btn sm full" style="margin-top:8px" onclick="loadVoices();renderProgress()">🔄 Обновить</button>';
+          const opts='<option value="">Авто (лучший доступный)</option>'+vs.map(v=>`<option value="${v.name.replace(/"/g,'&quot;')}" ${S.voiceName===v.name?'selected':''}>${v.name}${/en[-_]GB/i.test(v.lang)?' · UK':''}</option>`).join('');
+          return `<select onchange="setVoice(this.value)" style="width:100%;padding:13px;border-radius:13px;border:1px solid var(--glassb);background:var(--card2);color:var(--txt);font-size:15px;font-weight:700">${opts}</select>`; })()}
+      </div>
+      <div class="between" style="margin-top:14px"><b>Скорость</b><span class="mut small">${(S.rate||0.95).toFixed(2)}×</span></div>
+      <div class="seg" style="margin-top:8px">
+        <button class="${(S.rate||0.95)<0.9?'on':''}" onclick="setRate(0.8)">🐢 Медленно</button>
+        <button class="${(S.rate||0.95)>=0.9&&(S.rate||0.95)<=1.0?'on':''}" onclick="setRate(0.95)">Норма</button>
+        <button class="${(S.rate||0.95)>1.0?'on':''}" onclick="setRate(1.1)">🐇 Быстро</button>
+      </div>
+      <button class="btn full" style="margin-top:14px" onclick="toggleSound()">${S.sound===false?'🔇 Звуки игры: выкл':'🔊 Звуки игры: вкл'}</button>
+      <div class="mut small" style="margin-top:12px;line-height:1.5">💡 На айфоне можно скачать более живой голос: <b>Настройки → Универсальный доступ → Устный контент → Голоса → English (UK)</b> → добавь «Serena» или «Stephanie» (Enhanced). Потом выбери его здесь.</div>
+    </div>
+
     <div class="secttl">По предметам</div>
     ${rows}
     <div class="panel" style="text-align:center">
@@ -1299,11 +1507,14 @@ function renderProgress(){
   </div>`;
 }
 function resetAll(){
-  if(confirm("Сбросить весь прогресс, серию и XP?")){
-    S={ xp:0, streak:0, lastDay:null, todayCount:0, todayDay:null, mastery:{}, voice:null };
+  if(confirm("Сбросить весь прогресс, серию и XP? (настройки голоса сохранятся)")){
+    S={ xp:0, streak:0, lastDay:null, todayCount:0, todayDay:null, mastery:{}, voiceName:S.voiceName, rate:S.rate, sound:S.sound };
     save(); toast("Прогресс сброшен"); go("home");
   }
 }
+function setVoice(name){ S.voiceName=name||null; save(); speak('Great choice. This is your listening voice.'); }
+function setRate(r){ S.rate=parseFloat(r); save(); renderProgress(); speak('Listen to the new speed.'); }
+function toggleSound(){ S.sound=(S.sound===false); save(); if(S.sound) sfx('good'); renderProgress(); }
 
 /* =========================================================================
    UTIL
@@ -1333,10 +1544,12 @@ function confetti(){
 }
 
 /* init: unlock speech on first interaction (iOS) */
-document.body.addEventListener("touchstart",function once(){
+function unlockAudio(){
   try{ const u=new SpeechSynthesisUtterance(" "); u.volume=0; speechSynthesis.speak(u); }catch(e){}
-  document.body.removeEventListener("touchstart",once);
-},{once:true});
+  try{ audioCtx(); }catch(e){}
+}
+document.body.addEventListener("touchstart",unlockAudio,{once:true});
+document.body.addEventListener("mousedown",unlockAudio,{once:true});
 
 render();
 
