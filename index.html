@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Pre-Sixth">
+<meta name="theme-color" content="#0b1020">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<title>Pre-Sixth Prep · KESW</title>
+<style>
+  :root{
+    --bg:#0b1020; --bg2:#121a33; --card:#172244; --card2:#1d2a52;
+    --line:#27355f; --txt:#eaf0ff; --mut:#93a1c9; --mut2:#6b7aa6;
+    --acc:#6ea8fe; --acc2:#8b7bff; --good:#34d399; --bad:#fb7185; --warn:#fbbf24;
+    --r:18px;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;
+    overscroll-behavior-y:none;}
+  body{padding:env(safe-area-inset-top) 0 calc(72px + env(safe-area-inset-bottom));
+    background:radial-gradient(120% 60% at 50% -10%, #1a2550 0%, var(--bg) 60%);min-height:100vh}
+  .wrap{max-width:560px;margin:0 auto;padding:14px}
+  h1,h2,h3{margin:0;font-weight:800;letter-spacing:-.02em}
+  .mut{color:var(--mut)} .small{font-size:13px}
+  .row{display:flex;align-items:center;gap:10px}
+  .between{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .grow{flex:1}
+  button{font-family:inherit;cursor:pointer;border:none;color:inherit}
+  .hidden{display:none!important}
+
+  /* top */
+  .top{padding:8px 2px 4px}
+  .brand{font-size:13px;color:var(--mut);letter-spacing:.18em;text-transform:uppercase;font-weight:700}
+  .hi{font-size:24px;margin-top:2px}
+
+  /* chips / stat */
+  .stats{display:flex;gap:10px;margin-top:14px}
+  .stat{flex:1;background:linear-gradient(160deg,var(--card),var(--bg2));border:1px solid var(--line);
+    border-radius:var(--r);padding:12px}
+  .stat b{font-size:22px;display:block;line-height:1.1}
+  .stat span{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em}
+
+  .panel{background:linear-gradient(160deg,var(--card),var(--bg2));border:1px solid var(--line);
+    border-radius:var(--r);padding:16px;margin-top:14px}
+
+  /* ring */
+  .ring{display:flex;align-items:center;gap:14px}
+  .ringsvg{width:62px;height:62px;flex:none}
+  .ringsvg circle{fill:none;stroke-width:7;stroke-linecap:round}
+  .ringbg{stroke:#26345e}
+  .ringfg{stroke:url(#g);transition:stroke-dashoffset .6s ease}
+
+  /* countdown */
+  .count{display:flex;gap:8px;margin-top:10px}
+  .count div{flex:1;background:#101733;border:1px solid var(--line);border-radius:14px;padding:10px 6px;text-align:center}
+  .count b{font-size:20px;display:block}
+  .count span{font-size:10px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em}
+
+  /* subject grid */
+  .secttl{margin:20px 2px 8px;font-size:14px;color:var(--mut);text-transform:uppercase;letter-spacing:.1em;font-weight:700}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .subj{position:relative;border:1px solid var(--line);border-radius:var(--r);padding:14px;
+    background:var(--card);overflow:hidden;text-align:left;transition:transform .12s}
+  .subj:active{transform:scale(.97)}
+  .subj .ic{font-size:26px}
+  .subj h3{font-size:16px;margin-top:8px}
+  .subj .ex{font-size:11px;color:var(--mut2);margin-top:2px}
+  .subj .bar{height:6px;border-radius:6px;background:#0f1730;margin-top:12px;overflow:hidden}
+  .subj .bar i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,var(--acc),var(--acc2))}
+  .subj .pc{font-size:11px;color:var(--mut);margin-top:6px;display:flex;justify-content:space-between}
+  .glow{position:absolute;inset:0;opacity:.14;pointer-events:none}
+
+  /* generic card / list */
+  .item{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--line);
+    border-radius:14px;background:var(--card);margin-bottom:10px}
+  .badge{font-size:11px;padding:3px 8px;border-radius:999px;border:1px solid var(--line);color:var(--mut)}
+
+  /* buttons */
+  .btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;border-radius:14px;
+    font-weight:700;font-size:15px;background:var(--card2);border:1px solid var(--line)}
+  .btn.acc{background:linear-gradient(135deg,var(--acc),var(--acc2));border:none;color:#0b1020}
+  .btn.full{width:100%}
+  .btn:active{filter:brightness(.95)}
+  .btn.sm{padding:10px 12px;font-size:13px}
+  .actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:14px}
+
+  /* flashcard */
+  .deckwrap{margin-top:10px}
+  .fcard{position:relative;height:360px;border-radius:22px}
+  .face{position:absolute;top:0;left:0;width:100%;height:100%;
+    border:1px solid var(--line);border-radius:22px;padding:22px;display:flex;flex-direction:column;
+    justify-content:center;align-items:center;text-align:center;background:linear-gradient(160deg,var(--card2),var(--bg2));
+    opacity:0;visibility:hidden;transform:scale(.96);transition:opacity .28s ease, transform .28s ease}
+  .face.front{opacity:1;visibility:visible;transform:none}
+  .fcard.flip .face.front{opacity:0;visibility:hidden;transform:scale(.96)}
+  .fcard.flip .face.rear{opacity:1;visibility:visible;transform:none}
+  .face.rear{justify-content:flex-start;align-items:flex-start;text-align:left;overflow:auto}
+  .term{font-size:30px;font-weight:800;letter-spacing:-.02em}
+  .ipa{color:var(--mut);margin-top:6px;font-size:14px}
+  .tap{position:absolute;bottom:14px;left:0;right:0;text-align:center;color:var(--mut2);font-size:12px}
+  .speaker{margin-top:18px;width:64px;height:64px;border-radius:50%;display:flex;align-items:center;
+    justify-content:center;font-size:26px;background:#0f1730;border:1px solid var(--line)}
+  .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--acc);font-weight:700;margin:14px 0 4px}
+  .ru{font-size:22px;font-weight:800}
+  .def{margin-top:2px;color:var(--txt);line-height:1.45}
+  .ex{color:var(--mut);font-style:italic;line-height:1.5;margin-top:2px}
+  .progressline{height:6px;background:#0f1730;border-radius:6px;overflow:hidden;margin:6px 0 12px}
+  .progressline i{display:block;height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2));transition:width .3s}
+
+  /* quiz */
+  .opt{padding:15px 16px;border:1px solid var(--line);border-radius:14px;background:var(--card);
+    margin-bottom:10px;font-size:16px;font-weight:600;transition:.15s;text-align:left;width:100%}
+  .opt:active{transform:scale(.99)}
+  .opt.correct{background:rgba(52,211,153,.16);border-color:var(--good)}
+  .opt.wrong{background:rgba(251,113,133,.14);border-color:var(--bad)}
+  .opt.dim{opacity:.5}
+  .qhead{font-size:13px;color:var(--mut);margin-bottom:6px}
+  .qprompt{font-size:24px;font-weight:800;margin:4px 0 18px;line-height:1.25}
+
+  /* bottom nav */
+  .nav{position:fixed;left:0;right:0;bottom:0;z-index:50;
+    background:rgba(13,19,40,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border-top:1px solid var(--line);padding:8px 0 calc(6px + env(safe-area-inset-bottom))}
+  .navin{max-width:560px;margin:0 auto;display:flex}
+  .nav button{flex:1;background:none;display:flex;flex-direction:column;align-items:center;gap:3px;
+    font-size:10px;color:var(--mut2);padding:4px}
+  .nav button .ni{font-size:21px}
+  .nav button.on{color:var(--acc)}
+
+  .iconbtn{width:40px;height:40px;border-radius:12px;background:var(--card);border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;font-size:18px}
+  .toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%) translateY(20px);opacity:0;
+    background:#0f1730;border:1px solid var(--line);padding:10px 16px;border-radius:999px;font-size:13px;
+    transition:.25s;z-index:80;pointer-events:none;font-weight:600}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .pill{display:inline-flex;gap:6px;align-items:center;font-size:12px;color:var(--mut);
+    background:#0f1730;border:1px solid var(--line);padding:5px 10px;border-radius:999px}
+  .empty{text-align:center;color:var(--mut);padding:40px 20px}
+  .topbar{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+  .back{font-size:22px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;
+    border-radius:12px;background:var(--card);border:1px solid var(--line)}
+  .seg{display:flex;background:#0f1730;border:1px solid var(--line);border-radius:12px;padding:4px;gap:4px;margin-top:12px}
+  .seg button{flex:1;padding:9px;border-radius:9px;font-size:13px;font-weight:700;color:var(--mut);background:none}
+  .seg button.on{background:var(--card2);color:var(--txt)}
+  .tag{font-size:11px;color:var(--mut);background:#0f1730;border:1px solid var(--line);
+    padding:4px 9px;border-radius:999px;margin:0 6px 6px 0;display:inline-block}
+  .ok{color:var(--good)} .ko{color:var(--bad)}
+  .fade{animation:fade .3s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .conf{position:fixed;inset:0;pointer-events:none;z-index:90}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<nav class="nav">
+  <div class="navin">
+    <button data-nav="home" class="on"><span class="ni">🏠</span>Главная</button>
+    <button data-nav="subjects"><span class="ni">📚</span>Предметы</button>
+    <button data-nav="daily"><span class="ni">⚡️</span>Тренировка</button>
+    <button data-nav="progress"><span class="ni">📈</span>Прогресс</button>
+  </div>
+</nav>
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================================
+   DATA — KESW Pre-Sixth (Year 11) survival vocabulary
+   en = английский термин/фраза · ru = перевод · def = простое объяснение
+   ex = пример в контексте (как это звучит на уроке)
+   ========================================================================= */
+const DATA = {
+  classroom: {
+    id:"classroom", name:"Язык урока", nameEn:"Classroom English", ic:"🗣️",
+    exam:"Что реально говорит учитель",
+    desc:"Фразы, которыми учителя дают инструкции, объясняют и проверяют, поняли ли вы. Это самое важное — выучи в первую очередь.",
+    topics:["Инструкции","Объяснение","Проверка понимания","Учёба и оценки"],
+    terms:[
+      {en:"Turn to page 42",ru:"Откройте страницу 42",def:"Учитель просит открыть учебник на нужной странице.",ex:"Right everyone, turn to page 42 and look at the diagram."},
+      {en:"Work in pairs",ru:"Работайте в парах",def:"Делать задание вдвоём с соседом.",ex:"Work in pairs and compare your answers."},
+      {en:"Hand in your work",ru:"Сдайте работу",def:"Отдать выполненное задание учителю.",ex:"Please hand in your work by the end of the lesson."},
+      {en:"Show your working",ru:"Покажите ход решения",def:"Записать все шаги, а не только ответ (важно в математике и науках).",ex:"You'll lose marks if you don't show your working."},
+      {en:"Make a note of this",ru:"Запишите это",def:"Учитель просит записать важную информацию.",ex:"Make a note of this — it will come up in the exam."},
+      {en:"Fill in the blanks",ru:"Заполните пропуски",def:"Вписать недостающие слова в задание.",ex:"Fill in the blanks using the words in the box."},
+      {en:"Underline the key words",ru:"Подчеркните ключевые слова",def:"Выделить главные слова линией снизу.",ex:"Underline the key words in the question first."},
+      {en:"Does that make sense?",ru:"Это понятно? / Логично?",def:"Учитель проверяет, поняли ли вы объяснение.",ex:"So we cancel the brackets — does that make sense?"},
+      {en:"Are you with me?",ru:"Вы успеваете за мной?",def:"Проверка, не отстали ли вы.",ex:"We move x to the other side. Are you with me so far?"},
+      {en:"In other words",ru:"Другими словами / То есть",def:"Учитель повторяет мысль проще.",ex:"It's elastic — in other words, demand changes a lot when the price changes."},
+      {en:"Bear in mind",ru:"Имейте в виду",def:"Запомнить важную деталь.",ex:"Bear in mind that the units must be the same."},
+      {en:"Let me give you an example",ru:"Давайте я приведу пример",def:"Учитель сейчас покажет конкретный случай.",ex:"Let me give you an example to make this clearer."},
+      {en:"The key point is...",ru:"Главное — это...",def:"Сейчас прозвучит самое важное.",ex:"The key point is that energy is always conserved."},
+      {en:"Could you repeat that?",ru:"Повторите, пожалуйста",def:"Вежливо попросить сказать ещё раз, если не расслышали.",ex:"Sorry, could you repeat that? I didn't catch the last part."},
+      {en:"I'm not sure I follow",ru:"Я не совсем понял",def:"Вежливо сказать, что вы потеряли мысль.",ex:"I'm not sure I follow — could you explain the second step again?"},
+      {en:"Could you clarify...?",ru:"Не могли бы вы уточнить...?",def:"Попросить объяснить непонятное место.",ex:"Could you clarify what you mean by 'net force'?"},
+      {en:"Deadline / due date",ru:"Срок сдачи",def:"Последний день, когда можно сдать работу.",ex:"The deadline for the essay is Friday."},
+      {en:"Homework / assignment",ru:"Домашнее задание",def:"Задание, которое делают дома.",ex:"For homework, finish the questions on page 50."},
+      {en:"To revise",ru:"Повторять перед экзаменом",def:"В британском английском revise = готовиться к экзамену (НЕ «переписывать»).",ex:"Make sure you revise the whole topic for the test."},
+      {en:"Mock exam",ru:"Пробный экзамен",def:"Тренировочный экзамен в условиях настоящего.",ex:"We have a mock exam after the half-term break."},
+      {en:"Marks / grade",ru:"Баллы / оценка",def:"Marks — баллы за работу; grade — итоговая оценка (9–1).",ex:"You got 18 out of 20 marks — a really strong grade."},
+      {en:"Feedback",ru:"Обратная связь / комментарии",def:"Что учитель написал о вашей работе и как её улучшить.",ex:"Read my feedback and act on it for next time."},
+      {en:"Highlight",ru:"Выделить маркером",def:"Отметить текст цветом.",ex:"Highlight the words you don't understand."},
+      {en:"Label the diagram",ru:"Подпишите схему",def:"Написать названия частей на рисунке.",ex:"Label the diagram of the heart with these terms."}
+    ]
+  },
+  subjects:[
+    {
+      id:"english", name:"Английский", nameEn:"English Language & Literature", ic:"📖",
+      exam:"AQA GCSE", color:"#6ea8fe",
+      desc:"Термины анализа текста: как разбирать приёмы автора, структуру и смысл. Нужны для эссе по литературе и языку.",
+      topics:["Литературные приёмы","Структура","Анализ"],
+      terms:[
+        {en:"Simile",ru:"Сравнение (как/словно)",def:"Сравнение двух вещей со словами 'like' или 'as'.",ex:"\"As brave as a lion\" is a simile."},
+        {en:"Metaphor",ru:"Метафора",def:"Описание одной вещи как будто она — другая, без 'like/as'.",ex:"\"Time is a thief\" is a metaphor."},
+        {en:"Personification",ru:"Олицетворение",def:"Когда неживому придают человеческие черты.",ex:"\"The wind whispered\" — personification of the wind."},
+        {en:"Alliteration",ru:"Аллитерация",def:"Повтор одинакового согласного звука в начале слов.",ex:"\"Wild and windy weather\" uses alliteration."},
+        {en:"Imagery",ru:"Образность",def:"Слова, создающие яркую картину в воображении (через 5 чувств).",ex:"The poem uses imagery of cold, grey seas."},
+        {en:"Tone",ru:"Тон",def:"Отношение автора к теме (серьёзный, ироничный и т.д.).",ex:"The tone of the letter is angry and bitter."},
+        {en:"Mood",ru:"Настроение (атмосфера)",def:"Чувство, которое текст вызывает у читателя.",ex:"The dark setting creates a tense mood."},
+        {en:"Protagonist",ru:"Главный герой",def:"Центральный персонаж истории.",ex:"Macbeth is the protagonist of the play."},
+        {en:"Foreshadowing",ru:"Предзнаменование",def:"Намёк на то, что произойдёт позже.",ex:"The storm is foreshadowing of the tragedy to come."},
+        {en:"Connotation",ru:"Коннотация (скрытый смысл)",def:"Дополнительное чувство, которое несёт слово помимо прямого значения.",ex:"\"Home\" has warm connotations of safety."},
+        {en:"Juxtaposition",ru:"Противопоставление",def:"Когда автор ставит рядом две контрастные вещи.",ex:"The juxtaposition of wealth and poverty shocks the reader."},
+        {en:"Stanza",ru:"Строфа",def:"Группа строк в стихотворении (как абзац).",ex:"The poem has four stanzas of six lines each."},
+        {en:"Dramatic irony",ru:"Драматическая ирония",def:"Когда зритель знает то, чего не знает персонаж.",ex:"Dramatic irony builds tension as we know the truth."},
+        {en:"Rhetorical question",ru:"Риторический вопрос",def:"Вопрос, на который не ждут ответа — для воздействия.",ex:"\"How long must we wait?\" is a rhetorical question."},
+        {en:"Audience",ru:"Аудитория (читатели)",def:"Те, для кого написан текст.",ex:"The article targets a teenage audience."},
+        {en:"Purpose",ru:"Цель текста",def:"Зачем текст написан: убедить, развлечь, информировать.",ex:"Identify the purpose: to persuade or to inform?"},
+        {en:"Infer",ru:"Делать вывод (между строк)",def:"Понять то, что прямо не написано, по подсказкам.",ex:"We can infer that the character is lonely."},
+        {en:"Evidence / quotation",ru:"Доказательство / цитата",def:"Слова из текста, которыми вы подтверждаете свою мысль.",ex:"Always support your point with evidence from the text."},
+        {en:"Analyse",ru:"Анализировать",def:"Подробно разобрать, КАК и ПОЧЕМУ автор использует приём.",ex:"Analyse how the writer creates fear in this paragraph."},
+        {en:"Structure",ru:"Структура текста",def:"Как организован текст: порядок, начало, развитие, концовка.",ex:"Comment on the structure of the opening chapter."}
+      ]
+    },
+    {
+      id:"maths", name:"Математика", nameEn:"Mathematics", ic:"➗",
+      exam:"Edexcel IGCSE (A)", color:"#34d399",
+      desc:"Number, Algebra, Geometry, Statistics. Английские названия операций и фигур — чтобы понимать задания и объяснения у доски.",
+      topics:["Number","Algebra","Geometry","Statistics"],
+      terms:[
+        {en:"Integer",ru:"Целое число",def:"Число без дробной части (…-2, -1, 0, 1, 2…).",ex:"Round your answer to the nearest integer."},
+        {en:"Numerator / Denominator",ru:"Числитель / Знаменатель",def:"Верхнее и нижнее число дроби.",ex:"In 3/4, three is the numerator and four is the denominator."},
+        {en:"Simplify",ru:"Упростить",def:"Записать выражение в самом простом виде.",ex:"Simplify the fraction 6/8 to 3/4."},
+        {en:"Expand the brackets",ru:"Раскрыть скобки",def:"Умножить то, что снаружи скобок, на каждое слагаемое внутри.",ex:"Expand the brackets: 3(x + 2) = 3x + 6."},
+        {en:"Factorise",ru:"Разложить на множители",def:"Обратное раскрытию скобок: вынести общий множитель.",ex:"Factorise x² + 5x as x(x + 5)."},
+        {en:"Solve the equation",ru:"Решить уравнение",def:"Найти значение неизвестной (обычно x).",ex:"Solve the equation 2x + 4 = 10."},
+        {en:"Substitute",ru:"Подставить",def:"Заменить букву числом.",ex:"Substitute x = 3 into the formula."},
+        {en:"Inequality",ru:"Неравенство",def:"Выражение со знаками <, >, ≤, ≥.",ex:"Solve the inequality x + 2 > 5."},
+        {en:"Gradient",ru:"Угловой коэффициент (наклон)",def:"Насколько круто наклонена прямая на графике.",ex:"The gradient of the line is 2."},
+        {en:"Simultaneous equations",ru:"Система уравнений",def:"Два уравнения, которые решают вместе.",ex:"Solve these simultaneous equations to find x and y."},
+        {en:"Perimeter",ru:"Периметр",def:"Длина границы фигуры (сумма всех сторон).",ex:"Find the perimeter of the rectangle."},
+        {en:"Area",ru:"Площадь",def:"Сколько места занимает поверхность фигуры.",ex:"The area of the triangle is 12 cm²."},
+        {en:"Volume",ru:"Объём",def:"Сколько места занимает тело в пространстве.",ex:"Calculate the volume of the cylinder."},
+        {en:"Circumference",ru:"Длина окружности",def:"Периметр круга.",ex:"The circumference equals π times the diameter."},
+        {en:"Parallel / Perpendicular",ru:"Параллельный / Перпендикулярный",def:"Не пересекаются / пересекаются под 90°.",ex:"These two lines are parallel; that one is perpendicular."},
+        {en:"Congruent",ru:"Равные (конгруэнтные)",def:"Фигуры одинаковой формы и размера.",ex:"The two triangles are congruent."},
+        {en:"Pythagoras' theorem",ru:"Теорема Пифагора",def:"a² + b² = c² для прямоугольного треугольника.",ex:"Use Pythagoras' theorem to find the hypotenuse."},
+        {en:"Mean / Median / Mode",ru:"Среднее / Медиана / Мода",def:"Три вида 'среднего' значения в статистике.",ex:"Work out the mean, median and mode of the data."},
+        {en:"Probability",ru:"Вероятность",def:"Насколько вероятно событие (от 0 до 1).",ex:"The probability of rolling a six is 1/6."},
+        {en:"Significant figures",ru:"Значащие цифры",def:"Сколько важных цифр оставить при округлении.",ex:"Round 3.14159 to three significant figures."}
+      ]
+    },
+    {
+      id:"economics", name:"Экономика", nameEn:"Economics", ic:"💹",
+      exam:"Cambridge (CIE) IGCSE", color:"#fbbf24",
+      desc:"Базовые понятия рынка, цен и государства. Много терминов = латинские/общие слова, их легко узнать.",
+      topics:["Спрос и предложение","Рынок","Государство","Торговля"],
+      terms:[
+        {en:"Demand",ru:"Спрос",def:"Сколько товара покупатели хотят и могут купить.",ex:"When the price falls, demand usually rises."},
+        {en:"Supply",ru:"Предложение",def:"Сколько товара производители готовы продать.",ex:"A good harvest increases the supply of wheat."},
+        {en:"Equilibrium price",ru:"Равновесная цена",def:"Цена, при которой спрос равен предложению.",ex:"The market reaches equilibrium where the curves cross."},
+        {en:"Scarcity",ru:"Ограниченность ресурсов",def:"Ресурсов меньше, чем хотят люди — главная проблема экономики.",ex:"Scarcity forces us to make choices."},
+        {en:"Opportunity cost",ru:"Альтернативная стоимость",def:"От чего вы отказались, выбрав что-то другое.",ex:"The opportunity cost of studying is the free time you lose."},
+        {en:"Factors of production",ru:"Факторы производства",def:"Ресурсы для производства: земля, труд, капитал, предпринимательство.",ex:"Labour is one of the four factors of production."},
+        {en:"Inflation",ru:"Инфляция",def:"Общий рост цен со временем (деньги обесцениваются).",ex:"High inflation means your money buys less."},
+        {en:"GDP",ru:"ВВП",def:"Стоимость всех товаров и услуг, произведённых в стране за год.",ex:"GDP measures the size of an economy."},
+        {en:"Unemployment",ru:"Безработица",def:"Люди, которые хотят работать, но не имеют работы.",ex:"Unemployment rose during the recession."},
+        {en:"Recession",ru:"Рецессия (спад)",def:"Период, когда экономика сокращается.",ex:"During a recession, firms produce less."},
+        {en:"Interest rate",ru:"Процентная ставка",def:"Цена за пользование деньгами (кредитом).",ex:"The bank raised the interest rate to fight inflation."},
+        {en:"Exchange rate",ru:"Валютный курс",def:"Сколько одна валюта стоит в другой.",ex:"The exchange rate is 90 roubles to the pound."},
+        {en:"Import / Export",ru:"Импорт / Экспорт",def:"Купить из-за границы / Продать за границу.",ex:"The UK imports cars and exports services."},
+        {en:"Tariff",ru:"Пошлина (тариф)",def:"Налог на импортные товары.",ex:"A tariff makes foreign goods more expensive."},
+        {en:"Subsidy",ru:"Субсидия",def:"Деньги от государства, чтобы снизить цену или поддержать.",ex:"The government gives farmers a subsidy."},
+        {en:"Direct / Indirect tax",ru:"Прямой / Косвенный налог",def:"Налог на доход / налог на покупки (как НДС).",ex:"Income tax is direct; VAT is an indirect tax."},
+        {en:"Revenue",ru:"Выручка",def:"Деньги, которые фирма получает от продаж.",ex:"Revenue is price multiplied by quantity sold."},
+        {en:"Monopoly",ru:"Монополия",def:"Когда на рынке только один продавец.",ex:"A monopoly can charge high prices."},
+        {en:"Productivity",ru:"Производительность",def:"Сколько производит один работник за час.",ex:"Training workers improves productivity."},
+        {en:"Standard of living",ru:"Уровень жизни",def:"Насколько хорошо живут люди в стране.",ex:"Higher incomes raise the standard of living."}
+      ]
+    },
+    {
+      id:"physics", name:"Физика", nameEn:"Physics", ic:"⚛️",
+      exam:"Pearson Edexcel IGCSE", color:"#8b7bff",
+      desc:"Силы, энергия, электричество, волны. Важно: единицы измерения и их английские названия.",
+      topics:["Forces & Motion","Energy","Electricity","Waves"],
+      terms:[
+        {en:"Force",ru:"Сила",def:"Толчок или притяжение; измеряется в ньютонах (N).",ex:"A force can change the speed of an object."},
+        {en:"Mass / Weight",ru:"Масса / Вес",def:"Масса (кг) — количество вещества; вес (N) — сила тяжести на него.",ex:"Mass stays the same, but weight changes on the Moon."},
+        {en:"Velocity",ru:"Скорость (с направлением)",def:"Скорость в определённом направлении (м/с).",ex:"The car's velocity is 20 m/s north."},
+        {en:"Acceleration",ru:"Ускорение",def:"Как быстро меняется скорость (м/с²).",ex:"Acceleration is the change in velocity over time."},
+        {en:"Friction",ru:"Трение",def:"Сила, тормозящая движение поверхностей друг по другу.",ex:"Friction between the tyres and road slows the car."},
+        {en:"Energy",ru:"Энергия",def:"Способность совершать работу; измеряется в джоулях (J).",ex:"Energy cannot be created or destroyed."},
+        {en:"Kinetic / Potential energy",ru:"Кинетическая / Потенциальная энергия",def:"Энергия движения / энергия положения (высоты).",ex:"Falling water converts potential energy into kinetic energy."},
+        {en:"Power",ru:"Мощность",def:"Как быстро используется энергия; ватты (W).",ex:"Power is the energy transferred per second."},
+        {en:"Pressure",ru:"Давление",def:"Сила на единицу площади; паскали (Pa).",ex:"Pressure increases as you go deeper underwater."},
+        {en:"Density",ru:"Плотность",def:"Масса на единицу объёма (кг/м³).",ex:"Oil floats on water because it is less dense."},
+        {en:"Current",ru:"Сила тока",def:"Поток электрического заряда; амперы (A).",ex:"The current in the circuit is 2 amps."},
+        {en:"Voltage",ru:"Напряжение",def:"'Толкает' заряд по цепи; вольты (V).",ex:"The battery provides a voltage of 9 volts."},
+        {en:"Resistance",ru:"Сопротивление",def:"Насколько цепь мешает току; омы (Ω).",ex:"A thin wire has a higher resistance."},
+        {en:"Series / Parallel circuit",ru:"Последовательная / Параллельная цепь",def:"Компоненты в одну линию / по разным веткам.",ex:"In a series circuit, the current is the same everywhere."},
+        {en:"Wavelength",ru:"Длина волны",def:"Расстояние между двумя гребнями волны.",ex:"Red light has a longer wavelength than blue light."},
+        {en:"Frequency",ru:"Частота",def:"Сколько волн проходит за секунду; герцы (Hz).",ex:"A higher frequency gives a higher pitch."},
+        {en:"Reflection / Refraction",ru:"Отражение / Преломление",def:"Волна отскакивает / меняет направление при переходе в другую среду.",ex:"Refraction makes a straw look bent in water."},
+        {en:"Conduction / Convection / Radiation",ru:"Теплопроводность / Конвекция / Излучение",def:"Три способа передачи тепла.",ex:"Heat travels through metal by conduction."},
+        {en:"Nucleus",ru:"Ядро (атома)",def:"Центр атома с протонами и нейтронами.",ex:"The nucleus contains protons and neutrons."},
+        {en:"Half-life",ru:"Период полураспада",def:"Время, за которое распадается половина радиоактивного вещества.",ex:"This isotope has a half-life of five years."}
+      ]
+    },
+    {
+      id:"biology", name:"Биология", nameEn:"Biology", ic:"🧬",
+      exam:"Pearson Edexcel IGCSE", color:"#34d399",
+      desc:"Клетки, тело человека, генетика, экосистемы. Много терминов греко-латинские — узнаваемы.",
+      topics:["Cells","Human body","Genetics","Ecology"],
+      terms:[
+        {en:"Cell",ru:"Клетка",def:"Базовая единица всего живого.",ex:"All living things are made of cells."},
+        {en:"Nucleus",ru:"Ядро (клетки)",def:"Часть клетки, где хранится ДНК.",ex:"The nucleus controls the cell's activities."},
+        {en:"Membrane",ru:"Мембрана",def:"Тонкая оболочка вокруг клетки, контролирует, что входит и выходит.",ex:"The cell membrane is partially permeable."},
+        {en:"Photosynthesis",ru:"Фотосинтез",def:"Как растения делают пищу из света, воды и CO₂.",ex:"Photosynthesis produces glucose and oxygen."},
+        {en:"Respiration",ru:"Дыхание (клеточное)",def:"Как клетки получают энергию из глюкозы.",ex:"Respiration releases energy from food."},
+        {en:"Diffusion",ru:"Диффузия",def:"Движение частиц из области высокой в область низкой концентрации.",ex:"Oxygen enters the blood by diffusion."},
+        {en:"Osmosis",ru:"Осмос",def:"Движение воды через мембрану (из менее в более концентрированный раствор).",ex:"Water enters the root cells by osmosis."},
+        {en:"Enzyme",ru:"Фермент",def:"Белок, ускоряющий химические реакции в теле.",ex:"Enzymes break down food in digestion."},
+        {en:"Digestion",ru:"Пищеварение",def:"Расщепление пищи на мелкие части, которые тело может усвоить.",ex:"Digestion begins in the mouth."},
+        {en:"Organism",ru:"Организм",def:"Любое живое существо.",ex:"A bacterium is a single-celled organism."},
+        {en:"Ecosystem",ru:"Экосистема",def:"Сообщество живых существ и их среда обитания.",ex:"A pond is a small ecosystem."},
+        {en:"Food chain",ru:"Пищевая цепь",def:"Кто кого ест: от растения к хищнику.",ex:"In the food chain, grass → rabbit → fox."},
+        {en:"Producer / Consumer",ru:"Продуцент / Консумент",def:"Растение, делающее пищу / животное, поедающее других.",ex:"Plants are producers; animals are consumers."},
+        {en:"Gene",ru:"Ген",def:"Участок ДНК, кодирующий один признак.",ex:"A gene controls your eye colour."},
+        {en:"Chromosome",ru:"Хромосома",def:"Длинная нить ДНК в ядре клетки.",ex:"Humans have 46 chromosomes."},
+        {en:"Dominant / Recessive",ru:"Доминантный / Рецессивный",def:"Сильный ген, который проявляется / слабый, который прячется.",ex:"Brown eyes are dominant over blue."},
+        {en:"Inheritance",ru:"Наследование",def:"Передача признаков от родителей к потомству.",ex:"Inheritance explains why you look like your parents."},
+        {en:"Pathogen",ru:"Патоген (возбудитель)",def:"Микроб, вызывающий болезнь.",ex:"A virus is a type of pathogen."},
+        {en:"Immunity",ru:"Иммунитет",def:"Защита тела от болезней.",ex:"Vaccines give us immunity to disease."},
+        {en:"Homeostasis",ru:"Гомеостаз",def:"Поддержание стабильной внутренней среды тела.",ex:"Homeostasis keeps your body temperature steady."}
+      ]
+    },
+    {
+      id:"chemistry", name:"Химия", nameEn:"Chemistry", ic:"🧪",
+      exam:"Pearson Edexcel IGCSE", color:"#fb7185",
+      desc:"Атомы, реакции, кислоты, периодическая таблица. Базовые слова реакций и состояний вещества.",
+      topics:["Atoms","Reactions","Acids","States of matter"],
+      terms:[
+        {en:"Atom",ru:"Атом",def:"Мельчайшая частица элемента.",ex:"An atom has a nucleus and electrons."},
+        {en:"Element",ru:"Элемент",def:"Вещество из одного вида атомов (из таблицы Менделеева).",ex:"Oxygen is an element."},
+        {en:"Compound",ru:"Соединение",def:"Вещество из двух+ элементов, химически связанных.",ex:"Water is a compound of hydrogen and oxygen."},
+        {en:"Mixture",ru:"Смесь",def:"Вещества вместе, но НЕ связанные химически.",ex:"Air is a mixture of gases."},
+        {en:"Molecule",ru:"Молекула",def:"Два или больше атомов, соединённых вместе.",ex:"A water molecule is H₂O."},
+        {en:"Ion",ru:"Ион",def:"Атом с зарядом (потерял или получил электроны).",ex:"A sodium ion has a positive charge."},
+        {en:"Periodic table",ru:"Периодическая таблица",def:"Таблица всех элементов по группам и периодам.",ex:"Metals are on the left of the periodic table."},
+        {en:"Reactant / Product",ru:"Реагент / Продукт",def:"Что вступает в реакцию / что получается.",ex:"In a reaction, reactants turn into products."},
+        {en:"Covalent / Ionic bond",ru:"Ковалентная / Ионная связь",def:"Атомы делят электроны / передают электроны.",ex:"Water has covalent bonds; salt has ionic bonds."},
+        {en:"Acid / Alkali",ru:"Кислота / Щёлочь",def:"Вещество с pH ниже 7 / выше 7.",ex:"Lemon juice is an acid; soap is an alkali."},
+        {en:"pH scale",ru:"Шкала pH",def:"Шкала от 0 до 14: насколько кислотное или щелочное вещество.",ex:"A pH of 7 is neutral."},
+        {en:"Neutralisation",ru:"Нейтрализация",def:"Реакция кислоты со щёлочью, дающая соль и воду.",ex:"Neutralisation produces a salt and water."},
+        {en:"Oxidation / Reduction",ru:"Окисление / Восстановление",def:"Потеря кислорода/электронов / приобретение.",ex:"Rusting is the oxidation of iron."},
+        {en:"Electrolysis",ru:"Электролиз",def:"Разложение вещества электрическим током.",ex:"Electrolysis splits water into hydrogen and oxygen."},
+        {en:"Catalyst",ru:"Катализатор",def:"Вещество, ускоряющее реакцию, но не расходующееся.",ex:"A catalyst speeds up the reaction."},
+        {en:"Solution / Solvent / Solute",ru:"Раствор / Растворитель / Растворённое",def:"Смесь / жидкость, которая растворяет / то, что растворяют.",ex:"In salt water, water is the solvent and salt is the solute."},
+        {en:"Distillation",ru:"Дистилляция (перегонка)",def:"Разделение жидкостей нагреванием и охлаждением.",ex:"Distillation separates alcohol from water."},
+        {en:"Filtration",ru:"Фильтрация",def:"Отделение твёрдого от жидкости через фильтр.",ex:"Filtration removes sand from the water."},
+        {en:"Exothermic / Endothermic",ru:"Экзотермическая / Эндотермическая",def:"Реакция выделяет тепло / поглощает тепло.",ex:"Burning is exothermic; it releases heat."},
+        {en:"State of matter",ru:"Агрегатное состояние",def:"Твёрдое, жидкое или газообразное.",ex:"Heating changes the state of matter from solid to liquid."}
+      ]
+    }
+  ]
+};
+
+/* flat list of every studyable module (classroom + subjects) */
+const MODULES = [DATA.classroom, ...DATA.subjects];
+function moduleById(id){ return MODULES.find(m=>m.id===id); }
+function itemId(mid,i){ return mid+"#"+i; }
+const TOTAL_ITEMS = MODULES.reduce((a,m)=>a+m.terms.length,0);
+const DAILY_GOAL = 20;
+const DEPARTURE = new Date("2026-09-01T00:00:00");
+
+/* =========================================================================
+   STATE
+   ========================================================================= */
+const SKEY="presixth_v2";
+let S = load();
+function load(){
+  try{ const r=JSON.parse(localStorage.getItem(SKEY)); if(r) return r; }catch(e){}
+  return { xp:0, streak:0, lastDay:null, todayCount:0, todayDay:null, mastery:{}, voice:null };
+}
+function save(){ localStorage.setItem(SKEY, JSON.stringify(S)); }
+function todayStr(){ const d=new Date(); return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate(); }
+function rollDay(){
+  const t=todayStr();
+  if(S.todayDay!==t){ S.todayDay=t; S.todayCount=0; }
+}
+function registerStudy(n){
+  rollDay();
+  const t=todayStr();
+  if(S.lastDay!==t){
+    // streak logic
+    const y=new Date(); y.setDate(y.getDate()-1);
+    const ys=y.getFullYear()+"-"+(y.getMonth()+1)+"-"+y.getDate();
+    S.streak = (S.lastDay===ys)? (S.streak+1) : 1;
+    S.lastDay=t;
+  }
+  S.xp += n;
+  save();
+}
+function masteryOf(id){ return S.mastery[id]||0; }   // 0..5
+function bump(id, up){
+  const cur=masteryOf(id);
+  S.mastery[id] = up ? Math.min(5,cur+1) : 0;
+  save();
+}
+function moduleProgress(m){
+  let learned=0;
+  m.terms.forEach((_,i)=>{ if(masteryOf(itemId(m.id,i))>=3) learned++; });
+  return {learned, total:m.terms.length, pct: Math.round(learned/m.terms.length*100)};
+}
+function overallLearned(){
+  let n=0;
+  MODULES.forEach(m=>m.terms.forEach((_,i)=>{ if(masteryOf(itemId(m.id,i))>=3) n++; }));
+  return n;
+}
+function levelInfo(){
+  const lv = Math.floor(S.xp/200)+1;
+  const into = S.xp%200;
+  return { lv, into, pct: Math.round(into/200*100) };
+}
+
+/* =========================================================================
+   SPEECH (British voice)
+   ========================================================================= */
+let VOICES=[];
+function loadVoices(){ VOICES = window.speechSynthesis ? speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){
+  loadVoices();
+  speechSynthesis.onvoiceschanged = loadVoices;
+}
+function pickVoice(){
+  if(!VOICES.length) loadVoices();
+  return VOICES.find(v=>/en[-_]GB/i.test(v.lang)) ||
+         VOICES.find(v=>/Daniel|Kate|Serena|Arthur|UK English/i.test(v.name)) ||
+         VOICES.find(v=>/^en/i.test(v.lang)) || null;
+}
+function speak(text, rate){
+  if(!window.speechSynthesis) { toast("🔇 Озвучка недоступна на этом устройстве"); return; }
+  try{
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text.replace(/[²³]/g," squared "));
+    const v=pickVoice(); if(v) u.voice=v;
+    u.lang="en-GB"; u.rate=rate||0.9; u.pitch=1;
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+/* =========================================================================
+   ROUTER / VIEW
+   ========================================================================= */
+const app=document.getElementById("app");
+let view={name:"home"};
+function go(name, id){ view={name, id}; render(); window.scrollTo(0,0); }
+
+document.querySelectorAll(".nav button").forEach(b=>{
+  b.addEventListener("click",()=>go(b.dataset.nav));
+});
+function setNav(name){
+  document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("on", b.dataset.nav===name));
+}
+
+function toast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg; t.classList.add("show");
+  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove("show"),1700);
+}
+
+function render(){
+  rollDay();
+  const navMap={home:"home",subjects:"subjects",subject:"subjects",study:"subjects",
+    quiz:"subjects",listen:"subjects",daily:"daily",progress:"progress"};
+  setNav(navMap[view.name]||"home");
+  if(view.name==="home") return renderHome();
+  if(view.name==="subjects") return renderSubjects();
+  if(view.name==="subject") return renderSubject(view.id);
+  if(view.name==="study") return renderStudy(view.id);
+  if(view.name==="quiz") return renderQuiz(view.id);
+  if(view.name==="listen") return renderListen(view.id);
+  if(view.name==="daily") return renderDaily();
+  if(view.name==="progress") return renderProgress();
+}
+
+/* ---------- HOME ---------- */
+function renderHome(){
+  const li=levelInfo();
+  const days=Math.max(0,Math.ceil((DEPARTURE-new Date())/86400000));
+  const weeks=Math.floor(days/7);
+  const learned=overallLearned();
+  const goalPct=Math.min(100,Math.round(S.todayCount/DAILY_GOAL*100));
+  // phrase of the day
+  const cl=DATA.classroom.terms;
+  const potd=cl[(new Date().getDate())%cl.length];
+
+  app.innerHTML=`
+  <div class="wrap fade">
+    <div class="top">
+      <div class="brand">King Edward's · Witley · Pre-Sixth</div>
+      <div class="hi">Привет 👋 Готовимся к учёбе</div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><b>${S.streak}🔥</b><span>дней подряд</span></div>
+      <div class="stat"><b>Lv ${li.lv}</b><span>${S.xp} XP</span></div>
+      <div class="stat"><b>${learned}</b><span>выучено слов</span></div>
+    </div>
+
+    <div class="panel">
+      <div class="ring">
+        ${ringSvg(goalPct)}
+        <div class="grow">
+          <div class="between"><b>Цель на сегодня</b><span class="mut small">${S.todayCount}/${DAILY_GOAL}</span></div>
+          <div class="mut small" style="margin-top:4px">${goalPct>=100?"Готово! Отличная работа 🎉":"Пройди ещё "+(DAILY_GOAL-S.todayCount)+" карточек"}</div>
+          <button class="btn acc full" style="margin-top:12px" onclick="go('daily')">⚡️ Быстрая тренировка</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="background:linear-gradient(160deg,#1a2550,#121a33)">
+      <div class="between"><b>✈️ До отъезда в Англию</b><span class="pill">1 сентября</span></div>
+      <div class="count">
+        <div><b>${days}</b><span>дней</span></div>
+        <div><b>${weeks}</b><span>недель</span></div>
+        <div><b>${Math.round(learned/TOTAL_ITEMS*100)}%</b><span>курса</span></div>
+      </div>
+      <div class="mut small" style="margin-top:10px">Если учить по ${DAILY_GOAL} слов в день — пройдёшь весь курс примерно за ${Math.ceil(TOTAL_ITEMS/DAILY_GOAL)} дней.</div>
+    </div>
+
+    <div class="panel">
+      <div class="between" style="margin-bottom:8px"><b>🗣️ Фраза дня</b>
+        <button class="iconbtn" onclick="speak('${esc(potd.en)}')">🔊</button></div>
+      <div class="ru" style="font-size:20px">${potd.en}</div>
+      <div class="def" style="color:var(--mut)">${potd.ru}</div>
+      <div class="ex" style="margin-top:6px">“${potd.ex}”</div>
+    </div>
+
+    <div class="secttl">Продолжить</div>
+    <div class="grid">
+      ${MODULES.slice(0,2).map(subjCard).join("")}
+    </div>
+    <button class="btn full" style="margin-top:12px" onclick="go('subjects')">Все предметы →</button>
+  </div>`;
+}
+
+function ringSvg(pct){
+  const r=24, c=2*Math.PI*r, off=c-(pct/100)*c;
+  return `<svg class="ringsvg" viewBox="0 0 62 62">
+    <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6ea8fe"/><stop offset="1" stop-color="#8b7bff"/></linearGradient></defs>
+    <circle class="ringbg" cx="31" cy="31" r="${r}"></circle>
+    <circle class="ringfg" cx="31" cy="31" r="${r}" stroke-dasharray="${c}" stroke-dashoffset="${off}"
+      transform="rotate(-90 31 31)"></circle>
+    <text x="31" y="36" text-anchor="middle" font-size="15" font-weight="800" fill="#eaf0ff">${pct}%</text>
+  </svg>`;
+}
+
+/* ---------- SUBJECTS LIST ---------- */
+function subjCard(m){
+  const p=moduleProgress(m);
+  return `<button class="subj" onclick="go('subject','${m.id}')">
+    <div class="glow" style="background:radial-gradient(80% 80% at 80% 0,${m.color||'#6ea8fe'},transparent)"></div>
+    <div class="ic">${m.ic}</div>
+    <h3>${m.name}</h3>
+    <div class="ex">${m.exam}</div>
+    <div class="bar"><i style="width:${p.pct}%"></i></div>
+    <div class="pc"><span>${p.learned}/${p.total}</span><span>${p.pct}%</span></div>
+  </button>`;
+}
+function renderSubjects(){
+  app.innerHTML=`<div class="wrap fade">
+    <div class="top"><div class="brand">6 предметов + язык урока</div><div class="hi">Что учим</div></div>
+    <div class="item" style="margin-top:8px;background:linear-gradient(160deg,#1a2550,#121a33)">
+      <div class="ic" style="font-size:24px">🗣️</div>
+      <div class="grow">
+        <b>Начни с «Язык урока»</b>
+        <div class="mut small">Фразы учителя важнее терминов: если поймёшь инструкции — не потеряешься на уроке.</div>
+      </div>
+    </div>
+    <div class="grid">${MODULES.map(subjCard).join("")}</div>
+  </div>`;
+}
+
+/* ---------- SUBJECT OVERVIEW ---------- */
+function renderSubject(id){
+  const m=moduleById(id); const p=moduleProgress(m);
+  app.innerHTML=`<div class="wrap fade">
+    <div class="topbar">
+      <button class="back" onclick="go('subjects')">←</button>
+      <div><div class="brand">${m.exam}</div><h2 style="font-size:22px">${m.ic} ${m.name}</h2></div>
+    </div>
+    <div class="panel">
+      <div class="mut" style="line-height:1.5">${m.desc}</div>
+      <div style="margin-top:12px">${m.topics.map(t=>`<span class="tag">${t}</span>`).join("")}</div>
+      <div class="progressline" style="margin-top:14px"><i style="width:${p.pct}%"></i></div>
+      <div class="between small mut"><span>Выучено ${p.learned} из ${p.total}</span><span>${p.pct}%</span></div>
+    </div>
+    <div class="actions">
+      <button class="btn acc" onclick="go('study','${id}')">🃏<br>Карточки</button>
+      <button class="btn" onclick="go('listen','${id}')">🎧<br>Аудио</button>
+      <button class="btn" onclick="go('quiz','${id}')">✍️<br>Тест</button>
+    </div>
+    <div class="secttl">Все слова (${m.terms.length})</div>
+    ${m.terms.map((t,i)=>{
+      const lv=masteryOf(itemId(id,i));
+      const star = lv>=5?"🟢":lv>=3?"🟡":lv>0?"🟠":"⚪️";
+      return `<div class="item">
+        <button class="iconbtn" onclick="speak('${esc(t.en)}')">🔊</button>
+        <div class="grow" onclick="go('study','${id}')">
+          <b>${t.en}</b>
+          <div class="mut small">${t.ru}</div>
+        </div>
+        <span title="уровень запоминания">${star}</span>
+      </div>`;
+    }).join("")}
+  </div>`;
+}
+
+/* ---------- STUDY (flashcards) ---------- */
+let study={list:[],i:0,flip:false,mid:null};
+function renderStudy(id){
+  const m=moduleById(id);
+  // order: least-known first
+  const order=m.terms.map((t,i)=>({t,i,lv:masteryOf(itemId(id,i))})).sort((a,b)=>a.lv-b.lv);
+  study={list:order, i:0, flip:false, mid:id};
+  drawCard();
+}
+function drawCard(){
+  const m=moduleById(study.mid);
+  if(study.i>=study.list.length){ return studyDone(m); }
+  const {t,i}=study.list[study.i];
+  const pct=Math.round(study.i/study.list.length*100);
+  app.innerHTML=`<div class="wrap fade">
+    <div class="topbar">
+      <button class="back" onclick="go('subject','${m.id}')">←</button>
+      <div class="grow"><div class="brand">${m.ic} ${m.name}</div>
+        <div class="progressline" style="margin-top:6px"><i style="width:${pct}%"></i></div>
+      </div>
+      <span class="pill">${study.i+1}/${study.list.length}</span>
+    </div>
+
+    <div class="deckwrap">
+      <div class="fcard${study.flip?' flip':''}" id="fcard">
+        <div class="face front" onclick="flipCard()">
+          <div class="lbl">Английский</div>
+          <div class="term">${t.en}</div>
+          <button class="speaker" onclick="event.stopPropagation();speak('${esc(t.en)}')">🔊</button>
+          <div class="tap">Нажми, чтобы увидеть перевод</div>
+        </div>
+        <div class="face rear" onclick="flipCard()">
+          <div class="lbl">Перевод</div>
+          <div class="ru">${t.ru}</div>
+          <div class="lbl">Что это значит</div>
+          <div class="def">${t.def}</div>
+          <div class="lbl">Пример с урока</div>
+          <div class="ex">“${t.ex}”</div>
+          <button class="btn sm" style="margin-top:14px" onclick="event.stopPropagation();speak('${esc(t.ex)}')">🔊 Послушать пример</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions" style="grid-template-columns:1fr 1fr">
+      <button class="btn" onclick="answerCard(false)">🔁 Повторить</button>
+      <button class="btn acc" onclick="answerCard(true)">✅ Знаю</button>
+    </div>
+    <div class="mut small" style="text-align:center;margin-top:10px">«Знаю» 3 раза → слово выучено 🟢</div>
+  </div>`;
+}
+
+function flipCard(){
+  study.flip=!study.flip;
+  const c=document.getElementById("fcard"); if(c) c.classList.toggle("flip",study.flip);
+  const {t}=study.list[study.i];
+  if(study.flip){} else {}
+}
+function answerCard(known){
+  const {i}=study.list[study.i];
+  bump(itemId(study.mid,i), known);
+  registerStudy(known?5:2);
+  study.i++; study.flip=false;
+  drawCard();
+}
+function studyDone(m){
+  const p=moduleProgress(m);
+  confetti();
+  app.innerHTML=`<div class="wrap fade">
+    <div class="empty">
+      <div style="font-size:54px">🎉</div>
+      <h2 style="margin:10px 0">Колода пройдена!</h2>
+      <div class="mut">${m.ic} ${m.name} — выучено ${p.learned}/${p.total}</div>
+      <div class="panel" style="text-align:left">
+        <div class="between"><span>+ опыт</span><b>+${m.terms.length*5} XP</b></div>
+        <div class="between" style="margin-top:6px"><span>Прогресс предмета</span><b>${p.pct}%</b></div>
+      </div>
+      <button class="btn acc full" style="margin-top:6px" onclick="go('study','${m.id}')">🔁 Ещё раз</button>
+      <button class="btn full" style="margin-top:10px" onclick="go('quiz','${m.id}')">✍️ Проверить тестом</button>
+      <button class="btn full" style="margin-top:10px" onclick="go('subject','${m.id}')">← К предмету</button>
+    </div>
+  </div>`;
+}
+
+/* ---------- QUIZ ---------- */
+let quiz={list:[],i:0,score:0,mid:null,locked:false};
+function renderQuiz(id){
+  const m=moduleById(id);
+  const pool=m.terms.map((t,i)=>({t,i}));
+  shuffle(pool);
+  quiz={list:pool.slice(0,Math.min(10,pool.length)),i:0,score:0,mid:id,locked:false};
+  drawQuiz();
+}
+function drawQuiz(){
+  const m=moduleById(quiz.mid);
+  if(quiz.i>=quiz.list.length) return quizDone(m);
+  const cur=quiz.list[quiz.i];
+  const reverse = Math.random()<0.5; // sometimes EN->RU, sometimes RU->EN
+  const prompt = reverse ? cur.t.ru : cur.t.en;
+  const answer = reverse ? cur.t.en : cur.t.ru;
+  // build options
+  const others=m.terms.filter((_,i)=>i!==cur.i);
+  shuffle(others);
+  const opts=[answer, ...others.slice(0,3).map(o=>reverse?o.en:o.ru)];
+  shuffle(opts);
+  quiz._answer=answer; quiz._reverse=reverse; quiz.locked=false;
+  const pct=Math.round(quiz.i/quiz.list.length*100);
+  app.innerHTML=`<div class="wrap fade">
+    <div class="topbar">
+      <button class="back" onclick="go('subject','${m.id}')">←</button>
+      <div class="grow"><div class="brand">Тест · ${m.name}</div>
+        <div class="progressline" style="margin-top:6px"><i style="width:${pct}%"></i></div></div>
+      <span class="pill">${quiz.i+1}/${quiz.list.length}</span>
+    </div>
+    <div class="panel" style="text-align:center">
+      <div class="qhead">${reverse?"Как это по-английски?":"Что это значит?"}
+        ${reverse?"":`<button class="iconbtn" style="display:inline-flex;vertical-align:middle" onclick="speak('${esc(cur.t.en)}')">🔊</button>`}</div>
+      <div class="qprompt">${prompt}</div>
+    </div>
+    <div id="opts">
+      ${opts.map(o=>`<button class="opt" onclick="pickOpt(this,'${esc(o)}')">${o}</button>`).join("")}
+    </div>
+    <div class="between mut small" style="margin-top:6px">
+      <span>Очки: ${quiz.score}</span><span>🔥 ${S.streak} дней</span></div>
+  </div>`;
+}
+function pickOpt(btn,val){
+  if(quiz.locked) return; quiz.locked=true;
+  const correct = decode(val)===quiz._answer;
+  const cur=quiz.list[quiz.i];
+  document.querySelectorAll("#opts .opt").forEach(b=>{
+    const bv=b.textContent;
+    if(bv===quiz._answer) b.classList.add("correct");
+    else b.classList.add("dim");
+  });
+  if(correct){ btn.classList.add("correct"); quiz.score++; bump(itemId(quiz.mid,cur.i),true); registerStudy(10); }
+  else { btn.classList.remove("dim"); btn.classList.add("wrong"); bump(itemId(quiz.mid,cur.i),false); registerStudy(3);
+    if(!quiz._reverse) speak(cur.t.en); }
+  setTimeout(()=>{ quiz.i++; drawQuiz(); }, correct?650:1400);
+}
+function quizDone(m){
+  const pct=Math.round(quiz.score/quiz.list.length*100);
+  if(pct>=80) confetti();
+  app.innerHTML=`<div class="wrap fade"><div class="empty">
+    <div style="font-size:54px">${pct>=80?"🏆":pct>=50?"👍":"💪"}</div>
+    <h2 style="margin:10px 0">${quiz.score} из ${quiz.list.length} верно</h2>
+    <div class="mut">${pct>=80?"Отличный результат!":pct>=50?"Хорошо, но повтори слабые слова.":"Прогоним карточки ещё раз?"}</div>
+    <button class="btn acc full" style="margin-top:14px" onclick="go('study','${m.id}')">🃏 Учить карточки</button>
+    <button class="btn full" style="margin-top:10px" onclick="go('quiz','${m.id}')">🔁 Ещё тест</button>
+    <button class="btn full" style="margin-top:10px" onclick="go('subject','${m.id}')">← К предмету</button>
+  </div></div>`;
+}
+
+/* ---------- LISTEN (audio comprehension) ---------- */
+let listen={list:[],i:0,mid:null,score:0,locked:false};
+function renderListen(id){
+  const m=moduleById(id);
+  const pool=m.terms.map((t,i)=>({t,i})); shuffle(pool);
+  listen={list:pool.slice(0,Math.min(10,pool.length)),i:0,mid:id,score:0,locked:false};
+  drawListen();
+}
+function drawListen(){
+  const m=moduleById(listen.mid);
+  if(listen.i>=listen.list.length) return listenDone(m);
+  const cur=listen.list[listen.i];
+  const others=m.terms.filter((_,i)=>i!==cur.i); shuffle(others);
+  const opts=[cur.t.ru, ...others.slice(0,3).map(o=>o.ru)]; shuffle(opts);
+  listen.locked=false;
+  const pct=Math.round(listen.i/listen.list.length*100);
+  app.innerHTML=`<div class="wrap fade">
+    <div class="topbar">
+      <button class="back" onclick="go('subject','${m.id}')">←</button>
+      <div class="grow"><div class="brand">Аудирование · ${m.name}</div>
+        <div class="progressline" style="margin-top:6px"><i style="width:${pct}%"></i></div></div>
+      <span class="pill">${listen.i+1}/${listen.list.length}</span>
+    </div>
+    <div class="panel" style="text-align:center">
+      <div class="qhead">Слушай и выбери перевод</div>
+      <button class="speaker" style="margin:10px auto;width:84px;height:84px;font-size:34px"
+        onclick="speak('${esc(cur.t.en)}')">🔊</button>
+      <div class="mut small">Нажми ещё раз, чтобы повторить</div>
+      <button class="btn sm" style="margin-top:10px;display:inline-flex" onclick="speak('${esc(cur.t.ex)}',0.85)">🎧 Послушать в примере</button>
+    </div>
+    <div id="opts">
+      ${opts.map(o=>`<button class="opt" onclick="pickListen(this,'${esc(o)}')">${o}</button>`).join("")}
+    </div>
+  </div>`;
+  setTimeout(()=>speak(cur.t.en),350);
+}
+function pickListen(btn,val){
+  if(listen.locked) return; listen.locked=true;
+  const cur=listen.list[listen.i];
+  const correct=decode(val)===cur.t.ru;
+  document.querySelectorAll("#opts .opt").forEach(b=>{
+    if(b.textContent===cur.t.ru) b.classList.add("correct"); else b.classList.add("dim");
+  });
+  if(correct){ btn.classList.add("correct"); listen.score++; bump(itemId(listen.mid,cur.i),true); registerStudy(10); }
+  else{ btn.classList.remove("dim"); btn.classList.add("wrong"); bump(itemId(listen.mid,cur.i),false); registerStudy(3); }
+  // reveal the english word
+  const w=document.createElement("div"); w.className="mut small"; w.style.textAlign="center"; w.style.marginTop="8px";
+  w.innerHTML=`Это было: <b style="color:var(--txt)">${cur.t.en}</b>`;
+  document.getElementById("opts").appendChild(w);
+  setTimeout(()=>{ listen.i++; drawListen(); }, 1300);
+}
+function listenDone(m){
+  const pct=Math.round(listen.score/listen.list.length*100);
+  if(pct>=80) confetti();
+  app.innerHTML=`<div class="wrap fade"><div class="empty">
+    <div style="font-size:54px">${pct>=80?"🎧✨":"🎧"}</div>
+    <h2 style="margin:10px 0">${listen.score} из ${listen.list.length} на слух</h2>
+    <div class="mut">Понимание на слух — самый важный навык для уроков. Тренируй каждый день!</div>
+    <button class="btn acc full" style="margin-top:14px" onclick="go('listen','${m.id}')">🔁 Ещё раз</button>
+    <button class="btn full" style="margin-top:10px" onclick="go('subject','${m.id}')">← К предмету</button>
+  </div></div>`;
+}
+
+/* ---------- DAILY MIX ---------- */
+function renderDaily(){
+  // build a mixed deck across all modules, prioritising not-yet-mastered
+  const all=[];
+  MODULES.forEach(m=>m.terms.forEach((t,i)=>all.push({m,t,i,lv:masteryOf(itemId(m.id,i))})));
+  all.sort((a,b)=>a.lv-b.lv || Math.random()-0.5);
+  const list=all.slice(0,DAILY_GOAL);
+  // reuse study engine but mixed
+  study={list:list.map(x=>({t:x.t,i:x.i,_m:x.m.id})),i:0,flip:false,mid:"__mix__"};
+  drawMix();
+}
+function drawMix(){
+  if(study.i>=study.list.length){ return mixDone(); }
+  const cur=study.list[study.i]; const t=cur.t; const m=moduleById(cur._m);
+  const pct=Math.round(study.i/study.list.length*100);
+  app.innerHTML=`<div class="wrap fade">
+    <div class="topbar">
+      <button class="back" onclick="go('home')">←</button>
+      <div class="grow"><div class="brand">⚡️ Дневная тренировка</div>
+        <div class="progressline" style="margin-top:6px"><i style="width:${pct}%"></i></div></div>
+      <span class="pill">${study.i+1}/${study.list.length}</span>
+    </div>
+    <div class="row" style="margin-bottom:6px"><span class="tag">${m.ic} ${m.name}</span></div>
+    <div class="deckwrap">
+      <div class="fcard${study.flip?' flip':''}" id="fcard">
+        <div class="face front" onclick="flipMix()">
+          <div class="lbl">Английский</div>
+          <div class="term">${t.en}</div>
+          <button class="speaker" onclick="event.stopPropagation();speak('${esc(t.en)}')">🔊</button>
+          <div class="tap">Нажми, чтобы перевернуть</div>
+        </div>
+        <div class="face rear" onclick="flipMix()">
+          <div class="lbl">Перевод</div><div class="ru">${t.ru}</div>
+          <div class="lbl">Значение</div><div class="def">${t.def}</div>
+          <div class="lbl">Пример</div><div class="ex">“${t.ex}”</div>
+          <button class="btn sm" style="margin-top:14px" onclick="event.stopPropagation();speak('${esc(t.ex)}')">🔊 Пример</button>
+        </div>
+      </div>
+    </div>
+    <div class="actions" style="grid-template-columns:1fr 1fr">
+      <button class="btn" onclick="answerMix(false)">🔁 Повторить</button>
+      <button class="btn acc" onclick="answerMix(true)">✅ Знаю</button>
+    </div>
+  </div>`;
+}
+function flipMix(){ study.flip=!study.flip; const c=document.getElementById("fcard"); if(c)c.classList.toggle("flip",study.flip); }
+function answerMix(known){
+  const cur=study.list[study.i];
+  bump(itemId(cur._m,cur.i),known);
+  registerStudy(known?5:2);
+  study.i++; study.flip=false; drawMix();
+}
+function mixDone(){
+  confetti();
+  const goalPct=Math.min(100,Math.round(S.todayCount/DAILY_GOAL*100));
+  app.innerHTML=`<div class="wrap fade"><div class="empty">
+    <div style="font-size:54px">${goalPct>=100?"🏅":"⚡️"}</div>
+    <h2 style="margin:10px 0">Тренировка завершена!</h2>
+    <div class="mut">Сегодня пройдено ${S.todayCount} карточек · 🔥 ${S.streak} дней подряд</div>
+    <div class="panel">${ringSvgRow(goalPct)}</div>
+    <button class="btn acc full" onclick="go('daily')">🔁 Ещё раунд</button>
+    <button class="btn full" style="margin-top:10px" onclick="go('home')">🏠 На главную</button>
+  </div></div>`;
+}
+function ringSvgRow(pct){
+  return `<div class="ring">${ringSvg(pct)}<div class="grow" style="text-align:left">
+    <b>Цель дня ${pct>=100?"выполнена 🎉":""}</b>
+    <div class="mut small">${S.todayCount}/${DAILY_GOAL} карточек</div></div></div>`;
+}
+
+/* ---------- PROGRESS ---------- */
+function renderProgress(){
+  const li=levelInfo();
+  const learned=overallLearned();
+  const rows=MODULES.map(m=>{
+    const p=moduleProgress(m);
+    return `<div class="item">
+      <div class="ic" style="font-size:22px">${m.ic}</div>
+      <div class="grow">
+        <div class="between"><b>${m.name}</b><span class="mut small">${p.learned}/${p.total}</span></div>
+        <div class="bar" style="margin-top:8px;background:#0f1730"><i style="display:block;height:100%;border-radius:6px;width:${p.pct}%;background:linear-gradient(90deg,${m.color||'#6ea8fe'},#8b7bff)"></i></div>
+      </div>
+    </div>`;
+  }).join("");
+  app.innerHTML=`<div class="wrap fade">
+    <div class="top"><div class="brand">Твоя статистика</div><div class="hi">📈 Прогресс</div></div>
+    <div class="stats">
+      <div class="stat"><b>${S.streak}🔥</b><span>серия</span></div>
+      <div class="stat"><b>${S.xp}</b><span>XP</span></div>
+      <div class="stat"><b>${Math.round(learned/TOTAL_ITEMS*100)}%</b><span>курса</span></div>
+    </div>
+    <div class="panel">
+      <div class="between"><b>Уровень ${li.lv}</b><span class="mut small">${li.into}/200 XP</span></div>
+      <div class="progressline" style="margin-top:8px"><i style="width:${li.pct}%"></i></div>
+      <div class="mut small" style="margin-top:8px">Выучено ${learned} из ${TOTAL_ITEMS} слов и фраз. Слово считается выученным после 3 ответов «Знаю» 🟢.</div>
+    </div>
+    <div class="secttl">По предметам</div>
+    ${rows}
+    <div class="panel" style="text-align:center">
+      <div class="mut small">Хочешь начать заново?</div>
+      <button class="btn full" style="margin-top:10px" onclick="resetAll()">♻️ Сбросить прогресс</button>
+    </div>
+    <div style="height:10px"></div>
+  </div>`;
+}
+function resetAll(){
+  if(confirm("Сбросить весь прогресс, серию и XP?")){
+    S={ xp:0, streak:0, lastDay:null, todayCount:0, todayDay:null, mastery:{}, voice:null };
+    save(); toast("Прогресс сброшен"); go("home");
+  }
+}
+
+/* =========================================================================
+   UTIL
+   ========================================================================= */
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function esc(s){ return String(s)
+  .replace(/&/g,"&amp;").replace(/"/g,"&quot;")
+  .replace(/\\/g,"\\\\").replace(/'/g,"\\'").replace(/\n/g," "); }
+function decode(s){ return String(s).replace(/\\'/g,"'").replace(/\\\\/g,"\\"); }
+
+function confetti(){
+  const c=document.createElement("div"); c.className="conf"; document.body.appendChild(c);
+  const colors=["#6ea8fe","#8b7bff","#34d399","#fbbf24","#fb7185"];
+  for(let i=0;i<70;i++){
+    const p=document.createElement("div");
+    const s=6+Math.random()*8;
+    p.style.cssText=`position:absolute;top:-20px;left:${Math.random()*100}%;width:${s}px;height:${s}px;
+      background:${colors[i%colors.length]};border-radius:${Math.random()<.5?'50%':'2px'};
+      opacity:.9;transform:rotate(${Math.random()*360}deg)`;
+    c.appendChild(p);
+    const dur=1400+Math.random()*1200;
+    p.animate([{transform:`translateY(0) rotate(0)`},{transform:`translateY(110vh) rotate(${720*(Math.random()<.5?1:-1)}deg)`}],
+      {duration:dur,easing:"cubic-bezier(.2,.6,.4,1)"});
+    setTimeout(()=>p.remove(),dur);
+  }
+  setTimeout(()=>c.remove(),2800);
+}
+
+/* init: unlock speech on first interaction (iOS) */
+document.body.addEventListener("touchstart",function once(){
+  try{ const u=new SpeechSynthesisUtterance(" "); u.volume=0; speechSynthesis.speak(u); }catch(e){}
+  document.body.removeEventListener("touchstart",once);
+},{once:true});
+
+render();
+
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+}
+</script>
+</body>
+</html>
