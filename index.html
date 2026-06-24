@@ -710,18 +710,28 @@ const GRAMMAR = {
       mistake:{wrong:"I am agree. People is happy. He make his homework.",right:"I agree. People are happy. He does his homework.",why:"agree — глагол (без am); people — мн.ч.; homework делают через do."}}
   ],
   practice:[
-    {q:"I ___ my homework yesterday.",options:["did","have done","do","am doing"],answer:"did",explain:"«yesterday» → Past Simple (did)."},
-    {q:"If it ___ tomorrow, we will stay in.",options:["rains","will rain","rained","is raining"],answer:"rains",explain:"После «if» (1-й тип) — Present Simple, без will."},
-    {q:"I want to be ___ engineer.",options:["an","a","the","—"],answer:"an",explain:"Перед гласным звуком (e-) → an."},
-    {q:"The water ___ to 100°C.",options:["is heated","is heat","heats by us","has heat"],answer:"is heated",explain:"Пассив: be + 3-я форма (heated)."},
-    {q:"It was raining; ___, we cancelled the trip.",options:["therefore","however","such as","despite"],answer:"therefore",explain:"Причина → следствие: therefore."},
-    {q:"___ a good idea.",options:["It's","Its","Its'","Is"],answer:"It's",explain:"It's = it is (с апострофом)."},
-    {q:"Choose the correct sentence:",options:["I saw him last week.","I have seen him last week.","I seen him last week.","I am see him last week."],answer:"I saw him last week.",explain:"«last week» → Past Simple."},
-    {q:"She gave me some useful ___.",options:["advice","advices","an advice","advice's"],answer:"advice",explain:"advice — неисчисляемое, без множественного числа."},
-    {q:"Success ___ on hard work.",options:["depends","depend","is depend","depending"],answer:"depends",explain:"depend ON; 3-е лицо ед.ч. → depends."},
-    {q:"People ___ different opinions.",options:["have","has","is having","was"],answer:"have",explain:"people — множественное → have."},
-    {q:"He is good ___ maths.",options:["at","in","on","with"],answer:"at",explain:"good AT something."},
-    {q:"Formal version of 'kids don't like it':",options:["Children do not like it.","Kids dont like it.","Kids really hate it fr.","Children ain't liking it."],answer:"Children do not like it.",explain:"Формально: children + полная форма do not, без сленга."}
+    {lesson:"tenses",q:"I ___ my homework yesterday.",options:["did","have done","do","am doing"],answer:"did",explain:"«yesterday» → Past Simple (did)."},
+    {lesson:"tenses",q:"Choose the correct sentence:",options:["I saw him last week.","I have seen him last week.","I seen him last week.","I am see him last week."],answer:"I saw him last week.",explain:"«last week» → Past Simple."},
+    {lesson:"conditionals",q:"If it ___ tomorrow, we will stay in.",options:["rains","will rain","rained","is raining"],answer:"rains",explain:"После «if» (1-й тип) — Present Simple, без will."},
+    {lesson:"conditionals",q:"If I ___ rich, I would travel the world.",options:["were","am","will be","be"],answer:"were",explain:"2-й тип (нереальное настоящее): If I were…"},
+    {lesson:"articles",q:"I want to be ___ engineer.",options:["an","a","the","—"],answer:"an",explain:"Перед гласным звуком (e-) → an."},
+    {lesson:"articles",q:"___ sun rises in the east.",options:["The","A","An","—"],answer:"The",explain:"Единственное в своём роде (солнце) → the."},
+    {lesson:"passive",q:"The water ___ to 100°C.",options:["is heated","is heat","heats by us","has heat"],answer:"is heated",explain:"Пассив: be + 3-я форма (heated)."},
+    {lesson:"passive",q:"Choose the passive sentence:",options:["The bridge was built in 1900.","Workers built the bridge.","They build bridges.","We are building it."],answer:"The bridge was built in 1900.",explain:"Пассив: be + 3-я форма (was built)."},
+    {lesson:"linkers",q:"It was raining; ___, we cancelled the trip.",options:["therefore","however","such as","despite"],answer:"therefore",explain:"Причина → следствие: therefore."},
+    {lesson:"linkers",q:"___ the high price, sales increased.",options:["Despite","Because","Therefore","So"],answer:"Despite",explain:"Контраст «несмотря на» → Despite."},
+    {lesson:"punct",q:"___ a good idea.",options:["It's","Its","Its'","Is"],answer:"It's",explain:"It's = it is (с апострофом)."},
+    {lesson:"punct",q:"The dog wagged ___ tail.",options:["its","it's","its'","it is"],answer:"its",explain:"its (его) — притяжательное, без апострофа. it's = it is."},
+    {lesson:"mistakes",q:"She gave me some useful ___.",options:["advice","advices","an advice","advice's"],answer:"advice",explain:"advice — неисчисляемое, без множественного числа."},
+    {lesson:"mistakes",q:"Success ___ on hard work.",options:["depends","depend","is depend","depending"],answer:"depends",explain:"depend ON; 3-е лицо ед.ч. → depends."},
+    {lesson:"mistakes",q:"People ___ different opinions.",options:["have","has","is having","was"],answer:"have",explain:"people — множественное → have."},
+    {lesson:"mistakes",q:"He is good ___ maths.",options:["at","in","on","with"],answer:"at",explain:"good AT something."},
+    {lesson:"formal",q:"Formal version of 'kids don't like it':",options:["Children do not like it.","Kids dont like it.","Kids really hate it fr.","Children ain't liking it."],answer:"Children do not like it.",explain:"Формально: children + полная форма do not, без сленга."},
+    {lesson:"formal",q:"Самый формальный вариант:",options:["The results suggest a clear trend.","The results are gonna be big.","Results r clear tbh.","Big results, no cap."],answer:"The results suggest a clear trend.",explain:"Формальный стиль: без сокращений и сленга, с hedging (suggest)."},
+    {lesson:"peel",q:"Что означает буква E в схеме PEEL (сразу после Point)?",options:["Evidence — доказательство","Example — пример","Ending — концовка","Effect — эффект"],answer:"Evidence — доказательство",explain:"P-E-E-L: Point, Evidence, Explain, Link. Первое E — Evidence."},
+    {lesson:"peel",q:"Сколько главных мыслей должно быть в одном абзаце?",options:["Одна","Две-три","Сколько угодно","Ноль"],answer:"Одна",explain:"Правило: один абзац = одна мысль (Point)."},
+    {lesson:"introconcl",q:"Что НЕ нужно делать в заключении эссе?",options:["Вводить новый аргумент","Подвести итог","Дать финальную мысль","Повторить позицию"],answer:"Вводить новый аргумент",explain:"В заключении не вводят новые аргументы — только подытоживают."},
+    {lesson:"introconcl",q:"Хорошее начало эссе:",options:["This essay will explore how the writer presents fear.","The weather was nice and I like dogs.","In conclusion, fear is bad.","lol idk"],answer:"This essay will explore how the writer presents fear.",explain:"Вступление коротко называет тему и позицию."}
   ]
 };
 
@@ -864,7 +874,7 @@ function render(){
   if(view.name==="daily") return renderDaily();
   if(view.name==="grammar") return renderGrammar();
   if(view.name==="lesson") return renderLesson(view.id);
-  if(view.name==="gpractice") return renderGPractice();
+  if(view.name==="gpractice") return renderGPractice(view.id);
   if(view.name==="progress") return renderProgress();
 }
 
@@ -1546,15 +1556,21 @@ function renderLesson(id){
     <div class="secttl">Примеры</div>
     ${ex}
     ${mistake}
-    <button class="btn acc full" style="margin-top:16px" onclick="go('gpractice')">🎯 Проверить себя</button>
+    <button class="btn acc full" style="margin-top:16px" onclick="go('gpractice','${l.id}')">🎯 Закрепить эту тему</button>
   </div>`;
 }
 
 /* grammar practice trainer */
 let gprac={list:[],i:0,score:0,locked:false};
-function renderGPractice(){
-  const pool=GRAMMAR.practice.slice(); shuffle(pool);
-  gprac={list:pool,i:0,score:0,locked:false};
+function renderGPractice(lessonId){
+  let pool=GRAMMAR.practice.slice();
+  let title="🎯 Практика грамматики";
+  if(lessonId){
+    const f=pool.filter(q=>q.lesson===lessonId);
+    if(f.length){ pool=f; const l=lessonById(lessonId); title=l?(l.ic+" "+l.title):"Практика"; }
+  }
+  shuffle(pool);
+  gprac={list:pool,i:0,score:0,locked:false,lesson:(lessonId||null),title};
   drawGPractice();
 }
 function drawGPractice(){
@@ -1563,9 +1579,10 @@ function drawGPractice(){
   const opts=cur.options.slice(); shuffle(opts);
   gprac.locked=false;
   const pct=Math.round(gprac.i/gprac.list.length*100);
+  const back=gprac.lesson?`go('lesson','${gprac.lesson}')`:`go('grammar')`;
   app.innerHTML=`<div class="wrap fade game" style="--theme:#fbbf24">
-    ${gameTop('🎯 Практика грамматики',pct,{back:`go('grammar')`,i:gprac.i+1,n:gprac.list.length})}
-    <div class="qcard"><div class="qtype">🎯 Выбери правильный вариант</div>
+    ${gameTop(gprac.title,pct,{back,i:gprac.i+1,n:gprac.list.length})}
+    <div class="qcard"><div class="qtype">🎯 ${gprac.lesson?'Закрепляем тему':'Выбери правильный вариант'}</div>
       <div class="qbig">${cur.q}</div></div>
     <div id="opts" class="optgrid">${opts.map((o,k)=>optRow(o,k,`pickGP(this,'${esc(o)}')`)).join("")}</div>`;
 }
@@ -1590,8 +1607,9 @@ function gpracDone(){
   app.innerHTML=`<div class="wrap fade"><div class="result">
     <div class="em">${pct>=80?'🏆':pct>=50?'👍':'💪'}</div>
     <div class="rt">${gprac.score} из ${gprac.list.length}</div>
-    <div class="mut">${pct>=80?'Отличная грамматика!':'Перечитай уроки и попробуй снова.'}</div>
-    <button class="btn acc full" style="margin-top:18px" onclick="go('gpractice')">🔁 Ещё раз</button>
+    <div class="mut">${gprac.lesson?(gprac.title.replace(/^\S+\s/,'')):''}${gprac.lesson?' · ':''}${pct>=80?'Отлично!':'Перечитай урок и попробуй снова.'}</div>
+    <button class="btn acc full" style="margin-top:18px" onclick="go('gpractice'${gprac.lesson?",'"+gprac.lesson+"'":''})">🔁 Ещё раз</button>
+    ${gprac.lesson?`<button class="btn full" style="margin-top:10px" onclick="go('lesson','${gprac.lesson}')">← К уроку</button>`:''}
     <button class="btn full" style="margin-top:10px" onclick="go('grammar')">← К грамматике</button>
   </div></div>`;
 }
