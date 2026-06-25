@@ -342,6 +342,44 @@
     color:var(--theme);background:color-mix(in srgb,var(--theme) 16%,transparent);border:1px solid color-mix(in srgb,var(--theme) 32%,transparent);
     padding:5px 10px;border-radius:999px}
   .otd .otden{font-size:21px;font-weight:800;margin-top:11px;letter-spacing:-.01em}
+
+  /* ===================== BOLD COLORFUL REDESIGN ===================== */
+  .wrap{padding:18px 16px 8px}
+  .phead{padding:10px 2px 2px}
+  .phead .ttl{font-size:33px;letter-spacing:-.035em;line-height:1.04}
+  .phead .sub{font-size:14.5px;margin-top:9px}
+  .secttl{margin:26px 2px 13px;font-size:14px;letter-spacing:.04em;color:var(--txt);text-transform:none;font-weight:800;opacity:.92}
+  .grid{gap:14px}
+  .stats{gap:12px}
+  .stat{padding:15px 14px;border-radius:20px}
+  .stat b{font-size:26px}
+
+  /* big saturated colour tile */
+  .scard{position:relative;overflow:hidden;border-radius:26px;padding:18px;min-height:166px;text-align:left;color:#fff;
+    display:flex;flex-direction:column;border:1px solid rgba(255,255,255,.16);box-shadow:0 18px 38px rgba(0,0,0,.5);
+    transition:transform .14s;animation:popin .4s both}
+  .scard:active{transform:scale(.955)}
+  .scard::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(135% 85% at 100% 0%, rgba(255,255,255,.24), transparent 50%)}
+  .scard>*{position:relative;z-index:1}
+  .scard .sic{width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:27px;
+    background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.32)}
+  .scard .sbody{margin-top:auto;padding-top:16px}
+  .scard h3{font-size:20px;font-weight:800;letter-spacing:-.025em;line-height:1.08;text-shadow:0 1px 3px rgba(0,0,0,.3)}
+  .scard .sex{font-size:11px;color:rgba(255,255,255,.88);margin-top:4px;font-weight:600;text-shadow:0 1px 2px rgba(0,0,0,.25)}
+  .scard .sfoot{display:flex;align-items:center;gap:10px;margin-top:13px}
+  .scard .sbar{flex:1;height:7px;border-radius:7px;background:rgba(0,0,0,.32);overflow:hidden}
+  .scard .sbar i{display:block;height:100%;background:#fff;border-radius:7px;box-shadow:0 0 10px rgba(255,255,255,.55)}
+  .scard .spc{font-size:15px;font-weight:800}
+  .scard.wide{min-height:96px;flex-direction:row;align-items:center;gap:13px;padding:16px;border-radius:22px}
+  .scard.wide .sbody{margin:0;padding:0}
+  .scard.wide h3{font-size:17px}
+  .scard.wide .sex{margin-top:2px}
+
+  /* slim countdown strip */
+  .strip{display:flex;align-items:center;gap:12px;padding:15px 17px;border-radius:20px;margin-top:14px;
+    background:linear-gradient(135deg,rgba(111,123,255,.20),rgba(240,143,200,.12));border:1px solid var(--glassb)}
+  .strip .sn{font-size:23px;font-weight:800;letter-spacing:-.02em}
 </style>
 </head>
 <body>
@@ -957,7 +995,7 @@ function renderHome(){
     <div class="phead">
       <div class="eyebrow">King Edward's · Witley · Pre-Sixth</div>
       <div class="ttl">${greet} 👋</div>
-      <div class="sub">${days} ${plural(days,'день','дня','дней')} до отъезда в Англию · учим английский для школы</div>
+      <div class="sub">Учим английский, чтобы понимать уроки в Англии</div>
     </div>
 
     <div class="stats">
@@ -970,54 +1008,40 @@ function renderHome(){
       <div class="ring">
         ${ringSvg(goalPct)}
         <div class="grow">
-          <div class="between"><b>Цель на сегодня</b><span class="mut small">${S.todayCount}/${DAILY_GOAL}</span></div>
+          <div class="between"><b style="font-size:17px">Цель на сегодня</b><span class="mut small">${S.todayCount}/${DAILY_GOAL}</span></div>
           <div class="mut small" style="margin-top:4px">${goalPct>=100?"Готово! Отличная работа 🎉":"Пройди ещё "+(DAILY_GOAL-S.todayCount)+" карточек"}</div>
         </div>
       </div>
-      <button class="btn acc full" style="margin-top:14px" onclick="go('daily')">⚡️ Быстрая тренировка</button>
+      <button class="btn acc full" style="margin-top:15px;padding:16px;font-size:16px" onclick="go('daily')">⚡️ Быстрая тренировка</button>
     </div>
 
-    <div class="qrow">
-      <button class="ql" onclick="go('grammar')">
-        <div class="glow" style="background:radial-gradient(80% 80% at 80% 0,#fbbf24,transparent);opacity:.18"></div>
-        <div class="ic">✍️</div><b>Грамматика</b><span>Писать эссе правильно</span>
-      </button>
-      <button class="ql" onclick="go('subject','slang')">
-        <div class="glow" style="background:radial-gradient(80% 80% at 80% 0,#fb7bb5,transparent);opacity:.18"></div>
-        <div class="ic">💬</div><b>Сленг</b><span>Для переписки с друзьями</span>
-      </button>
+    <div class="grid" style="margin-top:14px">
+      <button class="scard wide" style="background:${subjGradient('#fbbf24')}" onclick="go('grammar')">
+        <div class="sic">✍️</div><div class="sbody"><h3>Грамматика</h3><div class="sex">эссе правильно</div></div></button>
+      <button class="scard wide" style="background:${subjGradient('#fb7bb5')}" onclick="go('subject','slang')">
+        <div class="sic">💬</div><div class="sbody"><h3>Сленг</h3><div class="sex">для переписки</div></div></button>
     </div>
 
-    <div class="panel">
-      <div class="between"><b>✈️ До отъезда в Англию</b><span class="pill">1 сентября</span></div>
-      <div class="count">
-        <div><b>${days}</b><span>дней</span></div>
-        <div><b>${weeks}</b><span>недель</span></div>
-        <div><b>${Math.round(learned/TOTAL_ITEMS*100)}%</b><span>курса</span></div>
-      </div>
+    <div class="secttl">Учить дальше</div>
+    <div class="grid">
+      ${GRID_MODULES.slice(0,4).map(subjCard).join("")}
     </div>
+    <button class="btn full" style="margin-top:14px" onclick="go('subjects')">Все 8 разделов →</button>
 
-    <div class="panel otd" style="--theme:#8b8cff">
+    <button class="strip" style="width:100%;text-align:left" onclick="go('progress')">
+      <span style="font-size:22px">✈️</span>
+      <div class="grow"><div class="sn">${days} ${plural(days,'день','дня','дней')}</div>
+        <div class="mut small">до отъезда в Англию · 1 сентября</div></div>
+      <span class="pill">${Math.round(learned/TOTAL_ITEMS*100)}% курса</span>
+    </button>
+
+    <div class="panel otd" style="--theme:#8b8cff;margin-top:14px">
       <div class="between"><span class="otdlab">🗣️ Фраза дня</span>
         <button class="iconbtn" onclick="speak('${esc(potd.en)}')">🔊</button></div>
       <div class="otden">${potd.en}</div>
       <div class="def" style="color:var(--mut)">${potd.ru}</div>
       <div class="ex" style="margin-top:6px">“${potd.ex}”</div>
     </div>
-
-    <div class="panel otd" style="--theme:#fb7bb5">
-      <div class="between"><span class="otdlab">💬 Сленг дня</span>
-        <button class="iconbtn" onclick="speak('${esc(sotd.en)}')">🔊</button></div>
-      <div class="otden">${sotd.en}</div>
-      <div class="def" style="color:var(--mut)">${sotd.ru}</div>
-      <div class="ex" style="margin-top:6px">“${sotd.ex}”</div>
-    </div>
-
-    <div class="secttl">Продолжить учить</div>
-    <div class="grid">
-      ${GRID_MODULES.slice(0,2).map(subjCard).join("")}
-    </div>
-    <button class="btn full" style="margin-top:12px" onclick="go('subjects')">Все разделы →</button>
   </div>`;
 }
 
@@ -1034,15 +1058,16 @@ function ringSvg(pct){
 }
 
 /* ---------- SUBJECTS LIST ---------- */
+function subjGradient(c){ return `linear-gradient(155deg, color-mix(in srgb,${c} 80%,#13141c), color-mix(in srgb,${c} 36%,#0a0b12))`; }
 function subjCard(m){
-  const p=moduleProgress(m); const color=m.color||'#6ea8fe';
-  return `<button class="subj" style="--theme:${color}" onclick="go('subject','${m.id}')">
-    <div class="glow" style="background:radial-gradient(85% 85% at 85% 0,${color},transparent)"></div>
-    <div class="ic">${m.ic}</div>
-    <h3>${m.name}</h3>
-    <div class="ex">${m.exam}</div>
-    <div class="bar"><i style="width:${p.pct}%;background:linear-gradient(90deg,${color},#c8a6ff)"></i></div>
-    <div class="pc"><span>${p.learned}/${p.total}</span><span>${p.pct}%</span></div>
+  const p=moduleProgress(m); const c=m.color||'#8b8cff';
+  return `<button class="scard" style="background:${subjGradient(c)}" onclick="go('subject','${m.id}')">
+    <div class="sic">${m.ic}</div>
+    <div class="sbody">
+      <h3>${m.name}</h3>
+      <div class="sex">${m.exam}</div>
+      <div class="sfoot"><div class="sbar"><i style="width:${p.pct}%"></i></div><div class="spc">${p.pct}%</div></div>
+    </div>
   </button>`;
 }
 function renderSubjects(){
@@ -1062,15 +1087,15 @@ function renderSubject(id){
       <button class="back" onclick="go('${id==='essay'?'grammar':'subjects'}')">←</button>
       <div class="grow"></div>
     </div>
-    <div class="shead">
+    <div class="shead" style="background:${subjGradient(color)};border-color:rgba(255,255,255,.18);color:#fff;border-radius:26px;padding:20px">
       <div class="row" style="align-items:flex-start">
-        <div class="sic">${m.ic}</div>
-        <div class="grow"><div class="sx">${m.exam}</div><h2>${m.name}</h2></div>
+        <div class="sic" style="width:54px;height:54px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:27px;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.32)">${m.ic}</div>
+        <div class="grow"><div style="font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:rgba(255,255,255,.85)">${m.exam}</div><h2 style="font-size:24px;font-weight:800;letter-spacing:-.02em;margin-top:3px;color:#fff">${m.name}</h2></div>
       </div>
-      <div class="mut" style="line-height:1.5;margin-top:12px;font-size:13.5px">${m.desc}</div>
-      <div style="margin-top:12px">${m.topics.map(t=>`<span class="tag">${t}</span>`).join("")}</div>
-      <div class="progressline" style="margin-top:14px;background:rgba(8,12,24,.45)"><i style="width:${p.pct}%;background:linear-gradient(90deg,${color},#c8a6ff)"></i></div>
-      <div class="between small" style="color:var(--mut)"><span>Выучено ${p.learned} из ${p.total}</span><span style="font-weight:800;color:#fff">${p.pct}%</span></div>
+      <div style="line-height:1.55;margin-top:13px;font-size:13.5px;color:rgba(255,255,255,.92)">${m.desc}</div>
+      <div style="margin-top:13px">${m.topics.map(t=>`<span class="tag" style="background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.26);color:#fff">${t}</span>`).join("")}</div>
+      <div class="progressline" style="margin-top:15px;background:rgba(0,0,0,.3)"><i style="width:${p.pct}%;background:#fff;box-shadow:0 0 10px rgba(255,255,255,.5)"></i></div>
+      <div class="between small" style="color:rgba(255,255,255,.88)"><span>Выучено ${p.learned} из ${p.total}</span><span style="font-weight:800;color:#fff">${p.pct}%</span></div>
     </div>
     <div class="tiles">
       <button class="tile primary" onclick="go('study','${id}')"><div class="tic">🎮</div><div><b>Учить</b><span>5 мини-игр</span></div></button>
